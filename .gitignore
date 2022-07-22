@@ -1,0 +1,13 @@
+# intell
+output
+
+
+# Folders
+.vs/
+
+# Files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+

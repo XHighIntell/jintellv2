@@ -56,7 +56,7 @@ declare namespace intell {
     }
 
     /** It is "on/off" function; and created by createOnOff. */
-    interface OnOffEventTarget<EventMap = DocumentEventMap, This = void, ChainType = void> {
+    interface OnOffEventTarget<EventMap = DocumentEventMap, This = void, ChainType = void> extends EventTarget {
         on: OnRegister<EventMap, This, ChainType>;
         off(name: string): void;
     }

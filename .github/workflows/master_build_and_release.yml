@@ -1,0 +1,46 @@
+﻿name: Master build and release
+
+on:
+    workflow_dispatch:
+        inputs: 
+            version:
+                description: 'Version - It’s common practice to prefix your version names with the letter v. Some good tag names might be v1.0.0 or v2.3.4.'
+                type: text
+                required: true
+
+jobs:
+    build:
+        name: build ${{ github.event.inputs.version }}
+        runs-on: windows-latest
+        
+
+        steps:
+        - name: Clone Repository
+          uses: actions/checkout@v3
+          
+        - name: Setup Node.js v16.x
+          uses: actions/setup-node@v3
+          with: 
+                node-version: 16.x
+
+        - name: Install dependencies
+          shell: cmd
+          run: |
+                cd build
+                "install dependencies.cmd"
+        
+        ### Ready to run ###
+        - name: Build
+          shell: cmd
+          run: |
+                cd build
+                "build production.cmd"
+    
+        - name: Create Release
+          shell: cmd
+          env: 
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                RELEASE_VERSION: ${{ github.event.inputs.version }}
+          run: |
+            cd build
+            "release github.cmd"

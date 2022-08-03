@@ -3,11 +3,13 @@
     /** Read content of file into string */
     export function readAllFilesText(src: string | string[]): string;
 
-    export function build(job: JavaScriptBuildJob, switches: BuildArgumentsObject["switches"]): void;
-    export function buildJavaScript(job: JavaScriptBuildJob, switches: BuildArgumentsObject["switches"]): void;
-    export function buildDeclarationTypescript(job: DeclarationTypescriptBuildJob, switches: BuildArgumentsObject["switches"]): void;
-    export function buildStyleSheet(job: StyleSheetBuildJob, switches: BuildArgumentsObject["switches"]): void;
+    export function build(job: BuildJob, switches: BuildSwitches): void;
+    export function buildJavaScript(job: JavaScriptBuildJob, switches: BuildSwitches): void;
+    export function buildDeclarationTypescript(job: DeclarationTypescriptBuildJob, BuildSwitches): void;
+    export function buildStyleSheet(job: StyleSheetBuildJob, switches: BuildSwitches): void;
 
+    /** Create github release. */
+    export function release(switches: ReleaseSwitches): void;
 
     interface BuildArgumentsObject {
         /** All parameters after split space. The parameters are not parsed by anything. */
@@ -17,14 +19,21 @@
         commands: string[];
 
         /** Only switches. */
-        switches: {
-            mode: 'development' | 'production';
-            input: 'src';
-            output: 'output/development';
-            [T: string]: string | boolean
-        };
+        switches: BuildSwitches | ReleaseSwitches;
     }
 
+    interface BuildSwitches {
+        action: 'build';
+        mode: 'development' | 'production';
+        input: 'src';
+        output: 'output/development';
+    }
+    interface ReleaseSwitches {
+        action: 'release';
+        input: '../output/production/*';
+        version: 'v1.2.3';
+        token: string;
+    }
 
     interface JavaScriptBuildJob {
         type: 'javascript',

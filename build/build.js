@@ -21,7 +21,7 @@ const colors = intell.colors;
 
 !function() {
     globalThis.build = {};
-
+    
 
     build.readAllFilesText = function(src) {
         if (Array.isArray(src) == false) src = [src];
@@ -133,6 +133,55 @@ const colors = intell.colors;
         intell.IO.Directory.CreateDirectory(Path.dirname(outputPath));
         FS.writeFileSync(outputPath, code, { encoding: "utf8" });
     }
+
+    build.release = function(switches) {
+
+        const axios = require("axios");
+        const input = switches.input;
+        const version = switches.version;
+        const token = switches.token;
+        
+
+        var child_process = require('child_process');
+        child_process.execSync('"C:/Program Files/7-Zip/7z.exe" a release.zip ' + input);
+
+        // GITHUB_REPOSITORY: 'XHighIntell/github-actions-template'
+
+        axios.post('https://api.github.com/repos/' + process.env.GITHUB_REPOSITORY + '/releases', {
+            target_commitish: 'master',
+            tag_name: version,
+            name: version,
+            body: 'Description of the release ' + version,
+            draft: true,
+            prerelease: false,
+            generate_release_notes: false
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/vnd.github+json',
+                'Authorization': 'token ' + token,
+            },
+        }).then(function(e) {
+            var id = e.data.id;
+            var data = FS.readFileSync("release.zip");
+
+            return axios.post('https://uploads.github.com/repos/' + process.env.GITHUB_REPOSITORY + '/releases/' + id + '/assets?name=release.zip', data, {
+                headers: {
+                    'Content-Type': 'application/zip',
+                    'Accept': 'application/vnd.github+json',
+                    'Authorization': 'token ' + token,
+                },
+            });
+
+        }).catch(function(e) {
+            console.log(e);
+
+            throw e;
+        });
+
+        
+
+    }
 }()
 
 
@@ -184,21 +233,24 @@ var jobs = [
     var args = intell.Diagnostics.ParseArguments();
     var switches = args.switches;
 
+    if (switches.action == 'build') {
+        console.log("build target = '" + colors.fg(226) + args.switches.mode + colors.reset + "'");
+        console.log("build output = '" + Path.resolve(args.switches.output) + "'");
+        console.log();
 
-    console.log("build target = '" + colors.fg(226) + args.switches.mode + colors.reset + "'");
-    console.log("build output = '" + Path.resolve(args.switches.output) + "'");
-    console.log();
+        jobs.forEach(function(job, index) {
 
-    jobs.forEach(function(job, index) {
+            process.stdout.write((index + 1).toString().padStart(2) + '. build ' + colors.fg(39) + job.name + colors.reset + '... ');
+            var current_time = Date.now();
 
-        process.stdout.write((index + 1).toString().padStart(2) + '. build ' + colors.fg(39) + job.name + colors.reset + '... ');
-        var current_time = Date.now();
+            build.build(job, switches);
 
-        build.build(job, switches);
-
-        var elapsed = Date.now() - current_time;
-        console.log("done in " + colors.fg(128) + elapsed + "ms" + colors.reset);
-    });
+            var elapsed = Date.now() - current_time;
+            console.log("done in " + colors.fg(128) + elapsed + "ms" + colors.reset);
+        });
+    } else if (switches.action == 'release') {
+        build.release(switches);
+    }
 }()
 
 

@@ -1,4 +1,5 @@
-﻿
+﻿/* !intell.js | https://github.com/xhighintell/jintellv2 */
+
 window.intell = function() {
     var intell = window.intell; intell = {
         version: '2.0.0'

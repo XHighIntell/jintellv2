@@ -1,5 +1,5 @@
 @echo off
 
-node "build.js" -mode:development -input:"../src" -output:"../output/development"
+node "build.js" -action:build -mode:development -input:"../src" -output:"../output/development"
 
 pause

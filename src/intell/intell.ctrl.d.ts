@@ -21,15 +21,18 @@ declare namespace intell.ctrl {
     /** Returns a DOMRect object providing information about the size of an element and its position relative to the document instead of the viewport. */
     export function getBoundingClientRectOffset(element: HTMLElement): DOMRect;
 
-
     export function getRectWhenShowAtRect(popup: DOMRect, target: DOMRect, location: number, option?: GetRectWhenShowAtOption): GetRectWhenShowAtResult;
-    export function getRectWhenShowAtCoord(popup: DOMRect, target: CoordinatesLike, location: number, option?: GetRectWhenShowAtOption): GetRectWhenShowAtResult;
+    export function getRectWhenShowAtCoord(popup: DOMRect, coord: CoordinatesLike, location: number, option?: GetRectWhenShowAtOption): GetRectWhenShowAtResult;
 
-
-    export function ShowAtRect(element: HTMLElement, target: DOMRect, locations: number[], option?: ShowAtOption): void;
+    export function showAt(element: HTMLElement, target: DOMRect, locations: number[], option?: ShowAtOption): void;
+    export function showAt(element: HTMLElement, coord: CoordinatesLike, locations: number[], option?: ShowAtOption): void;
+    export function showAt(element: HTMLElement, elementTarget: HTMLElement, locations: number[], option?: ShowAtOption): void;
+    export function showAtRect(element: HTMLElement, target: DOMRect, locations: number[], option?: ShowAtOption): void;
     export function showAtCoord(elementPopup: HTMLElement, coord: CoordinatesLike, locations: number[], option?: ShowAtOption): void;
     export function showAtElement(elementPopup: HTMLElement, elementTarget: HTMLElement, locations: number[], option?: ShowAtOption): void;
 
+
+    
 
     //export function startClass(element: HTMLElement, timeout: number, classname: string): Promise<void>;
     //export function stopClass(element: HTMLElement, classname: string): void;

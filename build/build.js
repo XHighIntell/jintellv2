@@ -56,9 +56,8 @@ const colors = intell.colors;
 
         if (switches.mode == "development") {
             var outputPath = Path.resolve(switches.output, job.dest.name);
-            var folder = Path.dirname(outputPath)
-            intell.IO.Directory.CreateDirectory(folder);
-
+            
+            intell.IO.Directory.CreateDirectory(Path.dirname(outputPath));
             FS.writeFileSync(outputPath, code, { encoding: "utf8" });
         }
         else {
@@ -193,6 +192,7 @@ var jobs = [
         src: [
             'intell/intell.js',
             'intell/intell.ctrl.js',
+            'intell.portal/portal.js',
         ],
         dest: {
             name: 'intell/intell.js',
@@ -207,25 +207,22 @@ var jobs = [
         src: [
             'intell/intell.d.ts',
             'intell/intell.ctrl.d.ts',
+            'intell.portal/portal.d.ts',
         ],
         dest: {
             name: 'intell/intell.d.ts'
         }
     },
-    //{
-    //    type: "style sheet",
-    //    name: "intell.css",
-    //    src: [
-    //        'intell/intell.css',
-    //        'intell/intell.controls.Waiting/Waiting.css',
-    //        'intell/intell.controls.ComboBox2/ComboBox2.css',
-    //        'intell/intell.controls.Menu2/Menu2.css',
-    //    ],
-    //    dest: {
-    //        name: "intell/intell.css",
-    //        minify: "intell/intell.min.css"
-    //    }
-    //},
+    {
+        type: "style sheet",
+        name: "portal.css",
+        src: [
+            'intell.portal/portal.css',
+        ],
+        dest: {
+            name: "intell/portal.css",
+        }
+    },
 ];
 
 !function() {

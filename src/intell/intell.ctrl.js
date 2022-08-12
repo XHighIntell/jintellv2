@@ -1,5 +1,5 @@
-﻿window.intell.ctrl = function() {
-    var ctrl = window.intell.ctrl; ctrl = {};
+﻿!function() {
+    var ctrl = intell.ctrl; ctrl = {}; intell.ctrl = ctrl;
 
     // === methods ===
     ctrl.show = function(element) {
@@ -180,7 +180,13 @@
     ctrl.getRectWhenShowAtCoord = function(popup, target, location, option) {
         return ctrl.getRectWhenShowAtRect(popup, new DOMRect(target.x ?? target.left, target.y ?? target.top, 0, 0), location, option);
     }
-    ctrl.ShowAtRect = function(element, target, locations, option) {
+
+    ctrl.showAt = function(element, o, locations, option) {
+        if (o instanceof HTMLElement) return ctrl.showAtElement(element, o, locations, option);
+        if (o.width != null && o.height != null) return ctrl.showAtRect(element, o, locations, option);
+        else return ctrl.showAtCoord(element, o, locations, option);
+    }
+    ctrl.showAtRect = function(element, target, locations, option) {
 
         if (locations == null) throw new TypeError("locations can't be null");
 
@@ -212,7 +218,7 @@
         return ctrl.ShowAtRect(element, target, locations, option);
     }
 
-
+    
 
     //!function() {
     //    /** @type intell.ctrl.StartHideProcess[] */
@@ -280,7 +286,4 @@
     //
     //}();
     
-
-
-    return ctrl;
 }();

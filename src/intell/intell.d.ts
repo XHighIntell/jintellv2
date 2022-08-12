@@ -25,6 +25,7 @@ declare namespace intell {
 
         hasListeners(): boolean;
 
+        /** Initializes a new instance of EventRegister object that is used to add, remove listeners and dispatch them. */
         constructor(target?: object);
     }
 

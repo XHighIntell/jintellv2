@@ -6,6 +6,11 @@ declare namespace intell {
     // ======= classes =======
     /** Event register object that is used to add, remove listeners and dispatch them. */
     export class EventRegister<T extends (this: any, ...args: any) => any> {
+
+        /** Initializes a new instance of EventRegister object that is used to add, remove listeners and dispatch them. 
+         * @param target The value of <mark>this</mark> provided for dispatching to listeners. */
+        constructor(target?: object);
+
         /** Private */
         protected listeners: T[];
 
@@ -18,15 +23,15 @@ declare namespace intell {
         /** Deregisters an event listener callback from this event. */
         removeListener(callback: T): void;
 
-        /** Dispatches a synthetic event to target. */
+        /** Dispatches a synthetic event. */
         dispatch(...args: Parameters<T>): void;
 
+        /** Determines whether this event includes a listener among its entries.
+         * @param callback Listener whose registration status shall be tested */
         hasListener(callback: T): boolean;
 
+        /** Determines whether this event has any listeners. */
         hasListeners(): boolean;
-
-        /** Initializes a new instance of EventRegister object that is used to add, remove listeners and dispatch them. */
-        constructor(target?: object);
     }
 
     // ======= methods =======
@@ -40,10 +45,12 @@ declare namespace intell {
     export function post(url: string): HttpRequest;
 
     /** Create a query object from a string.
-    * @param search location.search.substr(1) */
+    * @param search The string containing key value pair that separate by =. If search is not specified, location.search.substr(1) will be used instead.
+    * @returns Return the key value pair object. */
     export function qs(search?: string): { [T: string]: string };
 
     // ======= fields =======
+    /** Gets the version of this library. */
     export var version: '2.0.0';
 
     //export function elm(): void;

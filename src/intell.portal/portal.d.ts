@@ -1,8 +1,10 @@
 ﻿declare namespace intell.portal {
 
     // classes
+    /** Creates a portal for managing applications. */
     export class Portal {
-        /** Initializes a new instance of portal from element. */
+        /** Initializes a new instance of portal from element. 
+         @param element The element for which to create portal. */
         constructor(element: HTMLElement);
 
         // fields
@@ -10,14 +12,14 @@
         protected overlay: PortalOverlay;
 
         // properties
-        /** Gets the list of application. */
+        /** Gets the list of applications that are added to the portal. */
         applications: Application[];
-        /** Gets or sets acctive application. */
+        /** Gets or sets active application. */
         activeApplication: Application;
 
         // methods
         /** Add a manifest to portal. */
-        addManifest(manifest: ApplicationManifest, callback: ((application: Application) => void)): Application;
+        addManifest(manifest: ApplicationManifest, callback: (application: Application) => void): Application;
 
         /** Open the first application that have manifest.startup equal true.  */
         open(): void;
@@ -36,7 +38,10 @@
         /** Occurs when the activeApplication property value changes. */
         onChange: intell.EventRegister<(this: Portal, event: { oldApplication: Application, newApplication: Application }) => void>;
     }
+    /** The application that will be added to the portal. */
     export class Application {
+        /** Initializes a new instance of application. */
+        constructor();
 
         protected __callback: (application: Application) => Promise<any> | void;
 

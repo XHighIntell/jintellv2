@@ -1,10 +1,11 @@
 ﻿/* !intell.js | https://github.com/xhighintell/jintellv2 */
+'use strict';
 
-window.intell = function() {
-    var intell = window.intell; intell = {
+!function() {
+    var intell = globalThis.intell; intell = {
         version: '2.0.0'
-    };
-
+    }; globalThis.intell = intell;
+    
     // classes
     intell.EventRegister = function EventRegister(target) {
 
@@ -142,7 +143,7 @@ window.intell = function() {
         return request;
     }
     intell.qs = function(search) {
-        if (search == null) window.location.search.substr(1);
+        if (search == null) search = window.location.search.substr(1);
         var o = search.split('&');
 
         var r = {};
@@ -158,16 +159,4 @@ window.intell = function() {
     };
 
     
-
-    //if (window.intell == null) 
-
-    return intell;
 }();
-
-
-//$(asdasd).show();
-//intell.show(asdasd);
-//intell.controls.show(asdasd);
-
-
-//intell.get().on('')

@@ -1,0 +1,8 @@
+{
+    "_": "field",
+    "title": "version Field",
+    "description": "Gets the version of this library.",
+    "type": "string",
+
+    "remarks": "<mark>\"2.0.0\"</mark>"
+}

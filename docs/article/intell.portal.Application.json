@@ -1,0 +1,47 @@
+{
+    "_": "class",
+    "title": "Application Class",
+    "description": "The application that will be added to the portal.",
+
+    "constructors": [
+        {
+            "title": "constructor()",
+            "description": "Initializes a new instance of application."
+        }
+    ],
+    "fields": [
+        {
+            "title": "manifest: ApplicationManifest[]",
+            "type": "ApplicationManifest[]",
+            "href": "?q=intell.portal.ApplicationManifest",
+            "description": "Gets the manifest of application."
+        },
+        {
+            "title": "elementRoot: HTMLElement",
+            "type": "HTMLElement",
+            "description": "The root element of application."
+        },
+        {
+            "title": "elementShortcut: HTMLElement",
+            "type": "HTMLElement",
+            "href": "?q=intell.portal.Application",
+            "description": "Gets the sidebar element."
+        },
+        {
+            "title": "status: \"NONE\" | \"LOADING\" | \"LOADED\" | \"FAIL\"",
+            "type": "string",
+            "description": "The status of this application."
+        },
+        {
+            "title": "error: Error",
+            "type": "Error",
+            "description": "The error occurs while loading. <mark>null</mark> if the application does not get any error while load."
+        }
+    ],
+    "events": [
+        {
+            "title": "onOpen: EventRegister<(this: Application) => void>",
+            "description": "Occur when the portal opens this application."
+        }
+    ]
+}

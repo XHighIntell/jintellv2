@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Portal - Demo</title>
+    <link rel="icon" href="../favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 3 important scripts -->
+    <script src="../static/lib/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../static/lib/intell/intell.js"></script>
+    <link  href="../static/lib/intell/portal.css" rel="stylesheet" />
+
+    <!-- place resources, that share for all applications-->
+    <link href="css/global.css" rel="stylesheet" />
+    <style>
+
+        html{height:100%}
+        body{display:flex;flex-direction:column;height:100%;margin:0;font-family:'Segoe UI';font-size:16px;background-color:#fff}
+
+        .topbar{display:flex;flex:0 0 auto;height:40px;background-color:#1c1c1c}
+        .topbar-logo{margin-left:10px;padding:0 10px;font-size:20px;line-height:40px;color:#55b3ff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:none}
+        .topbar-button{display:flex;width:40px;align-items:center;justify-content:center;cursor:pointer}
+        .topbar-button>.icon{width:24px;height:24px;background:center no-repeat}
+        .topbar-button:hover{background:#3d3d3d}
+
+        /*
+        .topbar-button.console .icon{background-image:url(image/console.svg)}
+            */
+    </style>
+</head>
+<body>
+    
+    <div class="topbar">
+        <a class="topbar-logo" href="/">Xortal demo</a>
+        <div class="spring"></div>
+        <div class="topbar-button console">
+            <div class="icon"></div>
+        </div>
+    </div>
+
+
+    <div class="X-Portal">
+        <div class="Taskbar">
+            <div class="Taskbar-Top">
+                <div class="Collapse-Button" tabindex="0"></div>
+            </div>
+            <div class="Taskbar-Middle">
+                <!-- Portal give the best ways to customize ui -->
+                <div class="Group abstract" data-group="Account">
+                    <header>
+                        <div class="Name"></div>
+                    </header>
+                    <div class="Apps"></div>
+                </div>
+
+                <div class="Shortcut abstract" tabindex="0">
+                    <span class="Icon"></span>
+                    <span class="Name"></span>
+                </div>
+                <!--  -->
+
+            </div>
+        </div>
+        <main class="Portal-Content">
+            <div class="Loading-Overlay" style="display:none">
+                <i class="spring"></i>
+                <div class="content">
+                    <i class="spring"></i>
+                    <div class="waiting-box">
+                        <div class="Cycle1"></div>
+                        <div class="Cycle2"></div>
+                    </div>
+                    <div class="Application-Name"></div>
+                    <div class="Application-Description"></div>
+                    <i class="spring" style="flex-grow:2"></i>
+                </div>
+                
+                <i class="spring"></i>
+            </div>
+                        
+            <div class="Error-Overlay" style="display:none">
+                <i class="spring"></i>
+                <div class="Error-Content">
+                    <i class="spring"></i>
+                    <div class="Title">Oooops!</div>
+                    <div class="Application-Name"></div>
+                    <div class="Message"></div>
+                    <div class="Stack"></div>
+                    <i class="spring" style="flex-grow:2"></i>
+                </div>
+                <i class="spring"></i>
+            </div>
+
+            <div class="Portal-Applications">
+
+
+            </div>
+        </main>
+    </div>
+    
+
+
+    <script>
+        var $portal = $('.X-Portal').hide();
+        var portal = new intell.portal.Portal($portal[0]);
+        
+        $(document).ready(function() {
+            /* Allow portal to load/save collapsed key on localStorage */
+            portal.taskbar.enableCollapseStorage('portal.taskbar.collapsed');
+
+            
+
+            /* add a listener to customize url for current state of portal. */
+            portal.onChange.addListener(function(e) {
+                var qs = intell.qs();
+            
+                if (qs.application && qs.application.split('/')[0] == e.newApplication.manifest.id)
+                    return;
+            
+                qs.application = e.newApplication.manifest.id;
+            
+                var names = Object.getOwnPropertyNames(qs);
+                var url = '?' + names.map(function(name) {
+                    return name + '=' + qs[name];
+                }).join('&') + location.hash;
+            
+                history.replaceState(null, document.title, url);
+            });
+
+            var applicationId = intell.qs().application;
+            if (applicationId) applicationId = applicationId.split('/')[0];
+            
+            
+            portal.open(applicationId);
+
+            $portal.show();
+        })
+        console.log('a', document.currentScript);
+    </script>
+
+    <!-- List Application -->
+    <script src="apps/dashboard/dashboard.js"></script>
+    <script src="apps/loading/loading.js"></script>
+    <script src="apps/error/error.js"></script>
+    <script src="apps/cost-billing/cost-billing.js"></script>
+    <!-- Add many applications as you can -->
+
+</body>
+</html>

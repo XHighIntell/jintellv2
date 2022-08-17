@@ -1,0 +1,157 @@
+﻿<div class="article">
+    <div class="title">Portal</div>
+    <div>Creates a portal for managing applications.</div>
+
+    <div class="group-members constructors">
+        <div class="title">Constructors</div>
+        <div class="item-member item-method item-constructor">
+            <div class="label">
+                <div class="icon method"></div>
+                <div class="title" data-code="dts">constructor(element: HTMLElement)</div>
+            </div>
+            <div class="content">
+                <p>Writes the sequence of bytes contained in source into the current memory stream and advances the current position within this memory stream by the number of bytes written.</p>
+
+                <div class="parameters">
+                    <div class="title">Parameters</div>    
+                    <div class="parameter">
+                        <div class="info">
+                            <div class="name">buffer</div>
+                            <div class="type" data-code="dts">string[]</div>
+                        </div>
+                        <div class="description">
+                            The array of unsigned bytes from which to create the current stream.
+                        </div>
+                                
+                    </div>
+                </div>
+                        
+                        
+                <div class="remarks">
+                    <div class="title">Remarks</div>
+                    <p>
+                        The <mark>CanRead</mark>, <mark>CanSeek</mark>, and CanWrite properties are all set to true. Capacity is set to the length of the specified byte array. The new stream can be written to, but is not resizable.
+                        The length of the stream cannot be set to a value greater than the initial length of the specified byte array; however, the stream can be truncated (see SetLength).
+                        This constructor does not expose the underlying stream. GetBuffer throws UnauthorizedAccessException.
+                    </p>
+                </div>
+
+                        
+            </div>
+        </div>
+    </div>
+
+    <div class="group-members properties">
+        <h2 class="title">Properties</h2>
+        <div class="item-member item-property">
+            <div class="label">
+                <div class="icon property"></div>
+                <div class="title" data-code="dts">applications: Application[]</div>
+            </div>
+            <div class="content">
+
+            </div>
+        </div>
+        <div class="item-member item-property">
+            <div class="label">
+                <div class="icon property"></div>
+                <div class="title" data-code="dts">activeApplication: Application</div>
+            </div>
+            <div class="content">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="group-members events">
+        <div class="title">Events</div>
+        <div class="item-member item-event">
+            <div class="label">
+                <div class="icon event"></div>
+                <div class="title" data-code="dts">onChange: EventRegister<(this: Portal, event: { oldApplication: Application, newApplication: Application }) => void>;</div>
+            </div>
+            <div class="content">
+                asdasdasdasd
+                asdasdasd
+            </div>
+        </div>
+    </div>
+
+    <div class="group-members methods">
+        <h2 class="title">Methods</h2>
+        <div class="item-member item-method">
+            <div class="label">
+                <div class="icon method"></div>
+                <div class="title">addManifest</div>
+            </div>
+            <div class="content">
+                <p>Open an application that added before.</p>
+
+                <div class="group-members overloads">
+                    <div class="item-member item-overload">
+                        <div class="label">
+                            <div class="title" data-code="dts">addManifest(manifest: ApplicationManifest, callback: (application: Application) => void): Application</div>
+                        </div>
+                        <div class="content">
+                            aaaa
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item-member item-method">
+            <div class="label">
+                <div class="icon method"></div>
+                <div class="title">open</div>
+            </div>
+            <div class="content">
+                <p>Open an application that added before.</p>
+
+                <div class="group-members overloads">
+                    <div class="title">Overloads</div>
+                    <div class="item-member item-overload">
+                        <div class="label">
+                            <div class="title" data-code="dts">open(): void</div>
+                        </div>
+                        <div class="content">
+
+
+
+                            aaaa
+                        </div>
+                    </div>
+                    <div class="item-member item-overload">
+                        <div class="label" data-code="dts">open(application: Application): void</div>
+                        <div class="content">
+                            <div class="parameters">
+                                <div class="title">Parameters</div>
+                                <div class="parameter">
+                                    <div class="info">
+                                        <div class="name">application</div>
+                                        <div class="type" data-code="dts">Application</div>
+                                    </div>
+                                    <div class="description">
+                                        The array of unsigned bytes from which to create the current stream.
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-member item-overload">
+                        <div class="label" data-code="dts">open(applicationId: string): void</div>
+                        <div class="content">
+                            aaaa
+                        </div>
+                    </div>
+                </div>
+
+                <div class="remarks">
+                    <div class="title">Remark</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="height:400px"></div>
+</div>

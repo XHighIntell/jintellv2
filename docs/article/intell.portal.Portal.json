@@ -1,0 +1,101 @@
+{
+    "_": "class",
+    "title": "Portal Class",
+    "description": "Creates a portal for managing applications.",
+
+    "constructors": [
+        {
+            "title": "constructor(element: HTMLElement)",
+            "description": "Initializes a new instance of portal from element.",
+            "parameters": [
+                {
+                    "name": "element",
+                    "type": "HTMLElement",
+                    "description": "The element for which to create portal."
+                }
+            ]
+        }
+    ],
+    "properties": [
+        {
+            "title": "applications: Application[]",
+            "type": "Application[]",
+            "href": "?q=intell.portal.Application",
+            "description": "Gets the list of applications that are added to the portal.",
+            "value": {
+                "description": "Returns the clone array of applications, so modifying won't affect anything."
+            }
+        },
+        {
+            "title": "activeApplication: Application",
+            "type": "Application",
+            "href": "?q=intell.portal.Application",
+            "description": "Gets or sets actiive application.",
+            "value": {
+                "description": "The application that is currently selected by the user."
+            }
+        }
+    ],
+    "methods": [
+        {
+            "title": "addManifest",
+            "description": "Open an application that added before.",
+            "overloads": [
+                {
+                    "title": "addManifest(manifest: ApplicationManifest, callback: (application: Application) => void): Application",
+                    "description": "Add an application by a manifest.",
+                    "parameters": [
+                        {
+                            "name": "manifest",
+                            "type": "ApplicationManifest",
+                            "description": "The ApplicationManifest of application."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "open",
+            "description": "Open an application that added before.",
+            "overloads": [
+                {
+                    "title": "open(): void",
+                    "description": "Open the first application that have manifest.startup equal true."
+                },
+                {
+                    "title": "open(application: Application): void",
+                    "description": "Open an application that added before.",
+                    "parameters": [
+                        {
+                            "name": "application",
+                            "type": "Application",
+                            "href": "?q=intell.portal.Application",
+                            "description": "The Application to open."
+                        }
+                    ]
+                },
+                {
+                    "title": "open(applicationId: string): void",
+                    "description": "Open an application specified by its id. If there are no match id open default applcation.",
+                    "parameters": [
+                        {
+                            "name": "applicationId",
+                            "type": "string",
+                            "description": "The id of application to open."
+                        }
+                    ]
+                }
+
+            ]
+        }
+
+    ],
+    "events": [
+        {
+            "title": "onChange: EventRegister<(this: Portal, event: { oldApplication: Application, newApplication: Application }) => void>",
+            "description": " Occurs when the <mark>activeApplication</mark> property value changes."
+        }
+    ],
+
+    "examples": "article/intell.portal.Portal/examples.html"
+}

@@ -1,0 +1,13 @@
+﻿<div>
+    In this example we create an <mark>onOpen</mark> event that will be triggered after 5 seconds.
+</div>
+
+<code data-code="js">var o = {}
+o.onOpen = new intell.EventRegister(o);
+o.onOpen.addListener(function(text, point) {
+    console.log("Event occured:", text, point);
+});
+
+setTimeout(function() { 
+    o.onOpen.dispatch("hello from dispatch", { x: 100, y: 200 });    
+}, 5000)</code>

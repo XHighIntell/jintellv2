@@ -1,0 +1,83 @@
+@font-face{font-family:fontello;
+src:url(../../font/fontello.woff2) format('woff2'),
+    url(../../font/fontello.woff) format('woff');font-weight:normal;font-style:normal}
+
+.spring{flex:1 1 auto}
+
+/* Main Portal */
+.X-Portal{display:flex;flex:1 1 auto;flex-flow:row nowrap;overflow:hidden}
+.X-Portal>.Taskbar{display:flex;flex-direction:column;background:#000d1c;overflow:hidden;flex:0 0 220px}
+.X-Portal>.Taskbar *:focus{outline:#00bcf2 dashed 1px;outline-offset:-1px}
+.X-Portal>.Taskbar .Taskbar-Top{box-sizing:border-box;border-bottom:1px solid #444}
+.X-Portal>.Taskbar .Taskbar-Top .Collapse-Button{display:flex;height:23px;align-items:center;justify-content:flex-end;padding-right:8px;color:#969696;letter-spacing:-2px;font-family:fontello;cursor:pointer}
+.X-Portal>.Taskbar .Taskbar-Top .Collapse-Button:hover{background-color:rgba(255,255,255,.05)} 
+.X-Portal>.Taskbar .Taskbar-Top .Collapse-Button:focus{outline:#00bcf2 dashed 1px;outline-offset:-1px}
+.X-Portal>.Taskbar .Taskbar-Top .Collapse-Button::before{content:"\f104\f104"}
+
+
+.X-Portal>.Taskbar .Taskbar-Middle{flex:1 1 auto;width:220px;overflow-y:auto}
+.X-Portal>.Taskbar .Taskbar-Middle>.Group{}
+.X-Portal>.Taskbar .Taskbar-Middle>.Group>header{display:flex;align-items:center;height:1em;margin:10px 0 4px;padding:0 10px}
+.X-Portal>.Taskbar .Taskbar-Middle>.Group>header .Name{position:relative;color:#a5a5a5;font-size:.7em;font-weight:500}
+
+
+.X-Portal>.Taskbar .Taskbar-Middle .Shortcut{display:flex;align-items:center;min-height:48px;padding-left:18px;border-left:4px solid transparent;cursor:pointer}
+.X-Portal>.Taskbar .Taskbar-Middle .Shortcut:hover{background-color:rgba(255,255,255,.05)}
+.X-Portal>.Taskbar .Taskbar-Middle .Shortcut:focus{outline:#00bcf2 dashed 1px;outline-offset:-1px}
+.X-Portal>.Taskbar .Taskbar-Middle .Shortcut>.Icon{display:flex;align-items:center;justify-content:center;height:24px;flex:0 0 24px;background:center no-repeat;font-family:fontello;color:#0b6fab}
+.X-Portal>.Taskbar .Taskbar-Middle .Shortcut>.Name{margin-left:10px;color:#fff}
+.X-Portal>.Taskbar .Taskbar-Middle .Shortcut.ACTIVE{border-left:4px solid #00aeff;background-color:rgba(0,174,255,.4)}
+.X-Portal>.Taskbar .Taskbar-Middle .Shortcut.ACTIVE>.Icon{color:#fff}
+
+.X-Portal>.Taskbar.COLLAPSED{flex:0 0 60px}
+.X-Portal>.Taskbar.COLLAPSED .Taskbar-Top .Collapse-Button::before{content:"\f105\f105"}
+.X-Portal>.Taskbar.COLLAPSED .Taskbar-Middle{}
+.X-Portal>.Taskbar.COLLAPSED .Taskbar-Middle>.Group>header{display:flex;align-items:center;width:60px;box-sizing:border-box}
+.X-Portal>.Taskbar.COLLAPSED .Taskbar-Middle>.Group>header::before{content:"";flex:1 1;height:1px;background:#5b5b5b}
+.X-Portal>.Taskbar.COLLAPSED .Taskbar-Middle>.Group>header .Name{display:none}
+.X-Portal>.Taskbar.COLLAPSED .Taskbar-Middle .Shortcut{width:60px;box-sizing:border-box}
+.X-Portal>.Taskbar.COLLAPSED .Taskbar-Middle .Shortcut>.Name{display:none}
+            
+.X-Portal>.Portal-Content{position:relative;flex:1 1 100%;display:flex;flex-direction:column;overflow:hidden}
+.X-Portal>.Portal-Content>.Loading-Overlay{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;opacity:0;z-index:99}
+.X-Portal>.Portal-Content>.Loading-Overlay.ACTIVE{opacity:1;transition:opacity .5s .2s}
+.X-Portal>.Portal-Content>.Loading-Overlay>.content{display:flex;flex-direction:column;align-items:center;max-width:500px}
+.X-Portal>.Portal-Content>.Loading-Overlay>.content .Application-Name{font-size:1.3em;color:black;margin-bottom:5px}
+.X-Portal>.Portal-Content>.Loading-Overlay>.content .Application-Description{color:rgba(0,0,0,.5)}
+.X-Portal>.Portal-Content>.Loading-Overlay .waiting-box{display:flex;width:48px;height:48px;align-items:center;justify-content:center;margin-bottom:1em}
+.X-Portal>.Portal-Content>.Loading-Overlay .waiting-box .Cycle1{position:absolute;width:35px;height:35px;animation:pWz4 1s linear infinite;border:5px solid transparent;border-top:5px solid #00abff;border-radius:50%}
+.X-Portal>.Portal-Content>.Loading-Overlay .waiting-box .Cycle2{position:absolute;width:24px;height:24px;animation:pWz4 1.3s linear infinite;border:3px solid transparent;border-top:3px solid #0066ff;border-radius:50%}
+@keyframes pWz4 {
+    0%{transform:rotate(0deg)}
+    100%{transform:rotate(360deg)}
+}
+
+
+.X-Portal>.Portal-Content>.Error-Overlay{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;overflow:auto;z-index:99}
+.X-Portal>.Portal-Content>.Error-Overlay .Error-Content{display:flex;flex-direction:column}
+.X-Portal>.Portal-Content>.Error-Overlay .Error-Content>.Title{margin-bottom:.3em;text-align:center;font-size:3em}
+.X-Portal>.Portal-Content>.Error-Overlay .Error-Content .Message{display:flex;align-items:center;margin-bottom:20px;border-radius:1px;padding:10px;background:rgba(255,0,0,.05)}
+.X-Portal>.Portal-Content>.Error-Overlay .Error-Content .Message::before{content:"\2716";display:flex;align-items:center;justify-content:center;width:1.5em;height:1.5em;margin-right:.5em;font-size:.9em;color:#fff;background:#e20000;border-radius:50%}
+.X-Portal>.Portal-Content>.Error-Overlay .Error-Content .Stack{white-space:pre-wrap;color:#ec0000}
+
+
+.X-Portal>.Portal-Content>.Portal-Applications{position:absolute;left:0;right:0;top:0;bottom:0;overflow:auto}
+.X-Portal>.Portal-Content>.Portal-Applications>.Application-Wrapper{position:absolute;left:0;right:0;top:0;bottom:0;overflow:auto}
+
+
+/* Any child .X-Portal  */
+.X-Portal .X-Portal{}
+.X-Portal .X-Portal{}
+.X-Portal .X-Portal>.Taskbar{background:unset}
+.X-Portal .X-Portal>.Taskbar .Taskbar-Middle .Shortcut>.Name{color:unset;font-size:unset}
+
+
+
+/* If you want animation for Taskbar COLLAPSED uncomment below styles */
+/*
+
+*/
+
+.X-Portal>.Taskbar{transition:width .3s, flex .3s}
+.X-Portal>.Taskbar .Taskbar-Middle .Shortcut{width:100%;box-sizing:border-box}
+.X-Portal>.Taskbar.COLLAPSED .Taskbar-Middle .Shortcut{transition:width .3s}

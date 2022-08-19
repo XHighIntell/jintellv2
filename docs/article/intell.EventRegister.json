@@ -1,0 +1,109 @@
+{
+    "_": "class",
+    "title": "EventRegister Class",
+    "description": "Event register object that is used to add, remove listeners and dispatch them. EventRegister does not have any effects on DOM events, it is used for customizing events on objects.",
+
+    "constructors": [
+        {
+            "title": "constructor(target?: object)",
+            "description": "Initializes a new instance of EventRegister object that is used to add, remove listeners and dispatch them.",
+            "parameters": [
+                {
+                    "name": "target",
+                    "type": "object",
+                    "description": "The value of <mark>this</mark> provided for dispatching to listeners."
+                }
+            ]
+        }
+    ],
+    "methods": [
+        {
+            "title": "addListener",
+            "description": "Registers an event listener callback to this event.",
+            "overloads": [
+                {
+                    "title": "addListener(callback: (this: ThisParameterType&lt;T&gt;, ...args: Parameters&lt;T&gt;) => \"stop\" | void): void",
+                    "description": "Add a callback to this EventRegister",
+                    "parameters": [
+                        {
+                            "name": "callback",
+                            "type": "Function",
+                            "description": "Called when an event occurs. The parameters of this function depend on the type of event."
+                        }
+                    ]
+                }
+            ],
+            "remarks": "The listeners that are added earlier will have a higher priority and they will be called before others. <br> Listeners can return <mark data-code=\"dts\">\"stop\"</mark> to prevent further chain of callbacks."
+        },
+        {
+            "title": "removeListener",
+            "description": "Deregisters an event listener callback from this event.",
+            "overloads": [
+                {
+                    "title": "removeListener(callback: T): void;",
+                    "description": "Remove a callback to this EventRegister",
+                    "parameters": [
+                        {
+                            "name": "callback",
+                            "type": "Function",
+                            "description": "Listener that shall be unregistered."
+                        }
+                    ]
+                }
+
+            ]
+        },
+        {
+            "title": "dispatch",
+            "description": " Dispatches a synthetic event.",
+            "overloads": [
+                {
+                    "title": "dispatch(...args: any[]): void;",
+                    "description": "Dispatches event with parameters",
+                    "parameters": [
+                        {
+                            "name": "...args",
+                            "type": "any[]",
+                            "description": "The parameters depend on the type of event."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "hasListener",
+            "description": "Determines whether this event includes a listener among its entries.",
+            "overloads": [
+                {
+                    "title": "hasListener(callback: T): boolean",
+                    "description": "Determines whether this event includes a listener among its entries.",
+                    "parameters": [
+                        {
+                            "name": "callback",
+                            "type": "Function",
+                            "description": "Listener whose registration status shall be tested."
+                        }
+                    ],
+                    "returns": {
+                        "type": "boolean"
+                    }
+                }
+            ]
+        },
+        {
+            "title": "hasListeners",
+            "description": "Determines whether this event has any listeners.",
+            "overloads": [
+                {
+                    "title": "hasListeners(): boolean",
+                    "description": "Determines whether this event has any listeners.",
+                    "returns": {
+                        "type": "boolean"
+                    }
+                }
+            ]
+        }
+    ],
+
+    "examples": "article/intell.EventRegister/examples.html"
+}

@@ -1,0 +1,11 @@
+﻿
+
+#dashboard{min-height:100%;padding:10px 20px;box-sizing:border-box;background:#004e77;color:#fff}
+#dashboard a{color:#fff}
+#dashboard a:hover{color:#6fdeff}
+#dashboard .item-example{}
+#dashboard .item-example>.label{margin:5px 0;cursor:pointer}
+#dashboard .item-example>.label:hover{text-decoration:underline}
+#dashboard .item-example>.content{display:none;padding:15px 20px;background:#fff;color:#000;white-space:pre-wrap;font-family:consolas}
+#dashboard .item-example.expanded>.content{display:block}
+    

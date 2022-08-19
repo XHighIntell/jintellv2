@@ -1,0 +1,34 @@
+﻿/* Visual Studio-like style based on original C# coloring */
+
+.hljs .hljs-comment{color:green}
+
+.language-xml .hljs-meta{color:gray}
+
+/* javascript */
+.language-javascript{}
+.language-javascript .hljs-attr{}
+.language-javascript .hljs-keyword{color:blue;}
+.language-javascript .hljs-string{color:#a20000}
+.language-javascript .hljs-literal{color:blue;}
+
+
+.language-css{color:blue}
+.language-css .hljs-selector-tag{color:maroon}
+.language-css .hljs-attribute{color:red}
+.language-css [class^="hljs-selector-"]{color:#a20000}
+
+
+.hljs-tag{color:blue}
+.hljs-tag .hljs-name{color:#a20000}
+.hljs-tag .hljs-attr{color:red}
+.hljs-tag .hljs-string{color:blue}
+
+
+.hljs.cs .hljs-string{color:#a20000}
+.hljs.cs .hljs-keyword{color:blue}
+.hljs.cs .hljs-class{color:#0065b3}
+
+.hljs.json{}
+.hljs.json .hljs-string{color:#a20000}
+.hljs.json .hljs-number{}
+.hljs.json .hljs-literal{color:blue}

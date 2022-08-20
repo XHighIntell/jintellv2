@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jintell Demo</title>
+    <link href="../../../static/css/global.css" rel="stylesheet" />
+
+    <script src="../../../static/lib/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../../../static/lib/intell/intell.js"></script>
+    <script src="../../../static/lib/hljs/highlight.min.js"></script>
+    <script src="../../../static/js/docs.js"></script>
+</head>
+<body>
+    <div class="Container master-header">
+        <div class="Content">
+            <a href="../../../" class="title">jintellv2 - Demos</a>
+            <div class="spring"></div>
+            <div class="links">
+                <a class="link" title="Document" href="../../../document.html">
+                    <div class="icon"></div>
+                </a>
+                <a class="link" title="Source - Github" href="https://github.com/xhighintell/jintellv2">
+                    <div class="icon"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="demos-section Container">
+        <div class="Content">
+            <div class="example">
+                <div class="title">The simplest Numeric</div>
+                <div class="description"></div>
+
+                <div data-code-id="Example1">
+                    <input id="numeric1" class="X-Numeric Simple" type="text" value="3.14" title="Price">
+
+                    <style>
+                        .X-Numeric.Simple{height: 30px;padding:0 6px 0 6px;border:1px solid #b6b6b6;text-align:right;outline:none}
+                        .X-Numeric.Simple:focus{border-color:#0098ff}
+                    </style>
+
+                    <script>
+                        window.addEventListener('load', function() {
+                            var numeric1 = new intell.ctrl.Numeric(document.getElementById('numeric1'));
+
+                            numeric1.element.addEventListener('numericchange', function(e) {
+                                console.log(e);
+                            })
+                        })
+                    </script>
+                </div>
+
+                <div class="demo-source" data-code-source="Example1">
+                    <div class="label">Source code - The simplest Numeric</div>
+                </div>
+            </div>
+
+            <div class="example">
+                <div class="title">Light</div>
+                <div class="description"></div>
+
+                <div data-code-id="Example2">
+                    <div id="numeric2" class="X-Numeric Light" tabindex="0">
+                        <input type="text" value="3.14" title="Price">
+                        <div class="Actions">
+                            <div class="Action Action-Up"></div>
+                            <div class="Action Action-Down"></div>
+                        </div>
+                    </div>
+
+                    <style>
+                        .X-Numeric.Light{position:relative;display:inline-block}
+                        .X-Numeric.Light input{height:30px;padding:0 25px 0 6px;border:1px solid #b6b6b6;text-align:right;outline:none}
+                        .X-Numeric.Light input:focus{border-color:#0098ff}
+                        .X-Numeric.Light .Actions{position:absolute;top:1px;right:1px;bottom:1px;display:flex;flex-direction:column;width:20px}
+                        .X-Numeric.Light .Actions>.Action{flex:1 1 auto;display:flex;align-items:center;justify-content:center}
+                        .X-Numeric.Light .Actions>.Action:hover{background:rgba(0,0,0,.1)}
+                        .X-Numeric.Light .Actions>.Action:active{background:rgba(0,0,0,.2)}
+                        .X-Numeric.Light .Actions>.Action::before{display:block;font-family:fontello;line-height:0}
+                        .X-Numeric.Light .Actions>.Action-Up::before{content:""}
+                        .X-Numeric.Light .Actions>.Action-Down::before{content:""}
+                    </style>
+
+                    <script>
+                        window.addEventListener('load', function() {
+                            var numeric2 = new intell.ctrl.Numeric(document.getElementById('numeric2'));
+                        })
+
+                    </script>
+                </div>
+                <div class="demo-source" data-code-source="Example2">
+                    <div class="label">Source code - Light</div>
+                </div>
+            </div>
+
+            <div class="example">
+                <div class="title">Dark</div>
+                <div class="description"></div>
+
+                <div data-code-id="Example3" style="padding:10px;background:linear-gradient(141deg,#355c5c 0%,#006874 51%,#114d64 75%)">
+                    <div id="numeric3" class="X-Numeric Dark" tabindex="0">
+                        <input type="text" value="3.14" title="Price">
+                        <div class="Actions">
+                            <div class="Action Action-Up"></div>
+                            <div class="Action Action-Down"></div>
+                        </div>
+                    </div>
+
+                    <style>
+                        .X-Numeric.Dark{position:relative;display:inline-block;color:#fff}
+                        .X-Numeric.Dark input{height:30px;padding:0 25px 0 6px;border:1px solid rgba(255,255,255,.4);text-align:right;outline:none;background:rgba(0,0,0,.5);color:#fff}
+                        .X-Numeric.Dark input:focus{border-color:#0098ff}
+                        .X-Numeric.Dark .Actions{position:absolute;top:1px;right:1px;bottom:1px;display:flex;flex-direction:column;width:20px}
+                        .X-Numeric.Dark .Actions>.Action{flex:1 1 auto;display:flex;align-items:center;justify-content:center}
+                        .X-Numeric.Dark .Actions>.Action:hover{background:rgba(255,255,255,.1)}
+                        .X-Numeric.Dark .Actions>.Action:active{background:rgba(255,255,255,.2)}
+                        .X-Numeric.Dark .Actions>.Action::before{display:block;font-family:fontello;line-height:0}
+                        .X-Numeric.Dark .Actions>.Action-Up::before{content:""}
+                        .X-Numeric.Dark .Actions>.Action-Down::before{content:""}
+                    </style>
+
+                    <script>
+                        window.addEventListener('load', function() {
+                            var numeric3 = new intell.ctrl.Numeric(document.getElementById('numeric3'));
+                        })
+
+                    </script>
+                </div>
+                <div class="demo-source" data-code-source="Example3">
+                    <div class="label">Source code - Dark</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>docs.demos.auto()</script>
+</body>
+</html>
+
+
+
+
+

@@ -8,6 +8,7 @@
     export function generateGroupProperties(items: ItemProperty[]): HTMLElement;
     export function generateGroupEvents(items: ItemEvent[]): HTMLElement;
     export function generateGroupMethods(items: ItemMethod[]): HTMLElement;
+    export function generateGroupStaticMethods(items: ItemMethod[]): HTMLElement;
     export function generateGroupOverloads(items: ItemMethodOverload[]): HTMLElement;
 
     export function generateItemConstructor(item: ItemConstructor): HTMLElement;
@@ -122,9 +123,17 @@
 
 
 declare namespace docs.ui {
-
     export function _getArticleElement(id: string): Promise<HTMLElement>;
     export function _getArticleUrl(id: string): string;
     export function open(id: string): Promise<void>;
+    export function init(): void;
+}
+
+declare namespace docs.demos {
+
+    export function trimIndents(code: string): string;
+    export function auto(): void;
+
+
 
 }

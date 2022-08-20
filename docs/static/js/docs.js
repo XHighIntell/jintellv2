@@ -8,11 +8,11 @@
             },
             {
                 scope: 'keyword',
-                begin: '\\b(constructor|void|this|function)\\b',
+                begin: '\\b(constructor|void|this|function|static)\\b',
             },
             {
                 scope: 'attr',           // name
-                begin: /(\w+)(?= *:)/,
+                begin: /(\w+)(?= *\?? *:)/,
             },
             {
                 scope: 'class built_in', // type
@@ -68,6 +68,7 @@
         $article.append(docs.generateGroupProperties(article.properties));
         $article.append(docs.generateGroupEvents(article.events));
         $article.append(docs.generateGroupMethods(article.methods));
+        $article.append(docs.generateGroupStaticMethods(article.static_methods));
         $article.append(docs.generateGroupOverloads(article.overloads));
         $article.append(docs._generateRemarks(article.remarks));
         $article.append(await docs._generateExamples(article.examples));
@@ -151,6 +152,18 @@
         var $group = $(
             `<div class="group-members methods">
     <div class="title">Methods</div>
+</div>`);
+
+        $group.append(items.map(function(item) { return docs.generateItemMethod(item) }));
+
+        return $group[0];
+    }
+    docs.generateGroupStaticMethods = function(items) {
+        if (items == null || items.length == 0) return;
+
+        var $group = $(
+            `<div class="group-members methods">
+    <div class="title">Static Methods</div>
 </div>`);
 
         $group.append(items.map(function(item) { return docs.generateItemMethod(item) }));
@@ -432,6 +445,7 @@
     }
     ui._getArticleUrl = function(id) {
         if (id == 'getting-started') return 'article/Getting Started.html';
+        else if (id == 'intell.ctrl.Numeric') return 'article/intell.ctrl.Numeric/Numeric.json'
         else return 'article/' + id + '.json';
     }
     ui.open = async function(id) {
@@ -452,24 +466,84 @@
         
         return element;
     }
-    
-    // handle events
-    $tree.on('click', '.item-member>.label', async function() {
-        var $item = $(this).parent();
-        var id = $item.attr('data-article');
+    ui.init = function() {
 
-        if (!id) return;
-        if ($item.is('.active') == true) return;
-        
-        ui.open(id);
-    });
-    $articles.on('click', '.item-member>.label,.item-method>.label', function() { $(this).parent().toggleClass('expaned') });
+        // handle events
+        $tree.on('click', '.item-member>.label', async function() {
+            var $item = $(this).parent();
+            var id = $item.attr('data-article');
 
-    var qs = intell.qs();
-    var id = qs.q;
+            if (!id) return;
+            if ($item.is('.active') == true) return;
 
-    if (id) ui.open(id);
-    else ui.open('getting-started');
+            ui.open(id);
+        });
+        $articles.on('click', '.item-member>.label,.item-method>.label', function() { $(this).parent().toggleClass('expaned') });
+
+        var qs = intell.qs();
+        var id = qs.q;
+
+        if (id) ui.open(id);
+        else ui.open('getting-started');
+    }
 }();
 
 
+!function() {
+    var demos = docs.demos; demos = {}; docs.demos = demos;
+
+   
+    demos.trimIndents = function(code) {
+
+        var lines = code.split('\n');
+
+        var lines_space_count = lines.map(function(value) {
+            if (value.trim() == "") return 999;
+            return countSpace(value);
+        });
+
+        var min = Math.min.apply(Math, lines_space_count)
+        var s = ' '.repeat(min);
+
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            if (line.startsWith(s) == true) 
+                lines[i] = line.slice(min)
+        }
+
+        return lines.join('\n').trim();
+    }
+    demos.auto = function() {
+        document.querySelectorAll('.demo-source').forEach(function(element) {
+            var source = element.getAttribute('data-code-source');
+            if (!source) return;
+
+            var elementSource = document.querySelector('[data-code-id="' + source + '"]');
+            if (elementSource == null) return;
+
+            var $code = $('<code data-code="html">').appendTo(element).addClass('html');
+            $code.text(demos.trimIndents(elementSource.innerHTML));
+
+
+            $(element).on('click', '.label', function() {
+                $(this).parent().toggleClass('expaned');
+            });
+            
+            hljs.highlightElement($code[0]);
+        });
+
+
+    }
+
+
+    /** @param {string} line 
+     *  @returns {number} */
+    function countSpace(line) {
+        var count = 0;
+        for (var i = 0; i < line.length; i++) {
+            if (line[i] == ' ') count++;
+            else return count;
+        }
+        return count;
+    }
+}()

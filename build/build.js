@@ -193,6 +193,7 @@ var jobs = [
             'intell/intell.js',
             'intell/intell.ctrl.js',
             'intell.portal/portal.js',
+            'intell.ctrl/Numeric.js',
         ],
         dest: {
             name: 'intell/intell.js',
@@ -208,6 +209,7 @@ var jobs = [
             'intell/intell.d.ts',
             'intell/intell.ctrl.d.ts',
             'intell.portal/portal.d.ts',
+            'intell.ctrl/Numeric.d.ts',
         ],
         dest: {
             name: 'intell/intell.d.ts'

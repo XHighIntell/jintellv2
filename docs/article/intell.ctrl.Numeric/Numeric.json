@@ -1,0 +1,178 @@
+{
+    "_": "class",
+    "title": "Numeric Class",
+    "description": "Represents a spin box that displays numeric values.",
+
+    "constructors": [
+        {
+            "title": "constructor(element: HTMLElement)",
+            "description": "Initializes a new instance of the Numeric class from element.",
+            "parameters": [
+                {
+                    "name": "element",
+                    "type": "HTMLElement",
+                    "description": "The element for which to create Numeric."
+                }
+            ]
+        }
+    ],
+    "properties": [
+        {
+            "title": "element: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the root element of control.",
+            "value": {
+                "description": "Returns the root element of control."
+            }
+        },
+        {
+            "title": "elementUp: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the button up element.",
+            "value": {
+                "description": "Return the button up element."
+            }
+        },
+        {
+            "title": "elementDown: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the button down element.",
+            "value": {
+                "description": "Return the button down element."
+            }
+        },
+        {
+            "title": "elementInput: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the input element.",
+            "value": {
+                "description": "Return the input element."
+            }
+        },
+        {
+            "title": "min: number",
+            "type": "number",
+            "description": "Gets or sets the minimum allowed value; the default is <mark>null</mark>.",
+            "value": {
+                "description": "Sets to <mark>null</mark> to remove the lower limit."
+            }
+        },
+        {
+            "title": "max: number",
+            "type": "HTMLElement",
+            "description": "Gets or sets the maxium allowed value; the default is <mark>null</mark>.",
+            "value": {
+                "description": "Sets to <mark>null</mark> to remove the upper limit."
+            }
+        },
+        {
+            "title": "minimumFractionDigits: number",
+            "type": "HTMLElement",
+            "description": "Gets or sets the minimum number of digits to appear after the decimal point; the default is <mark>0</mark>.",
+            "value": {
+                "description": "Sets new value won't change current value."
+            }
+        },
+        {
+            "title": "maximumFractionDigits: number",
+            "type": "HTMLElement",
+            "description": "Gets or sets the maximum number of digits to appear after the decimal point; the default is <mark>2</mark>.",
+            "value": {
+                "description": "Sets new value won't change current value"
+            }
+        },
+        {
+            "title": "decimalSeparator: string",
+            "type": "string",
+            "description": "Gets or sets the decimal separator; the default is locale decimal separator.",
+            "value": {
+                "description": ""
+            }
+        },
+        {
+            "title": "thousandSeparator: string",
+            "type": "string",
+            "description": "Gets or sets the thousand separator; the default is locale thousand separator.",
+            "value": {
+                "description": ""
+            }
+        },
+        {
+            "title": "value?: number",
+            "type": "number",
+            "description": "Gets or sets the value of Numeric.",
+            "value": {
+                "description": "The value of numeric."
+            },
+            "remarks": "If the user puts an empty string into the textbox while <mark>nullable = false</mark>, the value will be set to <mark>0</mark>. <br>The value is checked and modified to satisfy conditions on sets.<ul><li>If the value is lesser than <mark>min</mark>, <mark>min</mark> will be used.</li><li>If the value is greater than <mark>max</mark>, <mark>max</mark> will be used.</li><li>And <mark>minimumFractionDigits</mark>, <mark>maximumFractionDigits</mark></li></ul>"
+        },
+        {
+            "title": "nullable: boolean",
+            "type": "number",
+            "description": "Gets or sets whether the value can be null; the default is <mark>false</mark>."
+        },
+        {
+            "title": "increment: number",
+            "type": "number",
+            "description": "Gets or sets the value to increment or decrement the spin box (also known as an up-down control) when the up or down buttons are clicked; the default is <mark>1</mark>."
+        }
+    ],
+    "static_methods": [
+        {
+            "title": "parseFloat",
+            "description": "The <mark>parseFloat()</mark> function parses an argument (converting it to a string first if needed) and returns a floating point number.",
+            "overloads": [
+                {
+                    "title": "static parseFloat(text: string, option: NumericFormatOption): number",
+                    "description": "Parses a string argument.",
+                    "parameters": [
+                        {
+                            "name": "text",
+                            "type": "string",
+                            "description": "The value to parse. If this argument is not a string, then it is converted to one using the <mark>ToString</mark> abstract operation."
+                        },
+                        {
+                            "name": "option",
+                            "type": "NumericFormatOption",
+                            "description": "An object that supplies culture-specific formatting information."
+                        }
+                    ],
+                    "returns": "Returns a floating point number parsed from the given string specified language-sensitive representation."
+                }
+            ]
+        },
+        {
+            "title": "formatNumber",
+            "description": "The <mark>formatNumber()</mark> method formats a number according to the locale and formatting options.",
+            "overloads": [
+                {
+                    "title": "static formatNumber(number: number, option: NumericFormatOption): string",
+                    "description": "Format a number argument.",
+                    "parameters": [
+                        {
+                            "name": "number",
+                            "type": "number",
+                            "description": "The number to format."
+                        },
+                        {
+                            "name": "option",
+                            "type": "NumericFormatOption",
+                            "description": "An object that supplies culture-specific formatting information."
+                        }
+                    ],
+                    "returns": "Returns a floating point number parsed from the given string specified language-sensitive representation."
+                }
+            ]
+        }
+
+    ],
+    "events": [
+        {
+            "title": "numericchange",
+            "description": "The change event is fired when an alteration to the value is committed by the user."
+
+        }
+    ],
+
+    "examples": "article/intell.ctrl.Numeric/examples.html"
+}

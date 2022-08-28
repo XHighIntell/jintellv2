@@ -141,3 +141,33 @@ a:hover{color:#0058ff}
 
 .documents-section>.Content>.docs-content .article-field{}
 .documents-section>.Content>.docs-content .article-field .type{padding:0 4px;background:#0000000d;border-radius:2px}
+
+
+/* == demos-section  ==*/
+.demos-section{}
+.demos-section .example{}
+.demos-section .example>.title{margin:.8em 0 .4em 0;font-size:2em}
+.demos-section .example .demo-source{margin:1rem 0 2rem}
+.demos-section .example .demo-source>.label{padding:5px 8px;border:1px solid #d5d5d5;background:rgba(0,0,0,.05);cursor:pointer}
+.demos-section .example .demo-source>.label:hover{background:rgba(0,0,0,.1)}
+.demos-section .example .demo-source>code{display:none;padding:.5rem 1rem .5rem 1rem;background:#f2f1f1;border:1px solid #d5d5d5;border-top:none;border-radius:0 0 2px 2px;word-wrap:break-word;white-space:pre-wrap;word-break:break-all;}
+.demos-section .example .demo-source.expaned>code{display:block}
+
+
+
+.demos-section .language-xml{color:#0000ff}
+.demos-section .language-xml .hljs-name{color:maroon}
+.demos-section .language-xml .hljs-attr{color:red}
+.demos-section .language-xml .hljs-string{color:#0000ff}
+
+.demos-section .language-javascript{color:#000}
+.demos-section .language-javascript .hljs-keyword{color:#0000ff}
+.demos-section .language-javascript .hljs-string{color:maroon}
+
+.demos-section .language-css{color:#0000ff}
+.demos-section .language-css .hljs-selector-class{color:maroon}
+.demos-section .language-css .hljs-selector-pseudo{color:maroon}
+.demos-section .language-css .hljs-attribute{color:red}
+
+.X-Numeric.Simple:focus{border-color:#0098ff}
+

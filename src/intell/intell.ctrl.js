@@ -151,27 +151,40 @@
 
 
         if (container != null) {
+            // A. rect can be bigger than its container
+            //    rect can exceed its container size in both x-axis and y-axis
+            //    but can't be placed in negative numbers relative to its container.
+            
+
             switch (location) {
                 case 1: case 2: case 3:
                     if (rect.y - margin < container.y) {
                         rect.y = container.y + margin;
                         score--;
                     }
+                    break;
                 case 4: case 5: case 6:
-                    if (rect.x + margin > container.x + container.width) {
-                        rect.x = container.x + container.width - margin;
+                    if (rect.x + rect.width + margin > container.x + container.width) {
+                        rect.x = container.x + container.width - margin - rect.width;
                         score--
                     }
+                    // --A--
+                    if (rect.x < container.x) rect.x = container.x; // rect.x can't smaller than container.x
+                    break;
                 case 7: case 8: case 9:
-                    if (rect.y + margin > container.y + container.height) {
-                        rect.y = container.y + container.height - margin;
+                    if (rect.y + rect.height + margin > container.y + container.height) {
+                        rect.y = container.y + container.height - margin - rect.height;
                         score--;
                     }
+                    // --A--
+                    if (rect.y < container.y) rect.y = container.y; // rect.y can't smaller than container.y
+                    break;
                 case 10: case 11: case 12:
                     if (rect.x - margin < container.x) {
                         rect.x = container.x + margin;
                         score--;
                     }
+                    break;
             }
         }
 
@@ -188,7 +201,35 @@
     }
     ctrl.showAtRect = function(element, target, locations, option) {
 
+        // 
+
         if (locations == null) throw new TypeError("locations can't be null");
+
+        if (option?.container_mode != null) {
+            
+            if (option.container_mode == 'auto') {
+                var clone = Object.assign({}, option);
+
+                var elementContainer = ctrl.findParentElement(element, function(element) {
+                    return element == document.documentElement || getComputedStyle(element).overflow != 'visible'
+                });
+
+                if (elementContainer != null) {
+                    let width = Math.max(elementContainer.clientWidth, elementContainer.offsetWidth, elementContainer.scrollWidth) - 1;
+                    let height = Math.max(elementContainer.clientHeight, elementContainer.offsetHeight, elementContainer.scrollHeight) - 1;
+
+                    let offset = $(elementContainer).offset();
+
+                    clone.container = new DOMRect(offset.left, offset.top, width, height);
+
+                    option = clone;
+                }
+            }
+        }
+
+
+        $(element).css({ left: '-900px', visibility: 'hidden' });
+        ctrl.show(element);
 
         var popup = ctrl.getBoundingClientRectOffset(element);
         var results = locations.map(function(location) { return ctrl.getRectWhenShowAtRect(popup, target, location, option) });
@@ -199,14 +240,14 @@
             return scoreB - scoreA;
         })[0];
 
-        $(element).offset({ left: best.rect.x, top: best.rect.y });
+        $(element).offset({ left: best.rect.x, top: best.rect.y }).css({ visibility: '' });
 
         return best;
     }
     ctrl.showAtCoord = function(element, coord, locations, option) {
         var target = new DOMRect(coord.x ?? coord.left, coord.y ?? coord.top, 0, 0);
 
-        return ctrl.ShowAtRect(element, target, locations, option);
+        return ctrl.showAtRect(element, target, locations, option);
     }
     ctrl.showAtElement = function(element, elementTarget, locations, option) {
 
@@ -215,11 +256,20 @@
 
         var target = ctrl.getBoundingClientRectOffset(elementTarget);
 
-        return ctrl.ShowAtRect(element, target, locations, option);
+        return ctrl.showAtRect(element, target, locations, option);
+    }
+
+    ctrl.findParentElement = function(element, predicate) {
+        var target = element.parentElement;
+        
+        while (target) {
+            if (predicate(target) == true) return target;
+
+            target = target.parentElement;
+        }
     }
 
     
-
     //!function() {
     //    /** @type intell.ctrl.StartHideProcess[] */
     //    var processes = [];

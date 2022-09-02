@@ -67,7 +67,7 @@ const colors = intell.colors;
 
 
             var result = Babel.transform(code, {
-                presets: [["@babel/preset-env", { "targets": "defaults" }]],
+                presets: [["@babel/preset-env", { "targets": "defaults", modules: false }]],
                 sourceMaps: true,
                 sourceFileName: Path.relative(Path.dirname(job.dest.sourcemap), job.dest.name),
             });
@@ -192,7 +192,9 @@ var jobs = [
         src: [
             'intell/intell.js',
             'intell/intell.ctrl.js',
+            'intell/intell.ctrl.template.js',
             'intell.portal/portal.js',
+            'intell.ctrl/ComboBox.js',
             'intell.ctrl/Numeric.js',
         ],
         dest: {
@@ -209,6 +211,7 @@ var jobs = [
             'intell/intell.d.ts',
             'intell/intell.ctrl.d.ts',
             'intell.portal/portal.d.ts',
+            'intell.ctrl/ComboBox.d.ts',
             'intell.ctrl/Numeric.d.ts',
         ],
         dest: {

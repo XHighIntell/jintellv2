@@ -151,11 +151,6 @@
 
 
         if (container != null) {
-            // A. rect can be bigger than its container
-            //    rect can exceed its container size in both x-axis and y-axis
-            //    but can't be placed in negative numbers relative to its container.
-            
-
             switch (location) {
                 case 1: case 2: case 3:
                     if (rect.y - margin < container.y) {
@@ -168,16 +163,12 @@
                         rect.x = container.x + container.width - margin - rect.width;
                         score--
                     }
-                    // --A--
-                    if (rect.x < container.x) rect.x = container.x; // rect.x can't smaller than container.x
                     break;
                 case 7: case 8: case 9:
                     if (rect.y + rect.height + margin > container.y + container.height) {
                         rect.y = container.y + container.height - margin - rect.height;
                         score--;
                     }
-                    // --A--
-                    if (rect.y < container.y) rect.y = container.y; // rect.y can't smaller than container.y
                     break;
                 case 10: case 11: case 12:
                     if (rect.x - margin < container.x) {
@@ -186,6 +177,18 @@
                     }
                     break;
             }
+
+            // we already minus score
+            // rect can be bigger than its container
+            // rect can exceed its container size in both x-axis and y-axis
+            // but can't be placed in negative numbers relative to its container.
+
+            if (rect.x + rect.width + margin > container.x + container.width) rect.x = container.x + container.width - rect.width - margin;
+            if (rect.x < container.x) rect.x = container.x;
+            
+            if (rect.y + rect.height + margin > container.y + container.height) rect.y = container.y + container.height - rect.height - margin;
+            if (rect.y < container.y) rect.y = container.y;
+
         }
 
         return { location: location, rect: rect, score: score }
@@ -268,6 +271,7 @@
             target = target.parentElement;
         }
     }
+
 
     
     //!function() {

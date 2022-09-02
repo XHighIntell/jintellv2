@@ -1,0 +1,35 @@
+{
+    "_": "class",
+    "title": "String.prototype",
+    "description": "Useful built-in prototype for <mark>String</mark> class.",
+
+    "methods": [
+        {
+            "title": "String.prototype.between",
+            "description": "Registers an event listener callback to this event.",
+            "overloads": [
+                {
+                    "title": "between(startWith: string, endWith: string, include?: boolean): string",
+                    "description": "Returns the string that between specified start and end string.",
+                    "parameters": [
+                        {
+                            "name": "startWith",
+                            "type": "string",
+                            "description": "The characters to be searched for at the start of this string."
+                        },
+                        {
+                            "name": "endWith",
+                            "type": "string",
+                            "description": "The characters to be searched for at the end of this string."
+                        },
+                        {
+                            "name": "include",
+                            "type": "boolean?",
+                            "description": "If true, return value will include startWith & endwith, else do not include. Default is false."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

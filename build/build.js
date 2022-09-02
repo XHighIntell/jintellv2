@@ -196,6 +196,7 @@ var jobs = [
             'intell.portal/portal.js',
             'intell.ctrl/ComboBox.js',
             'intell.ctrl/Numeric.js',
+            'String.prototype.js',
         ],
         dest: {
             name: 'intell/intell.js',
@@ -213,6 +214,7 @@ var jobs = [
             'intell.portal/portal.d.ts',
             'intell.ctrl/ComboBox.d.ts',
             'intell.ctrl/Numeric.d.ts',
+            'String.prototype.d.ts',
         ],
         dest: {
             name: 'intell/intell.d.ts'

@@ -21,6 +21,10 @@
         /** Add a manifest to portal. */
         addManifest(manifest: ApplicationManifest, callback: (application: Application) => void): Application;
 
+        /** Add a manifest to portal via module.
+         * @description Required ES2020 (ES11) */
+        addManifestModule(moduleName: string): Promise<any>;
+
         /** Open the first application that have manifest.startup equal true.  */
         open(): void;
         /** Open an application that added before. */

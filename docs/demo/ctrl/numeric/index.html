@@ -43,7 +43,7 @@
 
                     <script>
                         window.addEventListener('load', function() {
-                            var numeric1 = new intell.ctrl.Numeric(document.getElementById('numeric1'));
+                            var numeric1 = window.numeric1 = new intell.ctrl.Numeric(document.getElementById('numeric1'));
 
                             numeric1.element.addEventListener('numericchange', function(e) {
                                 console.log(e);
@@ -62,8 +62,8 @@
                 <div class="description"></div>
 
                 <div data-code-id="Example2">
-                    <div id="numeric2" class="X-Numeric Light" tabindex="0">
-                        <input type="text" value="3.14" title="Price">
+                    <div id="numeric2" class="X-Numeric Light">
+                        <input type="text" value="3.14" title="Price" tabindex="0">
                         <div class="Actions">
                             <div class="Action Action-Up"></div>
                             <div class="Action Action-Down"></div>
@@ -100,8 +100,8 @@
                 <div class="description"></div>
 
                 <div data-code-id="Example3" style="padding:10px;background:linear-gradient(141deg,#355c5c 0%,#006874 51%,#114d64 75%)">
-                    <div id="numeric3" class="X-Numeric Dark" tabindex="0">
-                        <input type="text" value="3.14" title="Price">
+                    <div id="numeric3" class="X-Numeric Dark">
+                        <input type="text" value="3.14" title="Price" tabindex="0">
                         <div class="Actions">
                             <div class="Action Action-Up"></div>
                             <div class="Action Action-Down"></div>

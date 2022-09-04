@@ -10,15 +10,6 @@ declare namespace intell.ctrl {
          * @param element The element for which to create Numeric.*/
         constructor(element: HTMLElement);
 
-        /** Returns a floating point number parsed from the given string specified language-sensitive representation. */
-        static parseFloat(text: string, option: NumericFormatOption): number;
-
-        /** Returns a string with a language-sensitive representation of this number. If number is null/NaN, return empty string. 
-         * @param number The value to parse. If this argument is not a string, then it is converted to one using the ToString abstract operation.
-         * @param option An object that supplies culture-specific formatting information. */
-        static formatNumber(number: number, option: NumericFormatOption): string;
-
-
         // properties
         /** Gets the root element of control. */
         element: HTMLElement;
@@ -62,6 +53,18 @@ declare namespace intell.ctrl {
         // methods
         getPrivate(): NumericPrivate;
         increaseSessionBy(value: number): void;
+        protected _focusout(): void;
+
+        // static methods
+        /** Returns a floating point number parsed from the given string specified language-sensitive representation. */
+        static parseFloat(text: string, option: NumericFormatOption): number;
+
+        /** Returns a string with a language-sensitive representation of this number. If number is null/NaN, return empty string. 
+         * @param number The value to parse. If this argument is not a string, then it is converted to one using the ToString abstract operation.
+         * @param option An object that supplies culture-specific formatting information. */
+        static formatNumber(number: number, option: NumericFormatOption): string;
+        static getItem(element: HTMLElement): Numeric;
+        static setItem(element: HTMLElement, comboBox: Numeric): Numeric;
     }
 
     interface NumericFormatOption {
@@ -93,9 +96,6 @@ declare namespace intell.ctrl {
         value: number;
 
         increment: number;
-
-        // on lost focus, when this is true, ignore the session value
-        session_skiped: boolean;
     }
 
 

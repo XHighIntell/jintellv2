@@ -1,8 +1,6 @@
 ﻿!function() {
     var ctrl = intell.ctrl;
     var Numeric = ctrl.Numeric;
-
-    var privateSymbol = Symbol ? Symbol('__private') : '__private';
     var localeDecimalSeparator = (0.1).toLocaleString().substr(1, 1);   // "." in en-US
     var localeThousandSeparator = (1000).toLocaleString().substr(1, 1); // "," in en-US
 
@@ -10,21 +8,22 @@
     // constructor
     /** @param {HTMLElement} element */
     Numeric = function(element) {
-        // 1. If this function is called without the new keyword, recall if with the new keyword
 
-        // --1--
+        // 1. If this element is already used to create this control, return previous.
+        //    a. If this function is called without the new keyword, recall if with the new keyword
+
+        // --1 & 1a--
+        if (Numeric.getItem(element)) return Numeric.getItem(element);
         if (this instanceof Numeric == false) return new Numeric(element);
 
 
-        /** @type intell.ctrl.Numeric */
-        var _this = element.__Numeric__ = this;
+        var _this = Numeric.setItem(element, this);
         var $element = $(element);
         var $elementUp = $element.find('.Action-Up');
         var $elementDown = $element.find('.Action-Down');
         var $elementInput = $element.find('input').addBack('input');
 
-        /** @type intell.ctrl.NumericPrivate */
-        var __private = _this[privateSymbol] = {};
+        var __private = _this.getPrivate({});
         __private.element = element;
         __private.elementInput = $elementInput[0];
         __private.elementUp = $elementUp[0];
@@ -43,16 +42,14 @@
         _this.value = Numeric.parseFloat(__private.elementInput.value, __private);
 
         // handle events
-        $elementInput.focus(function() {
-            
-            __private.session_skiped = false
-        });
+        var session_skiped = false;
+        $elementInput.focus(function() { session_skiped = false });
         $elementInput.keydown(function(ev) {
             var e = ev.originalEvent;
             var keyCode = e.keyCode;
 
             if (keyCode == 27) {
-                __private.session_skiped = true;
+                session_skiped = true;
                 __private.elementInput.value = Numeric.formatNumber(__private.value, __private);
                 __private.elementInput.blur();
             }
@@ -62,37 +59,9 @@
             else if (keyCode == 40) {
                 _this.increaseSessionBy(-__private.increment); e.preventDefault();
             }
-
-
-
         })
-        $elementInput.keypress(function(ev) {
-            var e = ev.originalEvent;
-            if ('1234567890.,-'.indexOf(e.key) == -1) return false;
-        });
-        $elementInput.focusout(function(ev) {
-            var e = ev.originalEvent;
-            var newValue = Numeric.parseFloat(__private.elementInput.value, __private);
-
-            if (__private.session_skiped == true) return;
-            if (__private.value == newValue) {
-                __private.elementInput.value = Numeric.formatNumber(__private.value, __private);
-                return;
-            }
-
-            var oldValue = __private.value;
-
-            _this.value = newValue;
-
-            if (_this.value == oldValue) {
-                // can't set
-                __private.elementInput.value = Numeric.formatNumber(__private.value, __private);
-            } else {
-                var event = new Event('numericchange', { cancelable: false, bubbles: true });
-                event.numeric = _this;
-                __private.elementInput.dispatchEvent(event);
-            }
-        });
+        $elementInput.keypress(function(e) { if ('1234567890.,-'.indexOf(e.originalEvent.key) == -1) return false });
+        $elementInput.focusout(function(e) { if (session_skiped == true) return; _this._focusout() });
 
         $elementUp.click(function() { _this.increaseSessionBy(_this.increment) });
         $elementDown.click(function() { _this.increaseSessionBy(-_this.increment) });
@@ -100,9 +69,7 @@
         $elementUp.add($elementDown).mousedown(function(ev) {
             __private.elementInput.focus();
 
-            ev.originalEvent.preventDefault()
-
-            
+            ev.originalEvent.preventDefault();
         })
         $element.on('mousewheel', function(ev) {
             if (__private.elementInput != document.activeElement) return;
@@ -116,6 +83,9 @@
         })
     }
     ctrl.Numeric = Numeric;
+
+    // setup inherit
+    ctrl.template.inherit(Numeric, { ctrlKey: Symbol('__Numeric__') });
 
     // properties
     var prototype = Numeric.prototype;
@@ -221,7 +191,6 @@
     Object.defineProperties(prototype, defineProperties)
 
     // methods
-    prototype.getPrivate = function() { return this[privateSymbol] }
     prototype.increaseSessionBy = function(increment) {
         var __private = this.getPrivate();
 
@@ -237,6 +206,42 @@
 
         __private.elementInput.value = Numeric.formatNumber(newValue, __private);
     }
+    prototype._focusout = function() {
+
+        // 1. parse newValue
+        // 2. if newValue equal current value, reset text & return
+        // 3. if can't change value or new value equal old value
+        //    a. can't set
+        //    b. can set
+
+        /** @type intell.ctrl.Numeric */
+        var _this = this;
+        var __private = _this.getPrivate();
+
+        // --1--
+        var newValue = Numeric.parseFloat(__private.elementInput.value, __private);
+
+        // --2--
+        if (__private.value == newValue) {
+            __private.elementInput.value = Numeric.formatNumber(__private.value, __private);
+            return;
+        }
+
+        var oldValue = __private.value;
+        _this.value = newValue;
+
+        // --3--
+        if (_this.value == oldValue) {
+            // --3a--
+            __private.elementInput.value = Numeric.formatNumber(__private.value, __private);
+        } else {
+            // --3b--
+            var event = new Event('numericchange', { cancelable: false, bubbles: true });
+            event.numeric = _this;
+            __private.elementInput.dispatchEvent(event);
+        }
+    }
+
 
     // static methods
     Numeric.parseFloat = function(text, option) {

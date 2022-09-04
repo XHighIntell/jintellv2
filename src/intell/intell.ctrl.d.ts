@@ -31,6 +31,8 @@ declare namespace intell.ctrl {
     export function showAtCoord(elementPopup: HTMLElement, coord: CoordinatesLike, locations: number[], option?: ShowAtOption): void;
     export function showAtElement(elementPopup: HTMLElement, elementTarget: HTMLElement, locations: number[], option?: ShowAtOption): void;
 
+    /** Returns the first element where the predicate is true while traversing up through its ancestors in the DOM tree. */
+    export function findParentElement(element: HTMLElement, predicate: (value: HTMLElement) => boolean): HTMLElement | undefined;
 
     
 
@@ -68,8 +70,11 @@ declare namespace intell.ctrl {
     }
 
     interface ShowAtOption extends GetRectWhenShowAtOption {
-        /** Move the popup element right after the target element. */
-        moveToTarget: boolean;
+        //** Move the popup element right after the target element. */
+        // moveToTarget: boolean;
+
+        /** If container_mode is present, `container` will be overridden. */
+        container_mode?: 'auto' | 'window';
     }
 
 

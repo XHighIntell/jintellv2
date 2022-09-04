@@ -1,0 +1,160 @@
+{
+    "_": "class",
+    "title": "ComboBox Class",
+    "description": "Represents a spin box that displays numeric values.",
+
+    "constructors": [
+        {
+            "title": "constructor(element: HTMLElement)",
+            "description": "Initializes a new instance of the ComboBox class from element.",
+            "parameters": [
+                {
+                    "name": "element",
+                    "type": "HTMLElement",
+                    "description": "The element for which to create ComboBox."
+                }
+            ]
+        }
+    ],
+    "properties": [
+        {
+            "title": "readonly element: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the root element of control.",
+            "value": {
+                "description": "Returns the root element of control."
+            }
+        },
+        {
+            "title": "readonly elementSelect: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the select element of control."
+        },
+        {
+            "title": "readonly elementChildren: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the element that contains children."
+        },
+        {
+            "title": "readonly elementItemAbstract: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets base element of item."
+        },
+        {
+            "title": "readonly childrenVisible: boolean",
+            "type": "boolean",
+            "description": "Gets value indicating whether the elementChildren are displayed."
+        },
+        {
+            "title": "readonly items: ComboBoxItem[]",
+            "type": "ComboBoxItem[]",
+            "href": "?q=intell.ctrl.ComboBoxItem",
+            "description": "Gets the items that are added to ComboBox.",
+            "value": {
+                "description": "Returns the clone array of items, so modifying won't affect anything."
+            }
+        },
+        {
+            "title": "popupLocations: number[]",
+            "type": "number[]",
+            "description": "Gets or sets locations indicating of <mark>elementChildren</mark> when it is shown.",
+            "value": {
+                "description": "The default value is <mark>[9, 1]</mark>."
+            }
+        },
+        {
+            "title": "popupOption?: intell.ctrl.ShowAtOption",
+            "type": "intell.ctrl.ShowAtOption",
+            "description": "Gets or sets the extra option for location of <mark>elementChildren</mark> when it is shown.",
+            "value": {
+                "description": "The default value is <mark>{space: -1, container_mode: \"auto\"}</mark>."
+            }
+        },
+        {
+            "title": "selectedItem?: ComboBoxItem",
+            "type": "ComboBoxItem",
+            "description": "Gets or sets the selected item.",
+            "value": {
+                "description": "Return the current selected item."
+            },
+            "remarks": "<mark>null</mark> is allowable."
+        }
+    ],
+    "methods": [
+        {
+            "title": "add",
+            "description": "The <mark>add()</mark> function adds an item to ComboBox.",
+            "overloads": [
+                {
+                    "title": "add(item: ComboBoxItem): void",
+                    "description": "Adds a previously created ComboBoxItem to the end of the collection.",
+                    "parameters": [
+                        {
+                            "name": "item",
+                            "type": "ComboBoxItem",
+                            "description": "The ComboBoxItem to add to the collection."
+                        }
+                    ]
+                },
+                {
+                    "title": "add(option: ComboBoxAddOption): ComboBoxItem",
+                    "description": "Adds a new item with the specified properties to the end of collection.",
+                    "parameters": [
+                        {
+                            "name": "option",
+                            "type": "ComboBoxAddOption",
+                            "description": "The specified properties to create ComboBoxItem."
+                        }
+                    ],
+                    "returns": "Returns a new ComboBoxItem that was created from specified ComboBoxAddOption."
+                }
+            ]
+        },
+        {
+            "title": "remove",
+            "description": "The <mark>remove()</mark> function removes an item from ComboBox.",
+            "overloads": [
+                {
+                    "title": "remove(item: ComboBoxItem): void;",
+                    "description": "Removes the specified ComboBoxItem from the collection.",
+                    "parameters": [
+                        {
+                            "name": "item",
+                            "type": "ComboBoxItem",
+                            "description": "The ComboBoxItem to remove from Collection."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "clear",
+            "description": "Clear all items that added to ComboBox. This <mark>clear</mark> function works like reset.",
+            "overloads": [
+                {
+                    "title": "clear(): void;",
+                    "description": "Clear all items and groups."
+                }
+            ]
+        },
+        {
+            "title": "toggleChildren",
+            "description": "Show or hide <mark>elementChildren</mark> depending on the current presence of <mark>elementChildren</mark>.",
+            "overloads": [
+                {
+                    "title": "toggleChildren(): void;",
+                    "description": "Toggle."
+                }
+            ]
+        }
+    ],
+    "events": [
+        {
+            "title": "comboboxchange",
+            "description": "The change event is fired when an alteration to the value is committed by the user."
+
+        }
+    ],
+
+    "examples": "article/intell.ctrl.ComboBox/examples.html"
+}

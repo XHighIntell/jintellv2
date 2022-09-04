@@ -21,7 +21,7 @@ src:url(../../font/fontello.woff2) format('woff2'),
 .X-Portal>.Taskbar .Taskbar-Middle>.Group>header .Name{position:relative;color:#a5a5a5;font-size:.7em;font-weight:500}
 
 
-.X-Portal>.Taskbar .Taskbar-Middle .Shortcut{display:flex;align-items:center;min-height:48px;padding-left:18px;border-left:4px solid transparent;cursor:pointer}
+.X-Portal>.Taskbar .Taskbar-Middle .Shortcut{display:flex;align-items:center;min-height:48px;padding-left:16px;border-left:4px solid transparent;cursor:pointer}
 .X-Portal>.Taskbar .Taskbar-Middle .Shortcut:hover{background-color:rgba(255,255,255,.05)}
 .X-Portal>.Taskbar .Taskbar-Middle .Shortcut:focus{outline:#00bcf2 dashed 1px;outline-offset:-1px}
 .X-Portal>.Taskbar .Taskbar-Middle .Shortcut>.Icon{display:flex;align-items:center;justify-content:center;height:24px;flex:0 0 24px;background:center no-repeat;font-family:fontello;color:#0b6fab}

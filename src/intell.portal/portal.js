@@ -84,6 +84,12 @@
             
             application.__callback = callback;
         }
+        portal.addManifestModule = function(moduleName) {
+            return import(moduleName).then(function(module) {
+                module.default(portal);
+            }); 
+        }
+
         portal.open = function(arg1) {
             // open method have 3 overloads
             // A. open(): void;

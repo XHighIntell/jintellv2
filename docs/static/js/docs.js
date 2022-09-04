@@ -8,7 +8,7 @@
             },
             {
                 scope: 'keyword',
-                begin: '\\b(constructor|void|this|function|static)\\b',
+                begin: '\\b(constructor|void|this|function|static|readonly)\\b',
             },
             {
                 scope: 'attr',           // name
@@ -434,8 +434,10 @@
 
             element.querySelectorAll('*[data-code]').forEach(function(element) {
                 var language = element.getAttribute('data-code');
-
                 if (!language) return;
+
+                if (language == 'js') element.innerHTML = docs.demos.trimIndents(element.innerHTML);
+
                 element.classList.add(language);
                 hljs.highlightElement(element);
             });
@@ -445,6 +447,7 @@
     }
     ui._getArticleUrl = function(id) {
         if (id == 'getting-started') return 'article/Getting Started.html';
+        else if (id == 'intell.ctrl.ComboBox') return 'article/intell.ctrl.ComboBox/ComboBox.json'
         else if (id == 'intell.ctrl.Numeric') return 'article/intell.ctrl.Numeric/Numeric.json'
         else return 'article/' + id + '.json';
     }
@@ -510,6 +513,7 @@
             if (line.startsWith(s) == true) 
                 lines[i] = line.slice(min)
         }
+        
 
         return lines.join('\n').trim();
     }

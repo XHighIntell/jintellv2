@@ -1,0 +1,25 @@
+﻿<div>
+    <div>In this example, we will create the simplest ComboBox.</div>
+    <code class="html" data-code="htlm">&lt;div id="combobox1" class="X-ComboBox Light" tabindex="0"&gt;&lt;/div></code>
+    <code class="js" data-code="js">
+    var combobox1 = window.combobox1 =  new intell.ctrl.ComboBox(document.getElementById('combobox1'));
+
+    combobox1.add({ icon: '', name: 'F1', value: 0, group: 'Free', disabled: true });
+    combobox1.add({ icon: '', name: 'B1', value: 1, group: 'Basic' });
+    combobox1.add({ icon: '', name: 'D1', value: 0, group: 'Shared' });
+        
+    combobox1.add({ icon: '', name: 'B2', value: 1, group: 'Basic' });
+    combobox1.add({ icon: '', name: 'B3', value: 1, group: 'Basic' });
+
+    combobox1.add({ icon: '', name: 'G1', value: 0, });
+    combobox1.add({ icon: '', name: 'G2', value: 0, });
+
+    document.addEventListener('comboboxchange', function(e) {
+        console.log(this, combobox1.selectedItem.name);
+    })
+    </code>
+</div>
+
+<div>
+    <a href="demo/ctrl/combobox/index.html">Click here</a> for more examples.
+</div>

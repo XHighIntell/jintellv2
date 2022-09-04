@@ -110,11 +110,12 @@ a:hover{color:#0058ff}
 
 .documents-section>.Content>.docs-content .article .content .parameters{}
 .documents-section>.Content>.docs-content .article .content .parameters>.title{margin:20px 0 6px 0;font-size:max(0.9375rem,min(11.05265px + .82237vw,1.25rem));font-weight:600}
-.documents-section>.Content>.docs-content .article .content .parameters>.parameter{}
+.documents-section>.Content>.docs-content .article .content .parameters>.parameter{margin:0.4em 0 0.8em}
 .documents-section>.Content>.docs-content .article .content .parameters>.parameter>.info{display:flex}
 .documents-section>.Content>.docs-content .article .content .parameters>.parameter>.info>.name{padding:0 6px 2px;background:#f2f2f2;font-weight:600}
 .documents-section>.Content>.docs-content .article .content .parameters>.parameter>.info>.type{margin-left:12px;text-decoration:none}
 .documents-section>.Content>.docs-content .article .content .parameters>.parameter>.description{margin-top:2px}
+.documents-section>.Content>.docs-content .article .content .parameters>.parameter:last-child{margin-bottom:0}
 
 .documents-section>.Content>.docs-content .article .returns{}
 .documents-section>.Content>.docs-content .article .returns>.title{margin:32px 0 12px 0;font-size:max(1.3125rem,min(13.15265px + 0.978621vw,1.75rem));font-weight:600}
@@ -150,7 +151,7 @@ a:hover{color:#0058ff}
 .demos-section .example .demo-source{margin:1rem 0 2rem}
 .demos-section .example .demo-source>.label{padding:5px 8px;border:1px solid #d5d5d5;background:rgba(0,0,0,.05);cursor:pointer}
 .demos-section .example .demo-source>.label:hover{background:rgba(0,0,0,.1)}
-.demos-section .example .demo-source>code{display:none;padding:.5rem 1rem .5rem 1rem;background:#f2f1f1;border:1px solid #d5d5d5;border-top:none;border-radius:0 0 2px 2px;word-wrap:break-word;white-space:pre-wrap;word-break:break-all;}
+.demos-section .example .demo-source>code{display:none;padding:.5rem 1rem .5rem 1rem;background:#f2f1f1;border:1px solid #d5d5d5;border-top:none;border-radius:0 0 2px 2px;word-wrap:break-word;white-space:pre-wrap;word-break:break-all;line-height:1.5em}
 .demos-section .example .demo-source.expaned>code{display:block}
 
 

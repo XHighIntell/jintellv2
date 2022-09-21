@@ -1,4 +1,5 @@
 ﻿!function() {
+    if (globalThis.window == null) return;
     var ctrl = intell.ctrl; ctrl = {}; intell.ctrl = ctrl;
 
     // === methods ===

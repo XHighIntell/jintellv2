@@ -1,5 +1,6 @@
 ﻿// ====== ComboBox ======
 !function() {
+    if (globalThis.window == null) return;
     var ctrl = intell.ctrl;
     var ComboBox = ctrl.ComboBox;
     var $itemAbstract = $(`<div class="Item">
@@ -33,10 +34,9 @@
         // --2--
         var _this = ComboBox.setItem(element, this);
         var $element = $(element);
-        var $elementSelect = $element.find('.Select');
-        var $elementChildren = $element.find('.Children');
-        var $elementItemAbstract = $elementChildren.find('.Item.abstract');
-
+        var $elementSelect = $element.find('>.Select');
+        var $elementChildren = $element.find('>.Children');
+        var $elementItemAbstract = $element.find('.Item.abstract').removeClass('abstract').remove();
 
         if ($elementSelect.length == 0) $elementSelect = $('<div class="Select"></div>').prependTo(element);
         if ($elementChildren.length == 0) $elementChildren = $('<div class="Children"></div>').insertAfter($elementSelect);
@@ -83,14 +83,64 @@
         $element.keydown(function(ev) {
             var e = ev.originalEvent;
             var keyCode = e.keyCode;
-            
-            if (keyCode == 38) _this._pressUpOrDown(keyCode);
-            if (keyCode == 40) _this._pressUpOrDown(keyCode);
+
+            if (keyCode == 38) { _this._pressUpOrDown(keyCode); e.preventDefault() }
+            if (keyCode == 40) { _this._pressUpOrDown(keyCode); e.preventDefault() }
             if (keyCode == 27) _this._pressEsc(keyCode);
         });
         $element.keypress(function(ev) {
             if (ev.originalEvent.keyCode == 13) _this._pressEnter();
         });
+
+        // Predefined
+        !function() {
+            var $order = $elementChildren.find('>*').remove();
+
+            $order.toArray().forEach(function(element) {
+                if (element.matches('.Item') == true) {
+                    let item = new ctrl.ComboBoxItem(element);
+                    let item__private = item.getPrivate();
+
+                    if (element.matches('.DISABLED') == true) item.disabled = true;
+                    item__private.name = item__private.elementName.innerText.trim();
+                    item__private.value = element.getAttribute('data-value');
+                    
+                    _this.add(item);
+
+                    if (element.matches('.ACTIVE') == true) _this.selectedItem = item;
+                }
+                else if (element.matches('.Group') == true) {
+                    var group = new ctrl.ComboBoxGroup(element);
+                    group.name = group.elementName.innerText.trim();
+                    __private.groups.push(group);
+                    $elementChildren.append(element);
+
+                    var elementItems = Array.from(element.querySelectorAll('.Item'));
+
+
+                    elementItems.forEach(function(element) {
+                        var item = new ctrl.ComboBoxItem(element);
+                        var item__private = item.getPrivate();
+
+                        //data-value
+                        var $element = $(element);
+                        if ($element.is('.DISABLED') == true) item.disabled = true;
+
+                        item__private.name = item__private.elementName.innerText.trim();
+                        item__private.value = $element.attr('data-value');
+                        item__private.group = group.name;
+
+                        _this.add(item);
+
+                        if ($element.is('.ACTIVE') == true) _this.selectedItem = item;
+                    })
+
+                    
+                }
+            })
+        }()
+        
+
     }
     ctrl.ComboBox = ComboBox;
 
@@ -503,6 +553,7 @@
 
 // ====== ComboBoxItem ======
 !function() {
+    if (globalThis.window == null) return;
     var ctrl = intell.ctrl;
     var ComboBoxItem = ctrl.ComboBoxItem;
 
@@ -550,7 +601,6 @@
             get: function() { return this.getPrivate().elementName },
             set: function(newValue) { throw new Error("'ComboBoxItem.elementName' cannot be assigned to -- it is read only") }
         },
-
         parent: {
             get: function() { return this.getPrivate().parent },
             set: function(newValue) { throw new Error("'ComboBoxItem.parent' cannot be assigned to -- it is read only") }
@@ -609,6 +659,7 @@
 
 // ====== ComboBoxGroup =====
 !function() {
+    if (globalThis.window == null) return;
     var ctrl = intell.ctrl;
     var ComboBoxGroup = ctrl.ComboBoxGroup;
 

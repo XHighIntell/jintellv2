@@ -1,4 +1,5 @@
 ﻿!function() {
+    if (globalThis.window == null) return;
     var ctrl = intell.ctrl;
     var Numeric = ctrl.Numeric;
     var localeDecimalSeparator = (0.1).toLocaleString().substr(1, 1);   // "." in en-US

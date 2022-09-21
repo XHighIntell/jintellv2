@@ -7,7 +7,7 @@
     }; globalThis.intell = intell;
     
     // classes
-    intell.EventRegister = function EventRegister(target) {
+    intell.EventRegister = function EventRegister(target, option) {
 
         // 1. If EventRegister is called without the new keyword, recall if with the new keyword
         // 2. If functions are not added to the prototype, create/add them
@@ -35,7 +35,9 @@
             prototype.dispatch = function() {
 
                 // 1. dispatch event to the listeners
-                // 2. if any of the listeners return "stopPropagation", stop. This is internally used
+                // 2. if true, the listener would be automatically removed when invoked
+                // 3. if any of the listeners return "stopPropagation", stop. This is internally used
+                var once = this.option.once;
 
                 for (var i = 0; i < this.listeners.length; i++) {
                     var callback = this.listeners[i];
@@ -44,6 +46,12 @@
                     var action = callback.apply(this.target, arguments);
 
                     // --2--
+                    if (once === true) {
+                        this.listeners.splice(i, 1);
+                        i--;
+                    }
+
+                    // --3--
                     if (action == "stop" || action == "stopPropagation") break;
                 }
             }
@@ -54,9 +62,11 @@
         // --3--
         /** @type intell.EventRegister<(this: {x:123}, name: string)=>void> */
         var _this; _this = this;
+        _this.option = {};
         _this.listeners = [];
         _this.target = target;
 
+        if (option != null && option.once != null) _this.option.once = option.once;
     }
     
 
@@ -160,8 +170,8 @@
 
     
 }();
-
 !function() {
+    if (globalThis.window == null) return;
     var ctrl = intell.ctrl; ctrl = {}; intell.ctrl = ctrl;
 
     // === methods ===
@@ -505,6 +515,7 @@
     
 }();
 !function() {
+    if (globalThis.window == null) return;
     var template = intell.ctrl.template; template = {}; intell.ctrl.template = template;
     var privateKey = Symbol ? Symbol('__private') : '__private';
     
@@ -1115,6 +1126,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 }();
 // ====== ComboBox ======
 !function() {
+    if (globalThis.window == null) return;
     var ctrl = intell.ctrl;
     var ComboBox = ctrl.ComboBox;
     var $itemAbstract = $(`<div class="Item">
@@ -1148,10 +1160,9 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         // --2--
         var _this = ComboBox.setItem(element, this);
         var $element = $(element);
-        var $elementSelect = $element.find('.Select');
-        var $elementChildren = $element.find('.Children');
-        var $elementItemAbstract = $elementChildren.find('.Item.abstract');
-
+        var $elementSelect = $element.find('>.Select');
+        var $elementChildren = $element.find('>.Children');
+        var $elementItemAbstract = $element.find('.Item.abstract').removeClass('abstract').remove();
 
         if ($elementSelect.length == 0) $elementSelect = $('<div class="Select"></div>').prependTo(element);
         if ($elementChildren.length == 0) $elementChildren = $('<div class="Children"></div>').insertAfter($elementSelect);
@@ -1198,14 +1209,64 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         $element.keydown(function(ev) {
             var e = ev.originalEvent;
             var keyCode = e.keyCode;
-            
-            if (keyCode == 38) _this._pressUpOrDown(keyCode);
-            if (keyCode == 40) _this._pressUpOrDown(keyCode);
+
+            if (keyCode == 38) { _this._pressUpOrDown(keyCode); e.preventDefault() }
+            if (keyCode == 40) { _this._pressUpOrDown(keyCode); e.preventDefault() }
             if (keyCode == 27) _this._pressEsc(keyCode);
         });
         $element.keypress(function(ev) {
             if (ev.originalEvent.keyCode == 13) _this._pressEnter();
         });
+
+        // Predefined
+        !function() {
+            var $order = $elementChildren.find('>*').remove();
+
+            $order.toArray().forEach(function(element) {
+                if (element.matches('.Item') == true) {
+                    let item = new ctrl.ComboBoxItem(element);
+                    let item__private = item.getPrivate();
+
+                    if (element.matches('.DISABLED') == true) item.disabled = true;
+                    item__private.name = item__private.elementName.innerText.trim();
+                    item__private.value = element.getAttribute('data-value');
+                    
+                    _this.add(item);
+
+                    if (element.matches('.ACTIVE') == true) _this.selectedItem = item;
+                }
+                else if (element.matches('.Group') == true) {
+                    var group = new ctrl.ComboBoxGroup(element);
+                    group.name = group.elementName.innerText.trim();
+                    __private.groups.push(group);
+                    $elementChildren.append(element);
+
+                    var elementItems = Array.from(element.querySelectorAll('.Item'));
+
+
+                    elementItems.forEach(function(element) {
+                        var item = new ctrl.ComboBoxItem(element);
+                        var item__private = item.getPrivate();
+
+                        //data-value
+                        var $element = $(element);
+                        if ($element.is('.DISABLED') == true) item.disabled = true;
+
+                        item__private.name = item__private.elementName.innerText.trim();
+                        item__private.value = $element.attr('data-value');
+                        item__private.group = group.name;
+
+                        _this.add(item);
+
+                        if ($element.is('.ACTIVE') == true) _this.selectedItem = item;
+                    })
+
+                    
+                }
+            })
+        }()
+        
+
     }
     ctrl.ComboBox = ComboBox;
 
@@ -1618,6 +1679,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 
 // ====== ComboBoxItem ======
 !function() {
+    if (globalThis.window == null) return;
     var ctrl = intell.ctrl;
     var ComboBoxItem = ctrl.ComboBoxItem;
 
@@ -1665,7 +1727,6 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
             get: function() { return this.getPrivate().elementName },
             set: function(newValue) { throw new Error("'ComboBoxItem.elementName' cannot be assigned to -- it is read only") }
         },
-
         parent: {
             get: function() { return this.getPrivate().parent },
             set: function(newValue) { throw new Error("'ComboBoxItem.parent' cannot be assigned to -- it is read only") }
@@ -1724,6 +1785,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 
 // ====== ComboBoxGroup =====
 !function() {
+    if (globalThis.window == null) return;
     var ctrl = intell.ctrl;
     var ComboBoxGroup = ctrl.ComboBoxGroup;
 
@@ -1816,6 +1878,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 
 }();
 !function() {
+    if (globalThis.window == null) return;
     var ctrl = intell.ctrl;
     var Numeric = ctrl.Numeric;
     var localeDecimalSeparator = (0.1).toLocaleString().substr(1, 1);   // "." in en-US

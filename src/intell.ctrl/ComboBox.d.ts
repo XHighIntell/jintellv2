@@ -94,6 +94,9 @@ declare namespace intell.ctrl {
         readonly elementName: HTMLElement;
         readonly parent: ComboBox;
 
+        icon: string;
+        name: string;
+        value: any;
         group: string;
         disabled: boolean;
 
@@ -113,6 +116,9 @@ declare namespace intell.ctrl {
         parent: ComboBox;
         parentGroup: ComboBoxGroup;
 
+        icon: string;
+        name: string;
+        value: any;
         group: string;
         disabled: boolean;
     }

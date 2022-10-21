@@ -75,7 +75,7 @@
                             combobox1.add({ icon: '', name: 'G1', value: 0, });
                             combobox1.add({ icon: '', name: 'G2', value: 0, });
 
-                            document.addEventListener('comboboxchange', function(e) {
+                            combobox1.element.addEventListener('comboboxchange', function(e) {
                                 console.log(this, combobox1.selectedItem.name);
                             })
                         });
@@ -89,6 +89,68 @@
                 </div>
             </div>
 
+            <div class="example">
+                <div class="title">Predefined</div>
+                <div class="description"></div>
+
+                <div data-code-id="Example2">
+                    <div id="combobox2" class="X-ComboBox Light" tabindex="0">
+                        <div class="Item abstract">
+                            <div class="Name"></div>
+                        </div>
+
+                        <div class="Children">
+                            
+
+
+                            <div class="Item">
+                                <div class="Name">Predefined Item A</div>
+                            </div>
+                            
+                            <div class="Group">
+                                <header>
+                                    <div class="Name">Free</div>
+                                </header>
+                                <div class="Children">
+                                    <div class="Item ACTIVE" data-value="F1">
+                                        <div class="Name">F1 (Predefined)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        
+                    </style>
+
+                    <script>
+                        window.addEventListener('load', function() {
+                            var combobox2 = window.combobox2 =  new intell.ctrl.ComboBox(document.getElementById('combobox2'));
+
+                            combobox2.add({ name: 'F2', value: 0, group: 'Free', disabled: true });
+                            combobox2.add({ name: 'B1', value: 1, group: 'Basic' });
+                            combobox2.add({ name: 'D1', value: 0, group: 'Shared' });
+                            
+                            combobox2.add({ name: 'B2', value: 1, group: 'Basic' });
+                            combobox2.add({ name: 'B3', value: 1, group: 'Basic' });
+
+                            combobox2.add({ name: 'G1', value: 0, });
+                            combobox2.add({ name: 'G2', value: 0, });
+
+                            combobox2.element.addEventListener('comboboxchange', function(e) {
+                                console.log(this, combobox2.selectedItem.name);
+                            })
+                        });
+
+                        
+                    </script>
+                </div>
+
+                <div class="demo-source" data-code-source="Example2">
+                    <div class="label">Source code - Object-oriented programming</div>
+                </div>
+            </div>
         </div>
     </div>
 

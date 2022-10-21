@@ -8,7 +8,7 @@
             },
             {
                 scope: 'keyword',
-                begin: '\\b(constructor|void|this|function|static|readonly)\\b',
+                begin: '\\b(new|constructor|void|this|function|static|readonly)\\b',
             },
             {
                 scope: 'attr',           // name
@@ -16,7 +16,7 @@
             },
             {
                 scope: 'class built_in', // type
-                begin: /(?<=: *)(string|object|any)/,
+                begin: /(?<=: *)(string|number|object|any)/,
             },
             {
                 scope: 'class',
@@ -24,19 +24,25 @@
             },
             {
                 scope: 'class built_in', // standalone name
-                begin: /(string|object|any)/,
+                begin: /(string|number|object|any)/,
             },
             //{
             //    scope: 'function', // fun()
             //    begin: /\w+(?= *\()/,
             //},
             {
+                scope: 'namespace',          // namespace standalone (namespace1).(namespace2).class end of string
+                begin: /\w+(?=\.\w+)/,
+            },
+
+
+            {
                 scope: 'class',          // class[]
                 begin: /\w+(?= *\[\])/,
             },
             {
-                scope: 'class',          // class standalone end of string
-                begin: /^\w+$/,
+                scope: 'class',          // "namespace1.namespace2.(class)"
+                begin: /\w+$/,
             },
             {
                 scope: 'class',          // <T> < T >
@@ -385,8 +391,10 @@
         var responseText = await response.text();
 
         var $root = $(responseText);
-        $root.appendTo($element);
-        
+        $root.appendTo($element).find('[data-code]').toArray().forEach(function(element) {
+            element.textContent = docs.demos.trimIndents(element.textContent);
+        })
+
         return $element[0];
     }
     docs._generatePropertyValue = function(value) {
@@ -449,6 +457,7 @@
         if (id == 'getting-started') return 'article/Getting Started.html';
         else if (id == 'intell.ctrl.ComboBox') return 'article/intell.ctrl.ComboBox/ComboBox.json'
         else if (id == 'intell.ctrl.Numeric') return 'article/intell.ctrl.Numeric/Numeric.json'
+        else if (id == 'intell.ctrl.TargetPopup') return 'article/intell.ctrl.TargetPopup/TargetPopup.json'
         else return 'article/' + id + '.json';
     }
     ui.open = async function(id) {

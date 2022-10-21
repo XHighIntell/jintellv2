@@ -7,7 +7,7 @@
     }; globalThis.intell = intell;
     
     // classes
-    intell.EventRegister = function EventRegister(target) {
+    intell.EventRegister = function EventRegister(target, option) {
 
         // 1. If EventRegister is called without the new keyword, recall if with the new keyword
         // 2. If functions are not added to the prototype, create/add them
@@ -35,7 +35,9 @@
             prototype.dispatch = function() {
 
                 // 1. dispatch event to the listeners
-                // 2. if any of the listeners return "stopPropagation", stop. This is internally used
+                // 2. if true, the listener would be automatically removed when invoked
+                // 3. if any of the listeners return "stopPropagation", stop. This is internally used
+                var once = this.option.once;
 
                 for (var i = 0; i < this.listeners.length; i++) {
                     var callback = this.listeners[i];
@@ -44,6 +46,12 @@
                     var action = callback.apply(this.target, arguments);
 
                     // --2--
+                    if (once === true) {
+                        this.listeners.splice(i, 1);
+                        i--;
+                    }
+
+                    // --3--
                     if (action == "stop" || action == "stopPropagation") break;
                 }
             }
@@ -54,9 +62,11 @@
         // --3--
         /** @type intell.EventRegister<(this: {x:123}, name: string)=>void> */
         var _this; _this = this;
+        _this.option = {};
         _this.listeners = [];
         _this.target = target;
 
+        if (option != null && option.once != null) _this.option.once = option.once;
     }
     
 

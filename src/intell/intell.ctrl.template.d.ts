@@ -10,6 +10,7 @@ declare namespace intell.ctrl.template {
      * - static getItem(), 
      * - static setItem()  */
     export function inherit(constructor: Constructor, option: InheritOption): void;
+    export function defineProperties<T>(o: T, properties: defineProperties<T>): T;
 
     interface InheritOption {
         ctrlKey: symbol | string;

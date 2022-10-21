@@ -24,12 +24,12 @@ declare namespace intell.ctrl {
     export function getRectWhenShowAtRect(popup: DOMRect, target: DOMRect, location: number, option?: GetRectWhenShowAtOption): GetRectWhenShowAtResult;
     export function getRectWhenShowAtCoord(popup: DOMRect, coord: CoordinatesLike, location: number, option?: GetRectWhenShowAtOption): GetRectWhenShowAtResult;
 
-    export function showAt(element: HTMLElement, target: DOMRect, locations: number[], option?: ShowAtOption): void;
-    export function showAt(element: HTMLElement, coord: CoordinatesLike, locations: number[], option?: ShowAtOption): void;
-    export function showAt(element: HTMLElement, elementTarget: HTMLElement, locations: number[], option?: ShowAtOption): void;
-    export function showAtRect(element: HTMLElement, target: DOMRect, locations: number[], option?: ShowAtOption): void;
-    export function showAtCoord(elementPopup: HTMLElement, coord: CoordinatesLike, locations: number[], option?: ShowAtOption): void;
-    export function showAtElement(elementPopup: HTMLElement, elementTarget: HTMLElement, locations: number[], option?: ShowAtOption): void;
+    export function showAt(element: HTMLElement, target: DOMRect, locations: number[], option?: ShowAtOption): GetRectWhenShowAtResult;
+    export function showAt(element: HTMLElement, coord: CoordinatesLike, locations: number[], option?: ShowAtOption): GetRectWhenShowAtResult;
+    export function showAt(element: HTMLElement, elementTarget: HTMLElement, locations: number[], option?: ShowAtOption): GetRectWhenShowAtResult;
+    export function showAtRect(element: HTMLElement, target: DOMRect, locations: number[], option?: ShowAtOption): GetRectWhenShowAtResult;
+    export function showAtCoord(elementPopup: HTMLElement, coord: CoordinatesLike, locations: number[], option?: ShowAtOption): GetRectWhenShowAtResult;
+    export function showAtElement(elementPopup: HTMLElement, elementTarget: HTMLElement, locations: number[], option?: ShowAtOption): GetRectWhenShowAtResult;
 
     /** Returns the first element where the predicate is true while traversing up through its ancestors in the DOM tree. */
     export function findParentElement(element: HTMLElement, predicate: (value: HTMLElement) => boolean): HTMLElement | undefined;

@@ -1,6 +1,8 @@
-# intell
+# jintellv2 output
 output
 
+# jintellv2 docs
+docs/static/lib/intell/intell.d.ts
 
 # Folders
 .vs/
@@ -10,4 +12,3 @@ output
 *.user
 *.userosscache
 *.sln.docstates
-

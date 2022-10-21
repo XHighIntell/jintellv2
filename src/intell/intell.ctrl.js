@@ -1,4 +1,5 @@
 ﻿!function() {
+    if (globalThis.window == null) return;
     var ctrl = intell.ctrl; ctrl = {}; intell.ctrl = ctrl;
 
     // === methods ===
@@ -214,7 +215,12 @@
                 var clone = Object.assign({}, option);
 
                 var elementContainer = ctrl.findParentElement(element, function(element) {
-                    return element == document.documentElement || getComputedStyle(element).overflow != 'visible'
+                    if (element == document.documentElement) return true;
+
+                    var computedStyle = getComputedStyle(element);
+                    if (computedStyle.overflow != 'visible' && computedStyle.position != 'static') return true;
+
+                    return false;
                 });
 
                 if (elementContainer != null) {

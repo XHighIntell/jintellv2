@@ -9,7 +9,9 @@ declare namespace intell {
 
         /** Initializes a new instance of EventRegister object that is used to add, remove listeners and dispatch them. 
          * @param target The value of <mark>this</mark> provided for dispatching to listeners. */
-        constructor(target?: object);
+        constructor(target?: object, option?: EventRegisterOption);
+
+        protected option: EventRegisterOption;
 
         /** Private */
         protected listeners: T[];
@@ -53,7 +55,11 @@ declare namespace intell {
     /** Gets the version of this library. */
     export var version: '2.0.0';
 
-    //export function elm(): void;
+
+    interface EventRegisterOption {
+        /** A boolean value indicating that the listener should be invoked at most once after being added. If true, the listener would be automatically removed when invoked. If not specified, defaults to false. */
+        once: boolean;
+    } 
 
     
 

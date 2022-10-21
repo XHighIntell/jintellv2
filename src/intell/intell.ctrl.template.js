@@ -1,4 +1,5 @@
 ﻿!function() {
+    if (globalThis.window == null) return;
     var template = intell.ctrl.template; template = {}; intell.ctrl.template = template;
     var privateKey = Symbol ? Symbol('__private') : '__private';
     
@@ -18,6 +19,7 @@
             return element[ctrlKey] = control
         }
     }
+    template.defineProperties = function(o, properties) { return Object.defineProperties(o, properties) }
 
     
     /** @type intell.ctrl.template.Constructor */

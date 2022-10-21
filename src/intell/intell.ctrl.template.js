@@ -19,6 +19,7 @@
             return element[ctrlKey] = control
         }
     }
+    template.defineProperties = function(o, properties) { return Object.defineProperties(o, properties) }
 
     
     /** @type intell.ctrl.template.Constructor */

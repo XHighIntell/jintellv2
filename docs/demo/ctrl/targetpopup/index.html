@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jintell Demo</title>
+    <link href="../../../static/css/global.css" rel="stylesheet" />
+
+    <script src="../../../static/lib/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../../../static/lib/intell/intell.js"></script>
+    <script src="../../../static/lib/hljs/highlight.min.js"></script>
+    <script src="../../../static/js/docs.js"></script>
+</head>
+<body>
+    <div class="Container master-header">
+        <div class="Content">
+            <a href="../../../" class="title">jintellv2 - Demos</a>
+            <div class="spring"></div>
+            <div class="links">
+                <a class="link" title="Document" href="../../../document.html">
+                    <div class="icon"></div>
+                </a>
+                <a class="link" title="Source - Github" href="https://github.com/xhighintell/jintellv2">
+                    <div class="icon"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="demos-section Container">
+        <div class="Content">
+            <div class="example">
+                <div class="title">The Static Way</div>
+                <div class="description"></div>
+
+                <div id="example1" data-code-id="Example1">
+                    <div class="actions">
+                        <div class="action">+</div>
+                        <div class="action">?</div>
+                    </div>
+                    <div id="targetpopup1" style="display:none">
+                        <span class="Arrow"></span>
+                        aaaaaaa
+                    </div>
+
+                    <style>
+                        #example1 .actions{display:flex;background:#ccd5f0}
+                        #example1 .actions .action{display:flex;align-items:center;justify-content:center;width:30px;height:30px;cursor:pointer}
+                        #example1 .actions .action:hover{background:rgba(0,234,255,.3)}
+                        #example1 .actions .action.POPUP-ATTACHED{background:rgba(0,234,255,.3);outline:1px dashed #0092ff}
+
+                        #example1 #targetpopup1{position:absolute;padding:2px 8px;box-shadow:0 0 2px black;background:#fff;transition:opacity .5s;opacity:0}
+                        #example1 #targetpopup1.ACTIVE{opacity:1}
+                        #example1 #targetpopup1 .Arrow{position:absolute;height:8px;width:8px;box-shadow:1px 1px 1px rgba(0,0,0,.4);background:white}
+                        #example1 #targetpopup1 .Arrow.DOWN{bottom:-4px;transform:rotate(45deg)}
+                        #example1 #targetpopup1 .Arrow.LEFT{left:-4px;transform:rotate(135deg)}
+                        #example1 #targetpopup1 .Arrow.UP{top:-4px;transform:rotate(225deg)}
+                        #example1 #targetpopup1 .Arrow.RIGHT{right:-4px;transform:rotate(315deg)}
+                    </style>
+
+                    <script>
+                        $('#example1').on('click', '.actions .action', function() {
+                            intell.ctrl.TargetPopup.showAt(document.getElementById('targetpopup1'), this);
+                        });
+                    </script>
+                </div>
+
+                <div class="demo-source" data-code-source="Example1">
+                    <div class="label">Source code - The simplest Numeric</div>
+                </div>
+            </div>
+
+            <div class="example">
+                <div class="title">The Simplest TargetPopup</div>
+                <div class="description"></div>
+
+                <div id="example2" data-code-id="Example2">
+                    <div class="actions">
+                        <div class="action">+</div>
+                        <div class="action">?</div>
+                    </div>
+                    <div id="targetpopup2" style="display:none">
+                        <span class="Arrow"></span>
+                        BBBB
+                    </div>
+
+                    <style>
+                        #example2 .actions{display:flex;background:#ccd5f0}
+                        #example2 .actions .action{display:flex;align-items:center;justify-content:center;width:30px;height:30px;cursor:pointer}
+                        #example2 .actions .action:hover{background:rgba(0,234,255,.3)}
+                        #example2 .actions .action.POPUP-ATTACHED{background:rgba(0,234,255,.3);outline:1px dashed #0092ff}
+
+                        #example2 #targetpopup2{position:absolute;padding:4px 8px;background:#000;transition:opacity .5s;border:1px solid #00aeff;box-shadow:0 0 5px 0 black;opacity:0;color:#fff}
+                        #example2 #targetpopup2.ACTIVE{opacity:1}
+                        #example2 #targetpopup2 .Arrow{position:absolute;height:8px;width:8px;box-shadow:1px 1px 0 #00aeff,.5px 1px 0 #00aeff,1px .5px 0 #00aeff,2px 2px 2px 0 rgba(0,0,0,40%);background:black;clip-path:polygon(calc(100% + 5px) -80%, calc(100% + 5px) calc(100% + 5px), -80% calc(100% + 5px))}
+                        #example2 #targetpopup2 .Arrow.DOWN{bottom:-4px;transform:rotate(45deg)}
+                        #example2 #targetpopup2 .Arrow.LEFT{left:-4px;transform:rotate(135deg)}
+                        #example2 #targetpopup2 .Arrow.UP{top:-4px;transform:rotate(225deg)}
+                        #example2 #targetpopup2 .Arrow.RIGHT{right:-4px;transform:rotate(315deg)}
+                    </style>
+
+                    <script>
+                        window.addEventListener('load', function() {
+                            var targetpopup2 = window.targetpopup2 = new intell.ctrl.TargetPopup(document.getElementById('targetpopup2'));
+
+                            $('#example2').on('click', '.actions .action', function() { targetpopup2.showAt(this) });
+                        });
+                    </script>
+                </div>
+
+                <div class="demo-source" data-code-source="Example2">
+                    <div class="label">Source code - The Simplest TargetPopup</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>docs.demos.auto()</script>
+</body>
+</html>
+
+
+
+
+

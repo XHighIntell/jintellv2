@@ -1,0 +1,169 @@
+{
+    "_": "class",
+    "title": "TargetPopup Class",
+    "description": "Represents a popup box that can be displayed at specified elements or coordinates.",
+
+    "constructors": [
+        {
+            "title": "constructor(element: HTMLElement)",
+            "description": "Initializes a new instance of the TargetPopup class from element.",
+            "parameters": [
+                {
+                    "name": "element",
+                    "type": "HTMLElement",
+                    "description": "The element for which to create TargetPopup."
+                }
+            ]
+        }
+    ],
+    "properties": [
+        {
+            "title": "element: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the root element of control.",
+            "value": {
+                "description": "Returns the root element of control."
+            }
+        },
+        {
+            "title": "elementArrow: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the arrow element.",
+            "value": {
+                "description": "Return the arrow element."
+            }
+        },
+        {
+            "title": "popupLocations: number[]",
+            "type": "number[]",
+            "description": "Gets or sets the locations indicating where the TargetPopup will display.",
+            "value": {
+                "description": "The default value is <mark>[9, 1]</mark>"
+            }
+        },
+        {
+            "title": "popupOption: intell.ctrl.ShowAtOption",
+            "type": "intell.ctrl.ShowAtOption",
+            "description": "Gets or sets the option indicating when the TargetPopup will display.",
+            "value": {
+                "description": "The default value is <mark>{space: -1, container_mode: \"auto\"}</mark>."
+            }
+        },
+        {
+            "title": "popupDelayHideTime: number",
+            "type": "number",
+            "description": "Gets or sets the interval, expressed in milliseconds. The time, in milliseconds, waiting before hiding the TargetPopup.",
+            "value": {
+                "description": "While in delay hide time, <mark>OUT</mark> class name will be set to TargetPopup. The default value is <mark>500</mark>."
+            }
+        }
+    ],
+    "methods": [
+        {
+            "title": "showAt",
+            "description": "The <mark>showAt()</mark> function displays <mark>TargetPopup</mark> at specified elements or coordinates.",
+            "overloads": [
+                {
+                    "title": "showAt(target: HTMLElement): void",
+                    "description": "Show <mark>TargetPopup</mark> at the specified element.",
+                    "parameters": [
+                        {
+                            "name": "target",
+                            "type": "HTMLElement",
+                            "description": "The target element which <mark>TargetPopup</mark> will display at."
+                        }
+                    ],
+                    "remarks": "Calls while the popup is already shown, the popup will immediately move to the new target element."
+                },
+                {
+                    "title": "showAt(coordinates: CoordinatesLike): void",
+                    "description": "Show <mark>TargetPopup</mark> at the specified coordinate.",
+                    "parameters": [
+                        {
+                            "name": "coordinates",
+                            "type": "intell.ctrl.CoordinatesLike",
+                            "description": "The coordinate."
+                        }
+                    ],
+                    "returns": "Calls while the popup is already shown, the popup will immediately move to the new coordinate."
+                }
+            ]
+        },
+        {
+            "title": "hide",
+            "description": "The <mark>hide()</mark> function hides <mark>TargetPopup</mark>.",
+            "overloads": [
+                {
+                    "title": "hide(): void",
+                    "description": "Start hiding <mark>TargetPopup</mark>."
+                }
+            ]
+        }
+    ],
+    "static_methods": [
+        {
+            "title": "showAt",
+            "description": "The static <mark>showAt()</mark> function is a shortcut way to create or reuse if <mark>TargetPopup</mark> is already created, then show at specified elements or coordinates.",
+            "overloads": [
+                {
+                    "title": "static showAt(elementPopup: HTMLElement, target: HTMLElement, locations?: number[], option?: ShowAtOption): TargetPopup",
+                    "description": "Show <mark>TargetPopup</mark> at the specified element.",
+                    "parameters": [
+                        {
+                            "name": "elementPopup",
+                            "type": "HTMLElement",
+                            "description": "The element of <mark>TargetPopup</mark>."
+                        },
+                        {
+                            "name": "target",
+                            "type": "HTMLElement",
+                            "description": "The target element which <mark>TargetPopup</mark> will display at."
+                        },
+                        {
+                            "name": "locations?",
+                            "type": "number[]",
+                            "description": "The locations indicating where the <mark>TargetPopup</mark> will display."
+                        },
+                        {
+                            "name": "option?",
+                            "type": "intell.ctrl.ShowAtOption[]",
+                            "description": "The option indicating when the <mark>TargetPopup</mark> will display."
+                        }
+                    ],
+                    "returns": "Returns the <mark>TargetPopup</mark> that is created or reused."
+                },
+                {
+                    "title": "static showAt(elementPopup: HTMLElement, coords: CoordinatesLike, locations?: number[], option?: ShowAtOption): TargetPopup",
+                    "description": "Show <mark>TargetPopup</mark> at the specified coordinate.",
+                    "parameters": [
+                        {
+                            "name": "elementPopup",
+                            "type": "HTMLElement",
+                            "description": "The element of <mark>TargetPopup</mark>."
+                        },
+                        {
+                            "name": "coords",
+                            "type": "intell.ctrl.CoordinatesLike",
+                            "description": "The target coordinate which <mark>TargetPopup</mark> will display at."
+                        },
+                        {
+                            "name": "locations?",
+                            "type": "number[]",
+                            "description": "The locations indicating where the <mark>TargetPopup</mark> will display."
+                        },
+                        {
+                            "name": "option?",
+                            "type": "intell.ctrl.ShowAtOption",
+                            "description": "The option indicating when the <mark>TargetPopup</mark> will display."
+                        }
+                    ],
+                    "returns": "Returns the <mark>TargetPopup</mark> that is created or reused."
+                }
+            ],
+            "remarks": "The function will call <mark><code data-code=\"dts\">new constructor(elementPopup)</code></mark>, set <mark>locations</mark> and <mark>option</mark> properties then call <mark>TargetPopup.showAt</mark>."
+        }
+
+    ],
+
+    "examples": "article/intell.ctrl.TargetPopup/examples.html"
+}

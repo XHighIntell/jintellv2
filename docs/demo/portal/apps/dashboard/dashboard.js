@@ -10,7 +10,7 @@
         iconText: "",
         content: {
             html:  new URL('dashboard.html', src).pathname,
-            js: ["../static/lib/hljs/highlight.min.js"],
+            js: ["/static/lib/hljs/highlight.min.js"],
             css: [new URL('style.css', src).pathname],
         },
         startup: true,

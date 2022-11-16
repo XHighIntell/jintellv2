@@ -9,7 +9,7 @@
         iconText: "",
         content: {
             html: "apps/cost-billing/ui.html",
-            js: ["../static/lib/hljs/highlight.min.js"],
+            js: ["/static/lib/hljs/highlight.min.js"],
         },
         group: "Account",
     }

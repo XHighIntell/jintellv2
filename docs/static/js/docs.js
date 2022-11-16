@@ -454,12 +454,17 @@
         return element;
     }
     ui._getArticleUrl = function(id) {
+
         if (id == 'getting-started') return 'article/Getting Started.html';
-        else if (id == 'intell.ctrl.ComboBox') return 'article/intell.ctrl.ComboBox/ComboBox.json'
-        else if (id == 'intell.ctrl.Numeric') return 'article/intell.ctrl.Numeric/Numeric.json'
-        else if (id == 'intell.ctrl.TargetPopup') return 'article/intell.ctrl.TargetPopup/TargetPopup.json'
-        else if (id == 'intell.ctrl.Time') return 'article/intell.ctrl.Time/Time.json'
-        else return 'article/' + id + '.json';
+
+        var index = id.lastIndexOf('.');
+        if (index == -1) return;
+
+        var folder = id.slice(0, index);
+        var name = id.slice(index + 1);
+
+        return 'article/' + folder + '/' + name + '.json';
+
     }
     ui.open = async function(id) {
         //var element = articles[id];

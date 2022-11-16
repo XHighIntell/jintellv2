@@ -107,7 +107,7 @@ type NotKeyOfFunction<T> = { [k in keyof T]: T[k] extends Function ? never : k }
 
 type defineProperties<T> = {
     [K in keyof T]: {
-        get: (this: T) => any;
+        get: (this: T) => T[K];
         set: (this: T, newValue: T[K]) => void;
     }
 }

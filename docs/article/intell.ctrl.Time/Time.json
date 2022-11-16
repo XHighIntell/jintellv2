@@ -1,0 +1,112 @@
+{
+    "_": "class",
+    "title": "Time Class",
+    "description": "Represents a box that displays time/duration value.",
+
+    "constructors": [
+        {
+            "title": "constructor(element: HTMLElement)",
+            "description": "Initializes a new instance of the Time class from element.",
+            "parameters": [
+                {
+                    "name": "element",
+                    "type": "HTMLElement",
+                    "description": "The element for which to create Time."
+                }
+            ]
+        }
+    ],
+    "properties": [
+        {
+            "title": "readonly element: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the root element of control.",
+            "value": {
+                "description": "Returns the root element of control."
+            }
+        },
+        {
+            "title": "readonly elementHours: HTMLElement",
+            "type": "HTMLElement",
+            "description": " Gets the hours element of control.",
+            "value": {
+                "description": "Returns the hours element of control."
+            }
+        },
+        {
+            "title": "readonly elementMinutes: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the minutes element of control.",
+            "value": {
+                "description": "Returns the minutes element of control."
+            }
+        },
+        {
+            "title": "readonly elementSeconds: HTMLElement",
+            "type": "HTMLElement",
+            "description": " Gets the seconds element of control.",
+            "value": {
+                "description": "Returns the seconds element of control."
+            }
+        },
+        {
+            "title": "readonly elementMilliseconds: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the miliseconds element of control.",
+            "value": {
+                "description": "Return the miliseconds element of control."
+            }
+        },
+        {
+            "title": "value: number",
+            "type": "number",
+            "description": "Gets or sets the value of time.",
+            "value": {
+                "description": "The default value is <mark>null</mark>"
+            }
+        },
+        {
+            "title": "nullable: boolean",
+            "type": "number",
+            "description": "Gets or sets whether the value can be null; the default is true.",
+            "value": {
+                "description": "The default value is <mark>true</mark>"
+            }
+        },
+        {
+            "title": "max: number",
+            "type": "number",
+            "description": "Gets or sets the maxium allowed value; the default is 86399999 (23:59:59.999)",
+            "value": {
+                "description": "the default is <mark>86399999</mark> (23:59:59.999)."
+            }
+        },
+        {
+            "title": "secondsEnabled: boolean",
+            "type": "boolean",
+            "description": "Gets or sets whether the seconds element is visible.",
+            "value": {
+                "description": "The default value is <mark>true</mark>."
+            }
+        },
+        {
+            "title": "millisecondsEnabled: boolean",
+            "type": "boolean",
+            "description": "Gets or sets whether the milliseconds element is visible.",
+            "value": {
+                "description": "The default value is <mark>false</mark>."
+            }
+        }
+    ],
+    "events": [
+        {
+            "title": "timechange",
+            "description": "The change event is fired when an alteration to the value is committed by the user."
+        }
+    ],
+    "static_methods": [
+
+    ],
+
+    "examples": "article/intell.ctrl.Time/examples.html"
+}

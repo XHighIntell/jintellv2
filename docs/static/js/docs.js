@@ -16,7 +16,7 @@
             },
             {
                 scope: 'class built_in', // type
-                begin: /(?<=: *)(string|number|object|any)/,
+                begin: /(?<=: *)(string|number|object|any|boolean)/,
             },
             {
                 scope: 'class',
@@ -458,6 +458,7 @@
         else if (id == 'intell.ctrl.ComboBox') return 'article/intell.ctrl.ComboBox/ComboBox.json'
         else if (id == 'intell.ctrl.Numeric') return 'article/intell.ctrl.Numeric/Numeric.json'
         else if (id == 'intell.ctrl.TargetPopup') return 'article/intell.ctrl.TargetPopup/TargetPopup.json'
+        else if (id == 'intell.ctrl.Time') return 'article/intell.ctrl.Time/Time.json'
         else return 'article/' + id + '.json';
     }
     ui.open = async function(id) {

@@ -2454,6 +2454,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         $element.mousedown(function(e) { _this._mousedown(e.originalEvent) });
         $element.keydown(function(e) { _this._keydown(e.originalEvent) });
         $element.focusout(function() { _this._focusout() });
+        element.addEventListener('wheel', function(e) { _this._wheel(e) });
     }
     ctrl.Time = Time;
 
@@ -2583,7 +2584,25 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 
         this.updateElementLabels();
     }
-    prototype.setEdit = function(name) {
+    prototype.getUnitElement = function(name) {
+        var __private = this.getPrivate();
+
+        if (name == "hours") return __private.elementHours;
+        if (name == "minutes") return __private.elementMinutes;
+        if (name == "seconds") return __private.elementSeconds;
+        if (name == "milliseconds") return __private.elementMilliseconds;
+    }
+
+    // ====== protected methods ======
+    prototype.getEditName = function(target) {
+        var __private = this.getPrivate();
+
+        if (__private.elementHours.contains(target)) return "hours";
+        else if (__private.elementMinutes.contains(target)) return "minutes";
+        else if (__private.elementSeconds.contains(target)) return "seconds";
+        else if (__private.elementMilliseconds.contains(target)) return "milliseconds";
+    }
+    prototype.setEditName = function(name) {
         var __private = this.getPrivate();
 
         if (name !== "hours" && name != "minutes" && name != "seconds" && name != "milliseconds") throw new Error("'name' must be 'hours', 'minutes', 'seconds' or 'milliseconds'");
@@ -2595,19 +2614,38 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 
         $([__private.elementHours, __private.elementMinutes, __private.elementSeconds, __private.elementMilliseconds]).removeClass('active');
 
-        this.getEditElement(name).classList.add('active');
+        this.getUnitElement(name).classList.add('active');
     }
-    prototype.getEditElement = function(name) {
+    prototype.setEditValue = function(name, newUnitValue) {
+        // 1. cap min
+        // 2. cap max for seconds, minutes and hours
+        // 3. set value to element
         var __private = this.getPrivate();
 
-        if (name == "hours") return __private.elementHours;
-        if (name == "minutes") return __private.elementMinutes;
-        if (name == "seconds") return __private.elementSeconds;
-        if (name == "milliseconds") return __private.elementMilliseconds;
+        // --1--
+        if (newUnitValue < 0) newUnitValue = 0;
+        if (__private.nullable == false && newUnitValue == null) newUnitValue = 0;
+
+        // --2--
+        if (newUnitValue != null) { 
+            switch (name) {
+                case "hours":
+                    var hhmmss = Time.getHHMMSS(__private.max);
+                    if (newUnitValue > hhmmss.hours) newUnitValue = hhmmss.hours;
+                    break;
+                case "minutes": if (newUnitValue > 59) newUnitValue = 59; break;
+                case "seconds": if (newUnitValue > 59) newUnitValue = 59; break;
+                case "milliseconds": if (newUnitValue > 999) newUnitValue = 999; break;
+            }
+        }
+        __private[name] = newUnitValue;
+
+        // --3--
+        this.updateElementLabel(name, newUnitValue);
     }
     prototype.updateElementLabel = function(name, value) {
         var __private = this.getPrivate();
-        var element = this.getEditElement(name);
+        var element = this.getUnitElement(name);
         var text = '';
         var length = 0;
 
@@ -2641,7 +2679,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
     // ====== methods events ======
     prototype._focus = function() {
         var __private = this.getPrivate();
-        if (__private.currentUnitName == null) this.setEdit("hours");
+        if (__private.currentUnitName == null) this.setEditName("hours");
 
         __private.save_hours = __private.hours;
         __private.save_minutes = __private.minutes;
@@ -2649,14 +2687,21 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         __private.save_milliseconds = __private.milliseconds;
     }
     prototype._mousedown = function(e) {
-        /** @type HTMLElement */
-        var target = e.target
+        var name = this.getEditName(e.target);
+        if (name) this.setEditName(name);
+    }
+    prototype._wheel = function(e) {
         var __private = this.getPrivate();
+        var name = __private.currentUnitName;
+        if (name == null) return;
 
-        if (__private.elementHours.contains(target)) this.setEdit("hours");
-        else if (__private.elementMinutes.contains(target)) this.setEdit("minutes");
-        else if (__private.elementSeconds.contains(target)) this.setEdit("seconds");
-        else if (__private.elementMilliseconds.contains(target)) this.setEdit("milliseconds");
+        var currentUnitValue = __private[name] ?? 0;
+        var increasement = e.deltaY < 0 ? 1 : -1;
+        var newUnitValue = currentUnitValue + increasement;
+
+        this.setEditValue(name, newUnitValue);
+
+        e.preventDefault();
     }
     prototype._keydown = function(e) {
         var __private = this.getPrivate();
@@ -2667,13 +2712,23 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         if (keycode == 8 || keycode == 46) this._keydownDel();
         if (keycode == 27) this._keydownEsc();
 
+        if (keycode == 38 || keycode == 40) {
+            var name = __private.currentUnitName; if (name == null) return;
+            var currentUnitValue = __private[name] ?? 0;
+            var increasement = keycode == 38 ? 1 : -1;
+            var newUnitValue = currentUnitValue + increasement;
+
+            this.setEditValue(name, newUnitValue);
+
+            e.preventDefault();
+        }
+
         if (48 <= e.keyCode && e.keyCode <= 57) {
             // internal handle number key press
             // 1. calculate newUnitValue from keycode. number (0-9)
-            //   a. if current is seconds and newUnitValue > 59 and user press 3 time, newUnitValue is new input 
-            // 2. cap max for seconds, minutes and hours
-            // 3. set value to element
-            // 4. move to next if possible
+            //   a. if current is seconds and newUnitValue > 59 and user press 3 time, newUnitValue is new input
+            // 2. setEditValue to handle new value
+            // 3. move to next if possible
 
             var name = __private.currentUnitName; if (name == null) return;
             var inputNumber = e.keyCode - 48;
@@ -2696,23 +2751,10 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
                 
             } else if (name == "milliseconds") newUnitValue = newUnitValue % 1000;
             
-
             // --2--
-            switch (name) {
-                case "hours":
-                    var hhmmss = Time.getHHMMSS(__private.max);
+            this.setEditValue(name, newUnitValue);
 
-                    if (newUnitValue > hhmmss.hours) newUnitValue = hhmmss.hours; break;
-                case "minutes": if (newUnitValue > 59) newUnitValue = 59; break;
-                case "seconds": if (newUnitValue > 59) newUnitValue = 59; break;
-                case "milliseconds": if (newUnitValue > 999) newUnitValue = 999; break;
-            }
-            __private[name] = newUnitValue;
-
-            // --3--
-            this.updateElementLabel(name, newUnitValue);
-
-            // --4-
+            // --3-
             var moveNext = false;
 
             if (name == "hours") {
@@ -2736,40 +2778,23 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
     prototype._keydownLeft = function() {
         var __private = this.getPrivate();
 
-        if (__private.currentUnitName == "minutes") this.setEdit("hours")
-        else if (__private.currentUnitName == "seconds") this.setEdit("minutes")
+        if (__private.currentUnitName == "minutes") this.setEditName("hours")
+        else if (__private.currentUnitName == "seconds") this.setEditName("minutes")
     }
     prototype._keydownRight = function() {
         var __private = this.getPrivate();
         var name = __private.currentUnitName;
 
-        if (name == 'hours') this.setEdit("minutes")
-        else if (name == 'minutes') this.setEdit("seconds")
-        else if (name == 'seconds' && __private.millisecondsEnabled == true) this.setEdit("milliseconds")
+        if (name == 'hours') this.setEditName("minutes")
+        else if (name == 'minutes') this.setEditName("seconds")
+        else if (name == 'seconds' && __private.millisecondsEnabled == true) this.setEditName("milliseconds")
     }
     prototype._keydownDel = function() {
         var __private = this.getPrivate();
         var name = __private.currentUnitName;
-
-        // 1. if name is null, return
-        // 2. if nullable is false, set value to 0
-        // 3. if nullable is true, set value to null
-        // 4. set 
-
-        // --1--
         if (name == null) return;
-        __private.currentNumbers = 0;
 
-        // --2--
-        var value = 0;
-
-        // --3--
-        if (__private.nullable == true) value = null;
-
-        // --4--
-        __private[name] = value
-
-        this.updateElementLabel(name, value);
+        this.setEditValue(name, null);
     }
     prototype._keydownEsc = function() {
         var __private = this.getPrivate();

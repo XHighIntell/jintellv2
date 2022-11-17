@@ -63,7 +63,7 @@
 
                 <div data-code-id="Example2">
                     <div id="numeric2" class="X-Numeric Light">
-                        <input type="text" value="3.14" title="Price" tabindex="0">
+                        <input type="text" title="Price" tabindex="0">
                         <div class="Actions">
                             <div class="Action Action-Up"></div>
                             <div class="Action Action-Down"></div>
@@ -85,7 +85,10 @@
 
                     <script>
                         window.addEventListener('load', function() {
-                            var numeric2 = new intell.ctrl.Numeric(document.getElementById('numeric2'));
+                            var numeric2 = window.numeric2 = new intell.ctrl.Numeric(document.getElementById('numeric2'));
+
+                            numeric2.max = 10;
+                            numeric2.min 0;
                         })
 
                     </script>

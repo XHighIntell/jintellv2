@@ -1,0 +1,305 @@
+{
+    "_": "class",
+    "title": "Menu Class",
+    "description": "Represents a menu control that allows the user to select a single item from a list",
+
+    "constructors": [
+        {
+            "title": "constructor()",
+            "description": "Initializes a new instance of the Menu class from element.",
+            "remarks": "Without a specified element, a new element will be created with the default template."
+        },
+        {
+            "title": "constructor(element: HTMLElement)",
+            "description": "Initializes a new instance of the Menu class from element.",
+            "parameters": [
+                {
+                    "name": "element",
+                    "type": "HTMLElement",
+                    "description": "The element for which to create Menu."
+                }
+            ]
+        }
+    ],
+    "properties": [
+        {
+            "title": "readonly element: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the root element of control.",
+            "value": {
+                "description": "Returns the root element of menu."
+            }
+        },
+        {
+            "title": "readonly elementChildren: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the children element of the menu",
+            "value": {
+                "description": "Returns the children element of menu."
+            }
+        },
+        {
+            "title": "readonly elementLabel: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the label element of the menu.",
+            "value": {
+                "description": "Returns the label element of menu."
+            }
+        },
+        {
+            "title": "readonly elementIcon: HTMLElement",
+            "type": "HTMLElement",
+            "description": " Gets the icon element of menu.",
+            "value": {
+                "description": "Returns the icon element of menu."
+            }
+        },
+        {
+            "title": "readonly elementName: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the name element of menu.",
+            "value": {
+                "description": "Return the name element of menu."
+            }
+        },
+        {
+            "title": "readonly elementIntersect: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the intersect element of menu.",
+            "value": {
+                "description": "Return the intersect element of menu."
+            }
+        },
+        {
+            "title": "readonly elementMenuAbstract: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the abstract menu element of menu.",
+            "value": {
+                "description": "Return the menu abstract element of menu."
+            }
+        },
+        {
+            "title": "readonly parent: Menu",
+            "type": "Menu",
+            "href": "?q=intell.ctrl.Menu",
+            "description": "Gets the parent of the menu.",
+            "value": {
+                "description": "The parent of the root menut is <mark>null</mark>"
+            }
+        },
+        {
+            "title": "readonly children: Menu[]",
+            "type": "Menu[]",
+            "href": "?q=intell.ctrl.Menu",
+            "description": "Gets the children of the menu.",
+            "value": {
+                "description": "The return value is a clone array, it is safe to modify or use on some where"
+            }
+        },
+        {
+            "title": "icon: string",
+            "type": "string",
+            "description": "Gets or sets textContent of the icon element."
+        },
+        {
+            "title": "name: string",
+            "type": "string",
+            "description": "Gets or sets textContent of the name element."
+        },
+        {
+            "title": "rootLocations: number[]",
+            "type": "number[]",
+            "description": "Gets or sets locations indicating where the children of the root menu are placed when displayed.",
+            "value": {
+                "description": "The default value is <mark>[9, 1]</mark>"
+            }
+        },
+        {
+            "title": "rootOption: ShowAtOption",
+            "type": "ShowAtOption",
+            "href": "?q=intell.ctrl.ShowAtOption",
+            "description": "Gets or sets option indicating where the children of the root menu are placed when displayed.",
+            "value": {
+                "description": "The default value is <mark>{ container_mode:\"auto\", space: -1 }</mark>"
+            }
+        },
+        {
+            "title": "rootFadeOutTime: number",
+            "type": "number",
+            "description": "Gets or sets fading out duration for the children element of the root menu.",
+            "value": {
+                "description": "The default value is <mark>0</mark>"
+            }
+        },
+
+        {
+            "title": "childLocations: number[]",
+            "type": "number[]",
+            "description": "Gets or sets locations indicating where the children of the child menu are placed when displayed.",
+            "value": {
+                "description": "The default value is <mark>[4, 12]</mark>"
+            }
+        },
+        {
+            "title": "childOption: ShowAtOption",
+            "type": "ShowAtOption",
+            "href": "?q=intell.ctrl.ShowAtOption",
+            "description": "Gets or sets option indicating where the children of the child menu are placed when displayed.",
+            "value": {
+                "description": "The default value is <mark>{ container_mode:\"auto\", margin: 0 }</mark>"
+            }
+        },
+        {
+            "title": "childFadeOutTime: number",
+            "type": "number",
+            "description": "Gets or sets fading out duration for the children element of the child menu.",
+            "value": {
+                "description": "The default value is <mark>500</mark>"
+            }
+        },
+
+        {
+            "title": "active: boolean",
+            "type": "boolean",
+            "description": "Gets or sets the active state of this menu.",
+            "value": {
+                "description": "the default is <mark>86399999</mark> (23:59:59.999)."
+            }
+        },
+        {
+            "title": "childrenVisible: boolean",
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether its child are displayed.",
+            "value": {
+                "description": "Return <mark>false</mark> when children are in the fading process."
+            }
+        }
+    ],
+    "methods": [
+        {
+            "title": "getRoot(): Menu",
+            "description": "Gets the root menu of its or itself if it is root menu."
+        },
+        {
+            "title": "getHighestActive(): Menu",
+            "description": "Gets the current active menu at highest level.",
+            "returns": "The active menu at the highest level.",
+            "remarks": "The function checks itself before children."
+        },
+        {
+            "title": "add",
+            "description": "Adds a new Menu, to the end of the current menu.",
+            "overloads": [
+                {
+                    "title": "add(name: string): Menu",
+                    "description": "Adds a new Menu, to the end of the current menu, with a specified caption.",
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "description": "The text content of name element of the <mark>Menu</mark>."
+                        }
+                    ],
+                    "returns": {
+                        "type": "Menu",
+                        "href": "?q=intell.ctrl.Menu",
+                        "description": "Returns the <a href='?q=intell.ctrl.Menu'>Menu</a> that represents the menu being added."
+                    }
+                },
+                {
+                    "title": "add(menu: Menu): void",
+                    "description": "Adds a previously created Menu to the end of the current menu.",
+                    "parameters": [
+                        {
+                            "name": "menu",
+                            "type": "Menu",
+                            "href": "?q=intell.ctrl.Menu",
+                            "description": "The <a href='?q=intell.ctrl.Menu'>Menu</a> to add."
+                        }
+                    ]
+                },
+                {
+                    "title": "add(menu: MenuOption): Menu",
+                    "description": "Adds a new Menu, to the end of the current menu, with a specified option.",
+                    "parameters": [
+                        {
+                            "name": "menu",
+                            "type": "MenuOption",
+                            "href": "?q=intell.ctrl.MenuOption",
+                            "description": "The option for which to create a menu."
+                        }
+                    ],
+                    "returns": {
+                        "type": "Menu",
+                        "href": "?q=intell.ctrl.Menu",
+                        "description": "Returns the <a href='?q=intell.ctrl.Menu'>Menu</a> that represents the menu being added."
+                    }
+                }
+            ]
+
+        },
+        {
+            "title": "addSeparator(): HTMLElement",
+            "description": "Gets the root menu of its or itself if it is root menu.",
+            "returns": {
+                "type": "HTMLElement",
+                "description": "Returns the new HTMLElement of separator being added."
+            }
+        },
+        {
+            "title": "remove(): void",
+            "description": "Removes the menu from its parent menu."
+        },
+        {
+            "title": "removeChildren(): void",
+            "description": "Removes the specified menu from the children."
+        },
+        {
+            "title": "clear(): void",
+            "description": "Removes all child from the list."
+        },
+        {
+            "title": "showChildrenAt",
+            "description": "Removes all child from the list.",
+            "overloads": [
+                {
+                    "title": "showChildrenAt(target: HTMLElement, locations?: number[], option?: ShowAtOption): void",
+                    "description": "Shows children at a specified target element.",
+                    "parameters": [
+                        { "name": "target", "type": "HTMLElement", "description": "The target element." },
+                        { "name": "locations", "type": "number[]", "description": "The locations of children." },
+                        { "name": "option", "type": "ShowAtOption", "description": "?." }
+                    ]
+                },
+                {
+                    "title": "showChildrenAt(coords: CoordinatesLike, locations?: number[], option?: ShowAtOption): void",
+                    "description": "Shows children at a specified target element.",
+                    "parameters": [
+                        { "name": "coords", "type": "CoordinatesLike", "description": "The target element." },
+                        { "name": "locations", "type": "number[]", "description": "The locations of children." },
+                        { "name": "option", "type": "ShowAtOption", "description": "?." }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "hideChildren(): void",
+            "description": "??."
+        },
+        {
+            "title": "hideChildrenImmediately(): void",
+            "description": "??."
+        }
+    ],
+    "events": [
+        {
+            "title": "menuclick",
+            "description": "Occurs when the menu is clicked. The events does bubbles."
+        }
+    ],
+    "static_methods": [
+
+    ],
+
+    "examples": "article/intell.ctrl/Menu_examples.html"
+}

@@ -198,6 +198,8 @@ var jobs = [
             'intell.ctrl/Numeric.js',
             'intell.ctrl/TargetPopup.js',
             'intell.ctrl/Time.js',
+            'intell.ctrl/Menu.js',
+            'intell.ctrl/MenuBar.js',
             'String.prototype.js',
         ],
         dest: {
@@ -218,6 +220,8 @@ var jobs = [
             'intell.ctrl/Numeric.d.ts',
             'intell.ctrl/TargetPopup.d.ts',
             'intell.ctrl/Time.d.ts',
+            'intell.ctrl/Menu.d.ts',
+            'intell.ctrl/MenuBar.d.ts',
             'String.prototype.d.ts',
         ],
         dest: {

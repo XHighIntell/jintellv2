@@ -1,4 +1,15 @@
-﻿hljs.registerLanguage('dts', function(a) {
+﻿hljs.registerLanguage('dts-type', function(a) {
+    return {
+        case_insensitive: true,
+        contains: [
+            { scope: 'class built_in', begin: /(string|number|object|any|boolean)/ }, // standalone type name
+            { scope: 'class', begin: /\w+$/ }, // "namespace1.namespace2.(class)"
+            { scope: 'class', begin: /\w+(?= *\[\])/ } // class[]
+        ]
+    }
+});
+
+hljs.registerLanguage('dts', function(a) {
     return {
         case_insensitive: true, // language is case-insensitive
         contains: [
@@ -19,31 +30,12 @@
                 begin: /(?<=: *)(string|number|object|any|boolean)/,
             },
             {
-                scope: 'class',
-                begin: /(?<=: *)(\w+)/,  //  : class
-            },
-            {
-                scope: 'class built_in', // standalone name
-                begin: /(string|number|object|any)/,
-            },
-            //{
-            //    scope: 'function', // fun()
-            //    begin: /\w+(?= *\()/,
-            //},
-            {
                 scope: 'namespace',          // namespace standalone (namespace1).(namespace2).class end of string
                 begin: /\w+(?=\.\w+)/,
             },
+            { scope: 'class', begin: /(?<=: *)\w+/ }, //  : class
+            { scope: 'class', begin: /(?<=\.)\w+$/ },
 
-
-            {
-                scope: 'class',          // class[]
-                begin: /\w+(?= *\[\])/,
-            },
-            {
-                scope: 'class',          // "namespace1.namespace2.(class)"
-                begin: /\w+$/,
-            },
             {
                 scope: 'class',          // <T> < T >
                 begin: /(?<=< *)\w+(?= *>)/,
@@ -78,7 +70,7 @@
         $article.append(docs.generateGroupOverloads(article.overloads));
         $article.append(docs._generateRemarks(article.remarks));
         $article.append(await docs._generateExamples(article.examples));
-        
+
 
         return $article[0];
     }
@@ -89,14 +81,14 @@
     
 </div>`);
         var $title = $article.find('.title'); $title.html(article.title);
-        
+
         if (article.type) {
             var $type = $('<a class="type" data-code="dts">').append(article.type);
             $type.attr('href', article.href);
             $article.append($type);
         }
         if (article.description) $article.append($('<div class="description">').append(article.description));
-        
+
 
         $article.append(docs._generateRemarks(article.remarks));
         $article.append(await docs._generateExamples(article.examples));
@@ -108,7 +100,7 @@
         if (items == null || items.length == 0) return;
 
         var $group = $(
-`<div class="group-members constructors">
+            `<div class="group-members constructors">
     <div class="title">Constructors</div>
 </div>`);
 
@@ -132,7 +124,7 @@
         if (items == null || items.length == 0) return;
 
         var $group = $(
-`<div class="group-members properties">
+            `<div class="group-members properties">
     <div class="title">Properties</div>
 </div>`);
 
@@ -194,7 +186,7 @@
 
     docs.generateItemConstructor = function(item) {
         var $item = $(
-`<div class="item-member item-method item-constructor">
+            `<div class="item-member item-method item-constructor">
     <div class="label">
         <div class="icon method"></div>
         <div class="title" data-code="dts"></div>
@@ -214,7 +206,7 @@
     }
     docs.generateItemField = function(item) {
         var $item = $(
-`<div class="item-member item-field">
+            `<div class="item-member item-field">
     <div class="label">
         <div class="icon field"></div>
         <div class="title" data-code="dts"></div>
@@ -228,7 +220,7 @@
         $title.html(item.title);
 
         if (item.type) {
-            var $type = $('<a class="type" data-code="dts">').append(item.type);
+            var $type = $('<a class="type" data-code="dts-type">').append(item.type);
             $type.attr('href', item.href);
             $content.append($type);
         }
@@ -240,7 +232,7 @@
     }
     docs.generateItemProperty = function(item) {
         var $item = $(
-`<div class="item-member item-property">
+            `<div class="item-member item-property">
     <div class="label">
         <div class="icon property"></div>
         <div class="title" data-code="dts"></div>
@@ -251,7 +243,7 @@
         var $content = $item.find('.content');
 
         if (item.type) {
-            var $type = $('<a class="type" data-code="dts">').append(item.type);
+            var $type = $('<a class="type" data-code="dts-type">').append(item.type);
             $type.attr('href', item.href);
             $content.append($type);
         }
@@ -285,7 +277,7 @@
             `<div class="item-member item-method">
     <div class="label">
         <div class="icon method"></div>
-        <div class="title"></div>
+        <div class="title" data-code="dts"></div>
     </div>
     <div class="content"></div>
 </div>`);
@@ -294,7 +286,13 @@
         var $content = $item.find('.content');
 
         $content.append($('<div class="description">').append(item.description));
-        $content.append(docs.generateGroupOverloads(item.overloads));
+
+        if (item.overloads != null) $content.append(docs.generateGroupOverloads(item.overloads));
+        else {
+            $content.append(docs._generateParameters(item.parameters));
+            $content.append(docs._generateReturns(item.returns));
+        }
+
         $content.append(docs._generateRemarks(item.remarks));
 
         return $item[0];
@@ -332,7 +330,7 @@
             var $param = $(`<div class="parameter">
     <div class="info">
         <div class="name"></div>
-        <a class="type" data-code="dts"></a>
+        <a class="type" data-code="dts-type"></a>
     </div>
     <div class="description"></div>
 </div>`).appendTo($element);
@@ -359,13 +357,13 @@
     <div class="title">Returns</div>
 </div>`);
 
-        if (typeof returns == "string") 
+        if (typeof returns == "string")
             $element.append($('<div class="description">').append(returns));
         else {
-            $element.append($('<a class="type" data-code="dts">').append(returns.type).attr('href', returns.href));
+            $element.append($('<a class="type" data-code="dts-type">').append(returns.type).attr('href', returns.href));
             $element.append($('<div class="description">').append(returns.description));
         }
-        
+
         return $element[0];
     }
     docs._generateRemarks = function(remarks) {
@@ -468,7 +466,7 @@
     }
     ui.open = async function(id) {
         //var element = articles[id];
-        
+
 
         $tree.find('.item-member').removeClass('active');
         $tree.find('[data-article="' + id + '"]').addClass('active');
@@ -478,10 +476,10 @@
         $loading.show().addClass('active');
         var element = await ui._getArticleElement(id);
         $loading.hide().removeClass('active');
-        
+
         $articles.append(element);
 
-        
+
         return element;
     }
     ui.init = function() {
@@ -510,7 +508,7 @@
 !function() {
     var demos = docs.demos; demos = {}; docs.demos = demos;
 
-   
+
     demos.trimIndents = function(code) {
 
         var lines = code.split('\n');
@@ -525,10 +523,10 @@
 
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
-            if (line.startsWith(s) == true) 
+            if (line.startsWith(s) == true)
                 lines[i] = line.slice(min)
         }
-        
+
 
         return lines.join('\n').trim();
     }
@@ -547,7 +545,7 @@
             $(element).on('click', '.label', function() {
                 $(this).parent().toggleClass('expaned');
             });
-            
+
             hljs.highlightElement($code[0]);
         });
 

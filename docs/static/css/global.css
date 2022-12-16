@@ -27,6 +27,9 @@ a:hover{color:#0058ff}
 .master-header>.Content>.links>.link:hover{background:rgba(255,255,255,.2)}
 
 /* HLJS Share */
+.language-dts-type .hljs-class{color:#2b91af}
+.language-dts-type .hljs-class.built_in{color:#0000ff}
+
 .language-dts .hljs-keyword{color:#0000ff}
 .language-dts .hljs-attr{color:rgb(31,55,127)}
 .language-dts .hljs-built_in{color:#0000ff}
@@ -34,6 +37,7 @@ a:hover{color:#0058ff}
 .language-dts .hljs-class{color:#2b91af}
 .language-dts .hljs-class.built_in{color:#0000ff}
 .language-dts .hljs-namespace{color:#2b91af}
+.language-dts .hljs-function{color:rgb(31,55,127)}
 
 .language-xml{}
 .language-xml .hljs-tag{color:blue}
@@ -101,11 +105,17 @@ a:hover{color:#0058ff}
 .documents-section>.Content>.docs-content .article .item-member>.label>.title{}
 .documents-section>.Content>.docs-content .article .item-member>.label:hover{text-decoration:underline}
 .documents-section>.Content>.docs-content .article .item-member>.content{display:none;margin:.5em 0 1.4em 1.25em}
+.documents-section>.Content>.docs-content .article .item-member>.content .description a{color:#0065b3;text-decoration:none}
+.documents-section>.Content>.docs-content .article .item-member>.content .description a:hover{text-decoration:underline}
+.documents-section>.Content>.docs-content .article .item-member>.content a.type[href] .hljs-class{color:#0065b3}
+.documents-section>.Content>.docs-content .article .item-member>.content a.type[href]:hover .hljs-class{text-decoration:underline}
+
+
 .documents-section>.Content>.docs-content .article .item-member.expaned>.content{display:block}
 
 .documents-section>.Content>.docs-content .article .item-method{}
-.documents-section>.Content>.docs-content .article .item-method>.label>.title{color:#2e74b5}
-.documents-section>.Content>.docs-content .article .item-method .overloads>.title{margin:20px 0 6px 0;font-size:max(0.9375rem,min(11.05265px + .82237vw,1.25rem));font-weight:600}        
+.documents-section>.Content>.docs-content .article .item-method>.label>.title{}
+.documents-section>.Content>.docs-content .article .item-method .overloads>.title{margin:10px 0 6px 0;font-size:max(0.9375rem,min(11.05265px + .82237vw,1.25rem));font-weight:600}
 
 .documents-section>.Content>.docs-content .article .item-field{}
 .documents-section>.Content>.docs-content .article .item-field .content>.type{padding:1px 6px;border-radius:2px;text-decoration:none;background:#00000012;color:unset}
@@ -114,8 +124,6 @@ a:hover{color:#0058ff}
 .documents-section>.Content>.docs-content .article .item-property{}
 .documents-section>.Content>.docs-content .article .item-property .content>.type{padding:1px 6px;border-radius:2px;text-decoration:none;background:#00000012;color:unset}
 .documents-section>.Content>.docs-content .article .item-property .property-value>.title{margin:20px 0 6px 0;font-size:max(0.9375rem,min(11.05265px + .82237vw,1.25rem));font-weight:600}
-.documents-section>.Content>.docs-content .article .item-property .property-value>.type{text-decoration:none;color:unset}
-.documents-section>.Content>.docs-content .article .item-property .property-value>.type:hover{text-decoration:underline}
 .documents-section>.Content>.docs-content .article .item-property .property-value>.description{margin-top:2px}
 
 .documents-section>.Content>.docs-content .article .item-event{}
@@ -135,11 +143,13 @@ a:hover{color:#0058ff}
 .documents-section>.Content>.docs-content .article .content .parameters>.parameter>.info{display:flex}
 .documents-section>.Content>.docs-content .article .content .parameters>.parameter>.info>.name{padding:0 6px 2px;background:#f2f2f2;font-weight:600}
 .documents-section>.Content>.docs-content .article .content .parameters>.parameter>.info>.type{margin-left:12px;text-decoration:none;color:unset}
+
 .documents-section>.Content>.docs-content .article .content .parameters>.parameter>.description{margin-top:2px}
 .documents-section>.Content>.docs-content .article .content .parameters>.parameter:last-child{margin-bottom:0}
 
 .documents-section>.Content>.docs-content .article .returns{}
-.documents-section>.Content>.docs-content .article .returns>.title{margin:32px 0 12px 0;font-size:max(1.3125rem,min(13.15265px + 0.978621vw,1.75rem));font-weight:600}
+.documents-section>.Content>.docs-content .article .returns>.title{margin:20px 0 6px 0;font-size:max(1.3125rem,min(13.15265px + 0.978621vw,1.75rem));font-weight:600}
+.documents-section>.Content>.docs-content .article .returns>.type{text-decoration:none}
 
 .documents-section>.Content>.docs-content .article .remarks{}
 .documents-section>.Content>.docs-content .article .remarks>.title{margin:32px 0 12px 0;font-size:max(1.3125rem,min(13.15265px + 0.978621vw,1.75rem));font-weight:600}

@@ -34,7 +34,11 @@ declare namespace intell.ctrl {
     /** Returns the first element where the predicate is true while traversing up through its ancestors in the DOM tree. */
     export function findParentElement(element: HTMLElement, predicate: (value: HTMLElement) => boolean): HTMLElement | undefined;
 
-    
+    /** Returns the first element where the predicate is true while traversing up through itself and its ancestors in the DOM tree. */
+    export function findClosestElement(element: HTMLElement, predicate: (value: HTMLElement) => boolean): HTMLElement | undefined;
+
+    /** Returns a third DOMRect that represents the intersection of two other DOMRect. If there is no intersection, null is returned. */
+    export function rectIntersect(a: DOMRect, b: DOMRect): DOMRect;
 
     //export function startClass(element: HTMLElement, timeout: number, classname: string): Promise<void>;
     //export function stopClass(element: HTMLElement, classname: string): void;
@@ -52,7 +56,7 @@ declare namespace intell.ctrl {
         /** The rectangle popup must be placed inside specified rectangle. */
         container?: DOMRect;
 
-        /** The minimum distance between popup and insideRect. */
+        /** The minimum distance between popup and container. */
         margin?: number;
 
         /** The minimum distance between popup and target. */

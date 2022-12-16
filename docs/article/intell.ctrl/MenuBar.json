@@ -1,0 +1,104 @@
+{
+    "_": "class",
+    "title": "MenuBar Class",
+    "description": "Represents a bar control that contains menus.",
+
+    "constructors": [
+        {
+            "title": "constructor(element: HTMLElement)",
+            "description": "Initializes a new instance of the MenuBar class from element.",
+            "parameters": [
+                {
+                    "name": "element",
+                    "type": "HTMLElement",
+                    "description": "The element for which to create MenuBar."
+                }
+            ]
+        }
+    ],
+    "properties": [
+        {
+            "title": "readonly element: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the root element of control.",
+            "value": {
+                "description": "Returns the root element of menu."
+            }
+        },
+        {
+            "title": "readonly elementMenuAbstract: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the abstract element of the menu that will be used to clone when creating a new Menu.",
+            "value": {
+                "description": "Returns abstract element of the menu."
+            }
+        },
+        {
+            "title": "readonly children: Menu[]",
+            "type": "Menu[]",
+            "href": "?q=intell.ctrl.Menu",
+            "description": "Gets the children of the menu.",
+            "value": {
+                "description": "The return value is a clone array, it is safe to modify or use on some where"
+            }
+        }
+    ],
+    "methods": [
+        {
+            "title": "add",
+            "description": "Adds a new Menu, to the end of the menu bar.",
+            "overloads": [
+                {
+                    "title": "add(name: string): Menu",
+                    "description": "Adds a new Menu, to the end of the current menu bar, with a specified caption.",
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "description": "The text content of name element of the <mark>Menu</mark>."
+                        }
+                    ],
+                    "returns": {
+                        "type": "Menu",
+                        "href": "?q=intell.ctrl.Menu",
+                        "description": "Returns the <a href='?q=intell.ctrl.Menu'>Menu</a> that represents the menu being added."
+                    }
+                },
+                {
+                    "title": "add(menu: Menu): void",
+                    "description": "Adds a previously created Menu to the end of the menu bar.",
+                    "parameters": [
+                        {
+                            "name": "menu",
+                            "type": "Menu",
+                            "href": "?q=intell.ctrl.Menu",
+                            "description": "The <a href='?q=intell.ctrl.Menu'>Menu</a> to add."
+                        }
+                    ]
+                },
+                {
+                    "title": "add(menu: MenuOption): Menu",
+                    "description": "Adds a new Menu, to the end of the menu bar, with a specified option.",
+                    "parameters": [
+                        {
+                            "name": "menu",
+                            "type": "MenuOption",
+                            "href": "?q=intell.ctrl.MenuOption",
+                            "description": "The option for which to create a menu."
+                        }
+                    ],
+                    "returns": {
+                        "type": "Menu",
+                        "href": "?q=intell.ctrl.Menu",
+                        "description": "Returns the <a href='?q=intell.ctrl.Menu'>Menu</a> that represents the menu being added."
+                    }
+                }
+            ]
+
+        }
+    ],
+    "events": [],
+    "static_methods": [],
+
+    "examples": "article/intell.ctrl/Menu_examples.html"
+}

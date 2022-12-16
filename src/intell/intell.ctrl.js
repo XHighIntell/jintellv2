@@ -228,8 +228,17 @@
                     let height = Math.max(elementContainer.clientHeight, elementContainer.offsetHeight, elementContainer.scrollHeight) - 1;
 
                     let offset = $(elementContainer).offset();
+                    let scrollbar_right_size = elementContainer.offsetWidth - elementContainer.clientWidth;
+                    let scrollbar_bottom_size = elementContainer.offsetHeight - elementContainer.clientHeight;
 
-                    clone.container = new DOMRect(offset.left, offset.top, width, height);
+                    // notes: <html> <body> tag cannot obtain a scroll bar (the browser scroll bar stays outside the border of the root element).
+                    // => This may need more implementation.
+                    if (elementContainer == document.documentElement || elementContainer == document.body) {
+                        scrollbar_right_size = 0;
+                        scrollbar_bottom_size = 0;
+                    }
+
+                    clone.container = new DOMRect(offset.left, offset.top, width - scrollbar_right_size, height - scrollbar_bottom_size);
 
                     option = clone;
                 }
@@ -277,9 +286,26 @@
             target = target.parentElement;
         }
     }
+    ctrl.findClosestElement = function(element, predicate) {
+        var target = element;
 
+        while (target) {
+            if (predicate(target) == true) return target;
 
-    
+            target = target.parentElement;
+        }
+    }
+
+    ctrl.rectIntersect = function(a, b) {
+        var x1 = Math.max(a.x, b.x);
+        var x2 = Math.min(a.x + a.width, b.x + b.width);
+        var y1 = Math.max(a.y, b.y);
+        var y2 = Math.min(a.y + a.height, b.y + b.height);
+
+        if (x2 >= x1 && y2 >= y1) return new DOMRect(x1, y1, x2 - x1, y2 - y1);
+
+        return null;
+    }
     //!function() {
     //    /** @type intell.ctrl.StartHideProcess[] */
     //    var processes = [];

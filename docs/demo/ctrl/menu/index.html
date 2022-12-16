@@ -1,0 +1,364 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jintell Demo</title>
+    <link href="../../../static/css/global.css" rel="stylesheet" />
+
+    <script src="../../../static/lib/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../../../static/lib/intell/intell.js"></script>
+    <script src="../../../static/lib/hljs/highlight.min.js"></script>
+    <script src="../../../static/js/docs.js"></script>
+</head>
+<body class="VS2020">
+    <div class="Container master-header">
+        <div class="Content">
+            <a href="../../../" class="title">Menu - Demo - jintellv2</a>
+            <div class="spring"></div>
+            <div class="links">
+                <a class="link" title="Document" href="../../../document.html">
+                    <div class="icon"></div>
+                </a>
+                <a class="link" title="Source - Github" href="https://github.com/xhighintell/jintellv2">
+                    <div class="icon"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="Container" style="margin:20px 0px">
+        <div class="Content">
+            <style>
+                .themes{display:flex}
+                .themes .action{margin:0 1px;padding:2px 4px;border:1px solid #0000006b;cursor:pointer}
+                .themes .action:hover{}
+                .themes .action.ACTIVE{background:#005287;color:#fff}
+            </style>
+            <div class="themes">
+                <div class="action" data-theme="VS2017">VS2017</div>
+                <div class="action ACTIVE" data-theme="VS2020">VS2020</div>
+                <div class="action" data-theme="GoogleChrome">Google Chrome</div>
+                <div class="action" data-theme="DarkBlue">Dark Blue</div>
+            </div>
+            <script>
+                $('.themes').on('click', '.action', function() {
+                    $('.themes .action').removeClass('ACTIVE');
+                    this.classList.add('ACTIVE');
+                    document.body.classList.remove('VS2017', 'VS2020', 'GoogleChrome', 'DarkBlue');
+                    document.body.classList.add(this.getAttribute('data-theme'));
+                });
+
+            </script>
+        </div>
+    </div>
+
+    <div class="demos-section Container">
+        <div class="Content">
+            <div class="example">
+                <div class="title">Object-oriented</div>
+                <div class="description"></div>
+
+                <div data-code-id="Example1">
+                    
+                    <div id="menu1" class="X-Menu" tabindex="0"></div>
+                    
+
+                    <style>
+                        #menu1{display:inline-flex;background:#d6dbe9}
+
+                        /* VS2017 */
+                        .VS2017 .X-Menu>.Children{position:absolute;display:none;flex-direction:column;padding:2px;border:1px solid #9ba7b7;background:#eaf0ff;z-index:99}
+                        .VS2017 .X-Menu>.Children::before{content:"";position:absolute;left:0;top:0;bottom:0;width:calc(22px + 1em);background:#f2f4fe;z-index:-1}
+                        .VS2017 .X-Menu>.Children::after{content:"";position:absolute;left:calc(22px + 1em);top:2px;bottom:2px;border-right:1px solid #bdbdbd;pointer-events:none}
+                        .VS2017 .X-Menu>.Children .X-Separator{margin-left:calc(20px + 1em);padding:1px 0 1px 5px}
+                        .VS2017 .X-Menu>.Children .X-Separator::before{content:"";display:block;height:1px;background:#bec3cb}
+
+                        .VS2017 .X-Menu.ROOT{outline:none;font-size:.8em}
+                        .VS2017 .X-Menu.ROOT>.Label{display:flex;align-items:center;padding:0 5px;border:1px solid transparent;cursor:pointer}
+                        .VS2017 .X-Menu.ROOT>.Label>.Icon{display:none}
+                        .VS2017 .X-Menu.ROOT>.Children{}
+                        .VS2017 .X-Menu.ROOT>.Children>.Intersect{position:absolute;z-index:99}
+                        .VS2017 .X-Menu.ROOT>.Children>.Intersect::before{content:"";position:absolute;left:1px;top:0;right:1px;bottom:0;background:#eaf0ff}
+                        .VS2017 .X-Menu.ROOT:hover>.Label{border:1px solid #e5c365;background:#fdf4bf}
+                        .VS2017 .X-Menu.ROOT.ACTIVE>.Label{border:1px solid #9ba7b7;background:#eaf0ff}                    
+
+                        .VS2017 .X-Menu:not(.ROOT){}
+                        .VS2017 .X-Menu:not(.ROOT)>.Label{display:flex;align-items:center;cursor:pointer}
+                        .VS2017 .X-Menu:not(.ROOT)>.Label>.Icon{min-width:1em;padding:0 10px;text-align:center;font-family:fontello}
+                        .VS2017 .X-Menu:not(.ROOT)>.Label>.Name{flex:1 1 auto;padding:3px 40px 3px 8px;white-space:nowrap}
+                        .VS2017 .X-Menu:not(.ROOT)>.Children>.Intersect{display:none!important}
+                        .VS2017 .X-Menu:not(.ROOT).HAS-CHILDREN>.Label::after{content:"";padding:0 .3em 0 .5em;font-family:fontello}
+                        .VS2017 .X-Menu:not(.ROOT).ACTIVE>.Label{background:#fdf4bf}
+
+                        /* VS2020 */
+                        .VS2020 .X-Menu>.Children{position:absolute;display:none;flex-direction:column;padding:2px;border:1px solid #9ba7b7;background:#e9eeff;z-index:99}
+                        .VS2020 .X-Menu>.Children .X-Separator{margin-left:calc(8px + 1em);padding:1px 0 1px 5px}
+                        .VS2020 .X-Menu>.Children .X-Separator::before{content:"";display:block;height:1px;background:#bec3cb}
+                        .VS2020 .X-Menu.ROOT{outline:none;font-size:.8em}
+                        .VS2020 .X-Menu.ROOT>.Label{display:flex;align-items:center;padding:0 5px;border:1px solid transparent;cursor:pointer}
+                        .VS2020 .X-Menu.ROOT>.Label>.Icon{display:none}
+                        .VS2020 .X-Menu.ROOT>.Children{}
+                        .VS2020 .X-Menu.ROOT>.Children>.Intersect{position:absolute;z-index:99}
+                        .VS2020 .X-Menu.ROOT>.Children>.Intersect::before{content:"";position:absolute;left:1px;top:0;right:1px;bottom:0;background:#eaf0ff}
+                        .VS2020 .X-Menu.ROOT:hover>.Label{border:1px solid rgb(93,107,153);background:rgb(236,244,255)}
+                        .VS2020 .X-Menu.ROOT.ACTIVE>.Label{border:1px solid rgb(148,166,202);background:rgb(233,238,255)}
+                        .VS2020 .X-Menu:not(.ROOT){}
+                        .VS2020 .X-Menu:not(.ROOT)>.Label{display:flex;align-items:center;cursor:pointer}
+                        .VS2020 .X-Menu:not(.ROOT)>.Label>.Icon{min-width:1em;padding:0 4px 0 8px;text-align:center;font-family:fontello}
+                        .VS2020 .X-Menu:not(.ROOT)>.Label>.Name{flex:1 1 auto;padding:3px 40px 3px 3px;white-space:nowrap}
+                        .VS2020 .X-Menu:not(.ROOT)>.Children>.Intersect{display:none!important}
+                        .VS2020 .X-Menu:not(.ROOT).HAS-CHILDREN>.Label::after{content:"";padding:0 .3em 0 .5em;font-family:fontello}
+                        .VS2020 .X-Menu:not(.ROOT).ACTIVE>.Label{background:rgb(177,197,255)}
+
+                        /* Google Chrome */
+                        .GoogleChrome .X-Menu{}
+                        
+                        .GoogleChrome .X-Menu>.Children{position:absolute;display:none;flex-direction:column;padding:2px;border:1px solid #dadada;background:#fff;z-index:99}
+                        .GoogleChrome .X-Menu.ACTIVE>.Label{background:#eee}
+                        
+                        .GoogleChrome .X-Menu.ROOT{outline:none;font-size:.8em;}
+                        .GoogleChrome .X-Menu.ROOT>.Label{border-radius:1px;cursor:pointer}
+                        .GoogleChrome .X-Menu.ROOT>.Label>.Name{padding:0 5px;}
+                        .GoogleChrome .X-Menu.ROOT:hover>.Label{background:#eee}
+                        .GoogleChrome .X-Menu.ROOT.ACTIVE>.Label{background:#eee}
+
+                        .GoogleChrome .X-Menu:not(.ROOT){margin:1px 0}
+                        .GoogleChrome .X-Menu:not(.ROOT)>.Label{display:flex;align-items:center;border-radius:4px;cursor:pointer}
+                        .GoogleChrome .X-Menu:not(.ROOT)>.Label>.Icon{min-width:1em;padding:0 4px 0 8px;text-align:center;font-family:fontello}
+                        .GoogleChrome .X-Menu:not(.ROOT)>.Label>.Name{flex:1 1 auto;padding:3px 40px 3px 2px;white-space:nowrap}
+                        .GoogleChrome .X-Menu:not(.ROOT)>.Children>.Intersect{display:none!important}
+                        .GoogleChrome .X-Menu:not(.ROOT).HAS-CHILDREN>.Label::after{content:"";padding:0 .3em 0 .5em;font-family:fontello}
+
+                        .GoogleChrome #menu1{background:unset}
+                        .GoogleChrome #menu2{background:unset}
+                        .GoogleChrome #menubar1{background:unset}
+
+                        /* Dark Blue */
+                        .DarkBlue .X-Menu{}
+                        
+                        .DarkBlue .X-Menu>.Children{position:absolute;display:none;flex-direction:column;padding:2px;border:1px solid #04789f;background:#001629;z-index:99}
+                        .DarkBlue .X-Menu.ACTIVE>.Label{background:#eee}
+
+                        .DarkBlue .X-Menu.ROOT{outline:none;font-size:.8em;color:#fff}
+                        .DarkBlue .X-Menu.ROOT>.Label{cursor:pointer}
+                        .DarkBlue .X-Menu.ROOT>.Label>.Name{padding:0 5px;}
+                        .DarkBlue .X-Menu.ROOT:hover>.Label{background:#04789f}
+                        .DarkBlue .X-Menu.ROOT.ACTIVE>.Label{background:#004886}
+
+                        .DarkBlue .X-Menu:not(.ROOT){margin:1px 0}
+                        .DarkBlue .X-Menu:not(.ROOT)>.Label{display:flex;align-items:center;cursor:pointer}
+                        .DarkBlue .X-Menu:not(.ROOT)>.Label>.Icon{min-width:1em;padding:0 4px 0 8px;text-align:center;font-family:fontello}
+                        .DarkBlue .X-Menu:not(.ROOT)>.Label>.Name{flex:1 1 auto;padding:3px 40px 3px 2px;white-space:nowrap}
+                        .DarkBlue .X-Menu:not(.ROOT)>.Children>.Intersect{display:none!important}
+                        .DarkBlue .X-Menu:not(.ROOT).HAS-CHILDREN>.Label::after{content:"";padding:0 .3em 0 .5em;font-family:fontello}
+                        .DarkBlue .X-Menu:not(.ROOT).ACTIVE>.Label{background:#04789f}
+
+                        .DarkBlue #menu1{background:#032041}
+                        .DarkBlue #menu2{background:#032041}
+                        .DarkBlue #menubar1{background:#032041}
+
+                        
+                    </style>
+
+                    <script>
+                        window.addEventListener('load', function() {
+
+                            var menu1 = window.menu1 = new intell.ctrl.Menu(document.getElementById('menu1'));
+                            menu1.name = "FILE";
+
+                            var fileNew = menu1.add("New");
+                            fileNew.add("Project...");
+                            fileNew.add("Repository...");
+                            fileNew.add("File...");
+
+                            var fileOpen = menu1.add("Open");
+                            fileOpen.add("Project/Solution...");
+                            fileOpen.add("Folder...");
+                            fileOpen.add("Web Site...");
+                            menu1.addSeparator();
+                            menu1.add("Save").icon = '';
+                            menu1.addSeparator();
+                            menu1.add("Exit");
+
+                            menu1.element.addEventListener('menuclick', function(e) {
+                                console.log('Clicked', e.menu.name);
+                            })
+                        });
+                    </script>
+                </div>
+
+                <div class="demo-source" data-code-source="Example1">
+                    <div class="label">Source code - Object-oriented &amp; CSS VS2017, VS2020 Themes</div>
+                </div>
+            </div>
+
+            <div class="example">
+                <div class="title">Predefine</div>
+                <div class="description"></div>
+
+                <div data-code-id="Example2">
+                    
+                    <div id="menu2" class="X-Menu" tabindex="0">
+                        <div class="Label">
+                            <div class="Name">FILE</div>
+                        </div>
+                        <div class="Children">
+                            <div class="X-Menu">
+                                <div class="Label">
+                                    <div class="Icon"></div>
+                                    <div class="Name">New</div>
+                                </div>
+                                <div class="Children">
+                                    <div class="X-Menu">
+                                        <div class="Label">
+                                            <div class="Icon"></div>
+                                            <div class="Name">Project...</div>
+                                        </div>
+                                    </div>
+                                    <div class="X-Menu">
+                                        <div class="Label">
+                                            <div class="Icon"></div>
+                                            <div class="Name">Repository...</div>
+                                        </div>
+                                    </div>
+                                    <div class="X-Menu">
+                                        <div class="Label">
+                                            <div class="Icon"></div>
+                                            <div class="Name">File...</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="X-Menu">
+                                <div class="Label">
+                                    <div class="Icon"></div>
+                                    <div class="Name">Open</div>
+                                </div>
+                                <div class="Children">
+                                    <div class="X-Menu">
+                                        <div class="Label">
+                                            <div class="Icon"></div>
+                                            <div class="Name">Project/Solution...</div>
+                                        </div>
+                                    </div>
+                                    <div class="X-Menu">
+                                        <div class="Label">
+                                            <div class="Icon"></div>
+                                            <div class="Name">Folder...</div>
+                                        </div>
+                                    </div>
+                                    <div class="X-Menu">
+                                        <div class="Label">
+                                            <div class="Icon"></div>
+                                            <div class="Name">Web Site...</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="X-Separator"></div>
+                            <div class="X-Menu">
+                                <div class="Label">
+                                    <div class="Icon"></div>
+                                    <div class="Name">Save</div>
+                                </div>
+                            </div>
+                            <div class="X-Separator"></div>
+                            <div class="X-Menu">
+                                <div class="Label">
+                                    <div class="Icon"></div>
+                                    <div class="Name">Exit</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        #menu2{display:inline-flex;background:#d6dbe9}
+                       
+                    </style>
+
+                    <script>
+                        window.addEventListener('load', function() {
+                            var menu2 = window.menu2 = new intell.ctrl.Menu(document.getElementById('menu2'));
+
+
+                            menu2.element.addEventListener('menuclick', function(e) {
+                                console.log('Clicked', e.menu.name);
+                            })
+                        });
+
+                    </script>
+                </div>
+                <div class="demo-source" data-code-source="Example2">
+                    <div class="label">Source code - Light</div>
+                </div>
+            </div>
+
+            <div class="example">
+                <div class="title">MenuBar</div>
+                <div class="description"></div>
+
+                <div data-code-id="menubar1">
+                    <div id="menubar1"></div>
+
+                    <style>
+                        #menubar1{display:flex;padding:2px;background:#d6dbe9;}
+                    </style>
+
+                    <script>
+                        window.addEventListener('load', function() {
+                            var menubar1 = window.menubar1 = new intell.ctrl.MenuBar(document.getElementById('menubar1'));
+
+
+                            menubar1.element.addEventListener('menuclick', function(e) {
+                                console.log('menubar1.menuclick', e.menu.name, e.menu);
+                            });
+
+                            var menu1 = menubar1.add("FILE");
+
+                            var fileNew = menu1.add("New");
+                            
+                            fileNew.add("Project...");
+                            fileNew.add("Repository...");
+                            fileNew.add("File...");
+                            
+                            var fileOpen = menu1.add("Open");
+                            fileOpen.add("Project/Solution...");
+                            fileOpen.add("Folder...");
+                            fileOpen.add("Web Site...");
+                            menu1.addSeparator();
+                            menu1.add("Save").icon = '';
+                            menu1.addSeparator();
+                            menu1.add("Exit");
+
+                            var edit = menubar1.add("EDIT");
+                            var editUndo = edit.add("Undo");
+                            var editRedo = edit.add("Redo");
+
+                            var view = menubar1.add("VIEW");
+                            var viewGitChanges = view.add("Git Changes");
+
+                       
+                        })
+
+                    </script>
+                </div>
+                <div class="demo-source" data-code-source="menubar1">
+                    <div class="label">Source code - MenuBar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>docs.demos.auto()</script>
+</body>
+</html>
+
+
+
+
+

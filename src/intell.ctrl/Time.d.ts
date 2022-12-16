@@ -40,16 +40,25 @@ declare namespace intell.ctrl {
 
         // methods
         getPrivate(): TimePrivate;
-        /** Set value */
+
+        /** Sets value of time. */
         setValue(newValue: number, keepLabel: boolean): void;
-        
-        //protected 
-        protected setEdit(name: TimePrivate["currentUnitName"]): void;
-        protected getEditElement(name: TimePrivate["currentUnitName"]): HTMLElement;
+
+        /** Gets the element of the unit by its name. */
+        getUnitElement(name: TimePrivate["currentUnitName"]): HTMLElement;
+
+        // protected methods
+        protected getEditName(element: HTMLElement): TimePrivate["currentUnitName"];
+        protected setEditName(name: TimePrivate["currentUnitName"]): void;
+        /** Set value of edit session. */
+        protected setEditValue(name: TimePrivate["currentUnitName"], newUnitValue: number): void;
         protected updateElementLabel(name: TimePrivate["currentUnitName"], value: number): void;
         protected updateElementLabels(): void;
+
+        // methods events
         protected _focus(): void;
         protected _mousedown(e: MouseEvent): void;
+        protected _wheel(e: WheelEvent): void;
         protected _keydown(e: KeyboardEvent): void;
         protected _keydownLeft(): void;
         protected _keydownRight(): void;

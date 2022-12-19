@@ -142,6 +142,7 @@
         var isVisible = __private.isVisible;
         var isFadingOut = __private.isFadingOut;
 
+        // 5. dispatch hide event
 
         if (isVisible == false) return; // 1. Invisible
         else if (isVisible == true && isFadingOut == true) return; // 2. Visible, Fadeout
@@ -165,6 +166,11 @@
                 __private.isVisible = false;
                 __private.isFadingOut = false;
             });
+
+            // --5--
+            var event = new Event('targetpopuphide', { cancelable: false, bubbles: true });
+            event.targetpopup = _this;
+            __private.element.dispatchEvent(event);
         }
 
     }

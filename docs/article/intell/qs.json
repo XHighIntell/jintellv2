@@ -3,7 +3,7 @@
     "title": "qs Function",
     "description": "Create a query object from a string.",
 
-    "overloads": [
+    "methods": [
         {
             "title": "function qs(search?: string): { [T: string]: string }",
             "description": "Create a query object from a string.",

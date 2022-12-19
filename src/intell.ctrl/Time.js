@@ -3,6 +3,7 @@
     var ctrl = intell.ctrl;
     var Time = ctrl.Time;
 
+    const ACTIVE_CLASS = "ACTIVE";
 
     // ====== constructor =======
     /**@param {HTMLElement} element */
@@ -208,9 +209,9 @@
         __private.currentNumbers = 0;
         
 
-        $([__private.elementHours, __private.elementMinutes, __private.elementSeconds, __private.elementMilliseconds]).removeClass('active');
+        $([__private.elementHours, __private.elementMinutes, __private.elementSeconds, __private.elementMilliseconds]).removeClass(ACTIVE_CLASS);
 
-        this.getUnitElement(name).classList.add('active');
+        this.getUnitElement(name).classList.add(ACTIVE_CLASS);
     }
     prototype.setEditValue = function(name, newUnitValue) {
         // 1. cap min
@@ -382,7 +383,7 @@
         var name = __private.currentUnitName;
 
         if (name == 'hours') this.setEditName("minutes")
-        else if (name == 'minutes') this.setEditName("seconds")
+        else if (name == 'minutes' && __private.secondsEnabled == true) this.setEditName("seconds")
         else if (name == 'seconds' && __private.millisecondsEnabled == true) this.setEditName("milliseconds")
     }
     prototype._keydownDel = function() {
@@ -404,7 +405,7 @@
     }
     prototype._focusout = function() {
 
-        // 0. clear editing state, remove active class
+        // 0. clear editing state, remove ACTIVE_CLASS class
         // 1. parse newValue
         // 2. if newValue equal current value, reset text & return
         // 3. change value
@@ -420,7 +421,7 @@
         // --0--
         __private.currentUnitName = null;
 
-        $([__private.elementHours, __private.elementMinutes, __private.elementSeconds, __private.elementMilliseconds]).removeClass('active');
+        $([__private.elementHours, __private.elementMinutes, __private.elementSeconds, __private.elementMilliseconds]).removeClass(ACTIVE_CLASS);
 
         // --1--
         var newValue = 0; newValue = null;

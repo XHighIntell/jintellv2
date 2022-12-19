@@ -1,6 +1,7 @@
 ﻿declare namespace docs {
 
     export function generateArticle(article: Article): Promise<HTMLElement>;
+    export function generateArticleFunction(article: ArticleFunction): Promise<HTMLElement>;
     export function generateArticleField(article: ArticleField): Promise<HTMLElement>;
 
     export function generateGroupConstructors(items: ItemConstructor[]): HTMLElement;
@@ -36,6 +37,7 @@
         properties: ItemProperty[];
         events: ItemEvent[];
         methods: ItemMethod[];
+        static_methods: ItemMethod[];
         remarks: string;
         examples: string;
     }
@@ -44,6 +46,7 @@
         title: string;
         description: string;
         overloads: ItemMethodOverload[]
+        returns: string;
         remarks: string;
         examples: string;
     }

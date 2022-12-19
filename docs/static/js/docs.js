@@ -50,6 +50,7 @@ hljs.registerLanguage('dts', function(a) {
     docs.generateArticle = async function(article) {
 
         if (article._ == 'field') return await docs.generateArticleField(article);
+        if (article._ == 'function') return await docs.generateArticleFunction(article);
 
         var $article = $(`
 <div class="article">
@@ -60,6 +61,7 @@ hljs.registerLanguage('dts', function(a) {
         var $title = $article.find('.title'); $title.html(article.title);
         var $description = $article.find('.description'); $description.html(article.description);
 
+        
 
         $article.append(docs.generateGroupConstructors(article.constructors));
         $article.append(docs.generateGroupFields(article.fields));
@@ -67,11 +69,29 @@ hljs.registerLanguage('dts', function(a) {
         $article.append(docs.generateGroupEvents(article.events));
         $article.append(docs.generateGroupMethods(article.methods));
         $article.append(docs.generateGroupStaticMethods(article.static_methods));
-        $article.append(docs.generateGroupOverloads(article.overloads));
         $article.append(docs._generateRemarks(article.remarks));
         $article.append(await docs._generateExamples(article.examples));
 
 
+        return $article[0];
+    }
+    docs.generateArticleFunction = async function(article) {
+        var $article = $(`
+<div class="article article-function">
+    <div class="title"></div>
+    <div class="description"></div>
+</div>`);
+
+        var $title = $article.find('.title'); $title.html(article.title);
+        var $description = $article.find('.description'); $description.html(article.description);
+
+        $article.append(docs.generateGroupMethods(article.methods));
+        $article.append(docs._generateReturns(article.returns));
+        $article.append(docs._generateRemarks(article.remarks));
+        $article.append(await docs._generateExamples(article.examples));
+
+        if (article.methods?.length == 1) $article.find('.methods>.item-method').addClass('expaned');
+        
         return $article[0];
     }
     docs.generateArticleField = async function(article) {

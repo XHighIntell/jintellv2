@@ -35,6 +35,7 @@
             prototype.dispatch = function() {
 
                 // 1. dispatch event to the listeners
+                //      a. if there is any error in a listener, log into the console and continue.
                 // 2. if true, the listener would be automatically removed when invoked
                 // 3. if any of the listeners return "stopPropagation", stop. This is internally used
                 var once = this.option.once;
@@ -43,8 +44,12 @@
                     var callback = this.listeners[i];
 
                     // --1--
-                    var action = callback.apply(this.target, arguments);
-
+                    try {
+                        var action = callback.apply(this.target, arguments);
+                    } catch (e) {
+                        console.error(e);
+                    }
+                    
                     // --2--
                     if (once === true) {
                         this.listeners.splice(i, 1);
@@ -68,7 +73,6 @@
 
         if (option != null && option.once != null) _this.option.once = option.once;
     }
-    
 
     // methods
     intell.createOnOff = function createOnOff(target) {

@@ -86,7 +86,7 @@
         }
         portal.addManifestModule = function(moduleName) {
             return import(moduleName).then(function(module) {
-                module.default(portal);
+                return module.default(portal);
             }); 
         }
 

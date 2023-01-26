@@ -19,7 +19,7 @@
 
     portal.addManifest(manifest, function(application) {
         var $root = $(application.elementRoot);
-
+        
         $root.find('.item-example').toArray().forEach(async function(element) {
             var url = element.getAttribute('data-url');
             var response = await fetch(url);
@@ -33,6 +33,11 @@
 
         $root.on('click', '.item-example>.label', function() { $(this).parent().toggleClass('expanded') });
         $root.find('.toggle').click(function() { $('body>.topbar').toggle() });
+        $root.find('.action-add').click(function() {
+            var moduleName = new URL('../dynamic/dynamic.js', src).pathname;
+            portal.addManifestModule(moduleName);
+        });
+        
     })
 
 

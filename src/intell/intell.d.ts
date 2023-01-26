@@ -85,7 +85,11 @@ declare namespace intell {
 
 
 
-    interface HttpRequest extends XMLHttpRequest, OnOffEventTarget<XMLHttpRequestEventMap, HttpRequest, HttpRequest> {
+    interface HttpRequest extends XMLHttpRequest {
+
+        on: OnRegister<XMLHttpRequestEventMap, HttpRequest, HttpRequest>;
+        off(name: string): void;
+
         loadstart(handler: (this: this, ev: XMLHttpRequestEventMap["loadstart"]) => any, options?: boolean | AddEventListenerOptions): this;
         readystatechange(handler: (this: this, ev: XMLHttpRequestEventMap["readystatechange"]) => any, options?: boolean | AddEventListenerOptions): this;
         progress(handler: (this: this, ev: XMLHttpRequestEventMap["progress"]) => any, options?: boolean | AddEventListenerOptions): this;

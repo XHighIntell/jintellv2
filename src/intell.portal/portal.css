@@ -54,7 +54,7 @@ src:url(../../font/fontello.woff2) format('woff2'),
 
 
 .X-Portal>.Portal-Content>.Error-Overlay{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;overflow:auto;z-index:99}
-.X-Portal>.Portal-Content>.Error-Overlay .Error-Content{display:flex;flex-direction:column}
+.X-Portal>.Portal-Content>.Error-Overlay .Error-Content{display:flex;flex-direction:column;padding:0 15px}
 .X-Portal>.Portal-Content>.Error-Overlay .Error-Content>.Title{margin-bottom:.3em;text-align:center;font-size:3em}
 .X-Portal>.Portal-Content>.Error-Overlay .Error-Content .Message{display:flex;align-items:center;margin-bottom:20px;border-radius:1px;padding:10px;background:rgba(255,0,0,.05)}
 .X-Portal>.Portal-Content>.Error-Overlay .Error-Content .Message::before{content:"\2716";display:flex;align-items:center;justify-content:center;width:1.5em;height:1.5em;margin-right:.5em;font-size:.9em;color:#fff;background:#e20000;border-radius:50%}

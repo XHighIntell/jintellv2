@@ -43,7 +43,7 @@ declare namespace intell.ctrl {
 
         // state
         targetElement: HTMLElement;
-        targetCoordinates: JQuery.Coordinates;
+        targetCoordinates: CoordinatesLike;
         isVisible: boolean;
         isFadingOut: boolean;
     }

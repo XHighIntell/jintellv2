@@ -55,6 +55,25 @@
             ]
         },
         {
+            "title": "addManifestModule",
+            "description": "Add a manifest to portal via JavaScript modules.",
+            "overloads": [
+                {
+                    "title": "addManifestModule(moduleName: string): Promise<any>",
+                    "description": "Add a manifest to portal via module.",
+                    "parameters": [
+                        {
+                            "name": "moduleName",
+                            "type": "string",
+                            "description": "The module name that is used in the <a href=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import\">import</a> function."
+                        }
+                    ]
+                }
+            ],
+            "remarks": "The module must export function. The portal will call that function with the first parameter is <mark>Portal</mark>.<br>Required ES2020 (ES11).",
+            "examples": "article/intell.portal/Portal.addManifestModule_examples.html"
+        },
+        {
             "title": "open",
             "description": "Open an application that added before.",
             "overloads": [

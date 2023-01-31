@@ -151,7 +151,7 @@ a:hover{color:#0058ff}
 
 .documents-section>.Content>.docs-content .article .returns{}
 .documents-section>.Content>.docs-content .article .returns>.title{margin:20px 0 6px 0;font-size:max(1.3125rem,min(13.15265px + 0.978621vw,1.75rem));font-weight:600}
-.documents-section>.Content>.docs-content .article .returns>.type{text-decoration:none}
+.documents-section>.Content>.docs-content .article .returns>.type{text-decoration:none;color:unset}
 
 .documents-section>.Content>.docs-content .article .remarks{}
 .documents-section>.Content>.docs-content .article .remarks>.title{margin:32px 0 12px 0;font-size:max(1.3125rem,min(13.15265px + 0.978621vw,1.75rem));font-weight:600}

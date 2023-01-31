@@ -4,7 +4,8 @@
         contains: [
             { scope: 'class built_in', begin: /(string|number|object|any|boolean)/ }, // standalone type name
             { scope: 'class', begin: /\w+$/ }, // "namespace1.namespace2.(class)"
-            { scope: 'class', begin: /\w+(?= *\[\])/ } // class[]
+            { scope: 'class', begin: /\w+(?= *\[\])/ }, // class[]
+            { scope: 'class', begin: /\w+(?=<)/ }, // class<T>
         ]
     }
 });
@@ -19,7 +20,7 @@ hljs.registerLanguage('dts', function(a) {
             },
             {
                 scope: 'keyword',
-                begin: '\\b(new|constructor|void|this|function|static|readonly)\\b',
+                begin: '\\b(any|new|constructor|void|this|function|static|readonly)\\b',
             },
             {
                 scope: 'attr',           // name
@@ -302,7 +303,7 @@ hljs.registerLanguage('dts', function(a) {
     <div class="content"></div>
 </div>`);
 
-        var $title = $item.find('.label .title'); $title.html(item.title);
+        var $title = $item.find('.label .title'); $title.html(document.createTextNode(item.title));
         var $content = $item.find('.content');
 
         $content.append($('<div class="description">').append(item.description));
@@ -380,7 +381,7 @@ hljs.registerLanguage('dts', function(a) {
         if (typeof returns == "string")
             $element.append($('<div class="description">').append(returns));
         else {
-            $element.append($('<a class="type" data-code="dts-type">').append(returns.type).attr('href', returns.href));
+            $element.append($('<a class="type" data-code="dts-type">').append(document.createTextNode(returns.type)).attr('href', returns.href));
             $element.append($('<div class="description">').append(returns.description));
         }
 

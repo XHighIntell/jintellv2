@@ -66,6 +66,13 @@ a:hover{color:#0058ff}
 .icon.event{background-image:url(../image/Event_16x.svg)!important}
 .icon.field{background-image:url(../image/Field_16x.svg)!important}
 .icon.interface{background-image:url(../image/Interface_16x.svg)!important}
+.icon.wwwroot{background-image:url(../image/WebSite_16x.svg)!important}
+.icon.folder{background-image:url(../image/FolderOpened_16x.svg)!important}
+.icon.JSFile{background-image:url(../image/JSFile_16x.svg)!important}
+.icon.HTMLFile{background-image:url(../image/HTMLFile_16x.svg)!important}
+.icon.CSSFile{background-image:url(../image/CSSFile_16x.svg)!important}
+
+
 
 .documents-section{padding-top:20px;line-height:160%}
 .documents-section>.Content{display:flex}

@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jintell Demo</title>
+    <link href="../../../static/css/global.css" rel="stylesheet" />
+
+    <script src="../../../static/lib/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../../../static/lib/intell/intell.js"></script>
+    <script src="../../../static/lib/hljs/highlight.min.js"></script>
+    <script src="../../../static/js/docs.js"></script>
+</head>
+<body>
+    <div class="Container master-header">
+        <div class="Content">
+            <a href="/" class="title">jintellv2 - Demos</a>
+            <div class="spring"></div>
+            <div class="links">
+                <a class="link" title="Document" href="../../../document.html">
+                    <div class="icon"></div>
+                </a>
+                <a class="link" title="Source - Github" href="https://github.com/xhighintell/jintellv2">
+                    <div class="icon"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <style>
+        .aa{padding-top:35px!important;padding-bottom:25px!important}
+        .aa>.title{margin:0 0 .2em 0;font-size:2em;text-align:center}
+        .aa>.description{width:47%;margin:0 auto 2em;text-align:center;color:#5f5f5f}
+        .aa .explorer{display:flex;margin:5px 0}
+        .aa .explorer .tree{}
+        .aa .explorer .tree .item-member{counter-set:level 1;--x:counter(level);padding-left:var(--x)}
+        .aa .explorer .tree .item-member>.label{display:flex;align-items:center;padding:2px 6px 2px 8px;cursor:pointer}
+        .aa .explorer .tree .item-member>.label>.icon{width:1em;height:1em;margin-right:5px;background:center no-repeat}
+        .aa .explorer .tree .item-member>.label>.name{}
+        .aa .explorer .tree .item-member>.label:hover{background:rgb(0 0 0/5%)}
+        .aa .explorer .tree .item-member>.children{margin-left:15px}
+        .aa .explorer .tree .item-member.active>.label{background:#00b6ff73}
+
+        .aa .explorer-title{display:flex}
+        .aa .explorer .code{flex:1 1;margin-left:.5em;padding:2px 10px;white-space:pre-wrap;background:linear-gradient(90deg,rgb(0 0 0/5%),transparent)}
+        .ji-demo{display:flex;margin:10px 0}
+        .ji-demo .panel-left{flex:1 1 50%;border:1px solid #c3c3c3;box-shadow:0px 0px 4px #0000004f;background:#fff}
+        .ji-demo .panel-left>.title{padding:4px 10px;background:rgb(246 247 249)}
+        .ji-demo .panel-left>.code{padding:2px 10px 10px;white-space:pre-wrap;font-family:'Segoe UI'}
+        .ji-demo .panel-right{flex:1 1 50%;padding:2px 10px 10px;margin-left:10px;border:1px solid;background:#fff}
+    </style>
+
+    <div class="demos-section Container">
+        <div class="aa Content">
+            <div class="title">Create user interfaces from components</div>
+            <div class="description">
+                jintellv2 lets you build user interfaces out of individual pieces called components. Create your own components and reuse them.
+            </div>
+            <div class="ji-demo">
+                <div class="panel-left html">
+                    <div class="title">page.html</div>
+                    <div class="code html">
+
+                    </div>
+                </div>
+                <div class="panel-right">
+                    <div>
+                        BUY_MAX_ORDERS = <input />
+                        <component cname="popover">Maximum number of buy orders</component>
+                    </div>
+                    <div>
+                        BUY_QUANTITY = <input />
+                        <component cname="popover">The quantity for each buy order</component> 
+                    </div>
+                    
+
+                    <script>
+                        window.addEventListener('load', function() {
+                            intell.component.config.rootDir = '/demo/component/';
+                            intell.component.addManifest({ name: 'popover', js: 'popover/index.js', css: ['popover/index.css'] });
+                            intell.component.transformAll(document.body);
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="demos-section Container" style="background:#00000008">
+        <div class="aa Content">
+            <div class="title">Use components in components</div>
+            <div class="description">
+                In jintellv2, components can contain other components that make it work in more flexible ways.
+            </div>
+
+            <div class="ji-demo">
+                <div class="panel-left html">
+                    <div class="title">page.html</div>
+                    <div class="code html">
+
+                    </div>
+                </div>
+                <div class="panel-right">
+                    <component cname="header" id="AAA" class="extra-class">
+                        <div>Level 1</div>
+                        <component cname="popover">Level 2</component>
+                    </component>
+                    <script>
+                        window.addEventListener('load', function() {
+                            intell.component.config.rootDir = '/demo/component/';
+                            intell.component.addManifest({ name: 'popover', js: 'popover/index.js', css: ['popover/index.css'] });
+                            intell.component.transformAll(document.body);
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="demos-section Container">
+        <div class="aa Content">
+            <h3 style="margin-top:0">Files behind <a href="https://github.com/XHighIntell/jintellv2/tree/master/docs/demo/component" target="_blank" style="font-size:1rem">View on github</a></h3>  
+
+            <div class="explorer">
+                <div class="tree">
+                    <div class="item-member">
+                        <div class="name"></div>
+                        <div class="label">
+                            <div class="icon wwwroot"></div>
+                            <div class="name">wwwroot</div>
+                        </div>
+                        <div class="children">
+                            <div class="item-member">
+                                <div class="label">
+                                    <div class="icon folder"></div>
+                                    <div class="name">demo</div>
+                                </div>
+                                <div class="children">
+                                    <div class="item-member">
+                                        <div class="label">
+                                            <div class="icon folder"></div>
+                                            <div class="name">component</div>
+                                        </div>
+                                        <div class="children">
+                                            <div class="item-member">
+                                                <div class="label">
+                                                    <div class="icon folder"></div>
+                                                    <div class="name">header</div>
+                                                </div>
+                                                <div class="children">
+                                                    <div class="item-member" data-file="header/index.html">
+                                                        <div class="label">
+                                                            <div class="icon HTMLFile"></div>
+                                                            <div class="name">index.html</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="item-member">
+                                                <div class="label">
+                                                    <div class="icon folder"></div>
+                                                    <div class="name">popover</div>
+                                                </div>
+                                                <div class="children">
+                                                    <div class="item-member" data-file="popover/index.html">
+                                                        <div class="label">
+                                                            <div class="icon HTMLFile"></div>
+                                                            <div class="name">index.html</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="item-member" data-file="popover/index.js">
+                                                        <div class="label">
+                                                            <div class="icon JSFile"></div>
+                                                            <div class="name">index.js</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="item-member" data-file="popover/index.css">
+                                                        <div class="label">
+                                                            <div class="icon CSSFile"></div>
+                                                            <div class="name">index.css</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="code">click on files to show content</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-bottom:4em"></div>
+    <script>
+        
+        $(document).ready(function() {
+            document.querySelectorAll('.ji-demo').forEach(function(element) {
+                var elementLeft = element.querySelector('.panel-left');
+                var elementCode = elementLeft.querySelector('.code');
+                var elementRight = element.querySelector('.panel-right');
+
+                elementCode.textContent = docs.demos.trimIndents(elementRight.innerHTML);
+                hljs.highlightElement(elementCode);
+            });
+
+            $('.explorer').on('click', '.item-member>.label', async function(e) {
+                var $this = $(this);
+                var $item = $(this).closest('.item-member');
+
+                var file = $item.attr('data-file');
+                if (!file) return;
+
+                $('.explorer').find('.item-member').removeClass('active');
+                $item.addClass('active');
+
+                var $code = $('.explorer .code');
+                var url = new URL(file, location.href);
+                var response = await fetch(url);
+                var code = await response.text();
+
+                $code.text(docs.demos.trimIndents(code));
+                $code[0].className = 'code';
+                hljs.highlightElement($code[0]);
+                
+            });
+        });
+
+    </script>
+
+    <script>docs.demos.auto()</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+    "_": "interface",
+    "title": "ComponentManifest interface",
+    "description": "Manifest for a component.",
+
+    "fields": [
+        {
+            "title": "name: string",
+            "type": "string",
+            "description": "The name of the component. The name of the component is case insensitive."
+        },
+        {
+            "title": "html: string",
+            "type": "string",
+            "description": "The url of html file.",
+            "remarks": "If <mark>null</mark>, <mark>manifest.name + '/index.html'</mark> will be used."
+        },
+        {
+            "title": "js: string",
+            "type": "string",
+            "description": "The url of js file.",
+            "remarks": "If null, the component won't run the script."
+
+        },
+        {
+            "title": "css: string[]",
+            "type": "string[]",
+            "description": "The urls of css file."
+        }
+    ]
+}

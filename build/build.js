@@ -200,6 +200,7 @@ var jobs = [
             'intell.ctrl/Time.js',
             'intell.ctrl/Menu.js',
             'intell.ctrl/MenuBar.js',
+            'intell.component/intell.component.js',
             'String.prototype.js',
         ],
         dest: {
@@ -215,6 +216,7 @@ var jobs = [
         src: [
             'intell/intell.d.ts',
             'intell/intell.ctrl.d.ts',
+            'intell/intell.ctrl.template.d.ts',
             'intell.portal/portal.d.ts',
             'intell.ctrl/ComboBox.d.ts',
             'intell.ctrl/Numeric.d.ts',
@@ -222,6 +224,7 @@ var jobs = [
             'intell.ctrl/Time.d.ts',
             'intell.ctrl/Menu.d.ts',
             'intell.ctrl/MenuBar.d.ts',
+            'intell.component/intell.component.d.ts',
             'String.prototype.d.ts',
         ],
         dest: {

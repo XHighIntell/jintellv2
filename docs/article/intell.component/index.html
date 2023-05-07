@@ -1,0 +1,134 @@
+﻿<style>
+    fieldset.file{border:1px solid #a0a0a0}
+</style>
+<div class="title">Front End Components</div>
+
+<div class="group-members">
+    <div class="title">What is the purpose?</div>
+    <p>
+        When developing the front end, many parts of html repeated many times is unavoidable. React/Angular components can solve this problem but they add more complexity to build pile progress and single page applications are not what we are looking for.
+    </p>
+</div>
+
+<div class="group-members">
+    <div class="title">How does jintell component work?</div>
+    <p>Let's start with the simplest example but contains almost all features.</p>
+
+    <style>
+        .chart-container{line-height:initial}
+        .chart-container fieldset{position:relative;margin:0;border:1px solid}
+        .chart-container .chart{display:flex;flex-direction:column;align-items:flex-start}
+        .chart-container .chart .row{display:flex}
+        .chart-container .chart .row fieldset{}
+        .chart-container .chart .row fieldset:nth-child(n+2){margin-left:10px}
+        .chart-container .chart .row fieldset .code{white-space:pre-wrap;font-family:monospace;font-size:.6em;line-height:1.3em}
+        .chart-container .chart .row fieldset .connect-line{position:absolute;bottom:-23px;display:flex;align-items:center}
+        .chart-container .chart .row fieldset .connect-line>.icon{font-size:19px;transform:scaleY(2)}
+        .chart-container .chart .row fieldset .connect-line>.name{font-size:.6em}
+        .chart-container .chart .step{display:inline-block;padding:10px;border:1px solid;white-space:pre-wrap;font-family:monospace;font-size:.6em;line-height:1.3em}
+        .chart-container .chart .step2{margin-top:26px}
+    </style>
+    <div class="chart-container">
+        <div class="chart" style="position:relative">
+
+            <div class="row">
+                <fieldset>
+                    <legend>page.html</legend>
+                    <div class="code" data-code="html">&lt;html lang="en">
+...
+&lt;body>
+    &lt;component cname="footer" id="footer" class="extra-class">
+        Hello, children
+    &lt;/component>
+&lt;/body>
+&lt;/html></div>
+                    <div class="connect-line">
+                        <div class="icon">↓</div>
+                        <div class="name">(1)</div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>/component/footer/index.html</legend>
+                    <div class="code" data-code="html">&lt;div class="footer">
+    &lt;div class="footer-links">
+        &lt;a href="/games">Games&lt;/a>
+        &lt;a href="/apps">Apps&lt;/a>
+        &lt;a href="/company">Company&lt;/a>
+        &lt;a href="/support">Support&lt;/a>
+        &lt;a href="/shop">Shop&lt;/a>
+    &lt;/div>
+    &lt;div class="footer-trademark">&lt;children/>&lt;/div>
+&lt;/div></div>
+                    <div class="connect-line">
+                        <div class="icon">↓</div>
+                        <div class="name">fetch (2)</div>
+                    </div>
+                </fieldset>
+            </div>
+
+            
+            <div class="row" style="margin-top:26px">
+                <fieldset>
+                    <div class="code" data-code="js">intell.component.config.rootDir = '/component/';
+intell.component.addManifest({ name: 'footer', html: 'footer/index.html' }); // optional
+intell.component.transformAll(document.body);</div>
+                    <div class="connect-line">
+                        <div class="icon">↓</div>
+                        <div class="name">transform (3)</div>
+                    </div>
+                </fieldset>
+
+            </div>
+
+            
+            <div class="step step2" data-code="html">&lt;html lang="en"&gt;
+...
+&lt;body&gt;
+    &lt;div class="footer"&gt;
+        &lt;div id="footer" class="footer-links extra-class"&gt;
+            &lt;a href="/games"&gt;Games&lt;/a&gt;
+            &lt;a href="/apps"&gt;Apps&lt;/a&gt;
+            &lt;a href="/company"&gt;Company&lt;/a&gt;
+            &lt;a href="/support"&gt;Support&lt;/a&gt;
+            &lt;a href="/shop"&gt;Shop&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class="footer-trademark"&gt;
+            Hello, children
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</div>
+
+        </div>
+    </div>
+
+    <ol>
+        <li>Search all elements that have tagName equal <mark>COMPONENT</mark> in body and transform them.</li>
+        <li><mark>transformAll</mark> will try to fetch necessary files based on the manifest list before transforming components.</li>
+        <li>Done</li>
+    </ol>
+</div>
+
+<div class="group-members">
+    <div class="title">Key Features</div>
+    <ul>
+        <li><mark>intell.component</mark> doesn't automatically transform code. The user has to call them manually.</li>
+        <li>A <mark>Component</mark> can contain other components. The <mark>children</mark> tag can be used in components to place elements.</li>
+        <li>If a component isn't registered with <mark>addManifest</mark>, they won't have script and styles. The default value for <mark>html</mark> is <mark>name + '/index.html'</mark>.</li>
+        <li>
+            <span>Original element (component tag) attributes will be copied to the destination element:</span>
+            <ul>
+                <li><mark>cname</mark> attribute will not be copied.</li>
+                <li><mark>class</mark> attribute will be added to the destination element.</li>
+                <li>Other attributes will be overridden.</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div class="group-members">
+    <div class="title">Examples</div>
+    <div>
+        <a href="/demo/component/index.html">Click here</a> for more examples.
+    </div>
+</div>

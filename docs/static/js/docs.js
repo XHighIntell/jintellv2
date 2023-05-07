@@ -475,6 +475,7 @@ hljs.registerLanguage('dts', function(a) {
     ui._getArticleUrl = function(id) {
 
         if (id == 'getting-started') return 'article/Getting Started.html';
+        if (id == 'intell.component') return 'article/intell.component/index.html';
 
         var index = id.lastIndexOf('.');
         if (index == -1) return;

@@ -1,0 +1,21 @@
+{
+    "_": "function",
+    "title": "addManifest Function",
+    "description": "Register a new component manifest.",
+
+    "methods": [
+        {
+            "title": "function addManifest(manifest: ComponentManifest): ComponentManifest",
+            "description": "Register a new component manifest.",
+            "parameters": [
+                {
+                    "name": "manifest",
+                    "type": "ComponentManifest",
+                    "href": "?q=intell.component.ComponentManifest",
+                    "description": "The manifest of component."
+                }
+            ],
+            "returns": "Return the new <mark>ComponentManifest</mark> with normalized urls."
+        }
+    ]
+}

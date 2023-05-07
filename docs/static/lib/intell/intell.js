@@ -35,6 +35,7 @@
             prototype.dispatch = function() {
 
                 // 1. dispatch event to the listeners
+                //      a. if there is any error in a listener, log into the console and continue.
                 // 2. if true, the listener would be automatically removed when invoked
                 // 3. if any of the listeners return "stopPropagation", stop. This is internally used
                 var once = this.option.once;
@@ -43,8 +44,12 @@
                     var callback = this.listeners[i];
 
                     // --1--
-                    var action = callback.apply(this.target, arguments);
-
+                    try {
+                        var action = callback.apply(this.target, arguments);
+                    } catch (e) {
+                        console.error(e);
+                    }
+                    
                     // --2--
                     if (once === true) {
                         this.listeners.splice(i, 1);
@@ -68,7 +73,6 @@
 
         if (option != null && option.once != null) _this.option.once = option.once;
     }
-    
 
     // methods
     intell.createOnOff = function createOnOff(target) {
@@ -543,7 +547,11 @@
     //    }
     //
     //}();
-    
+    ctrl.duplicateNodes = function(nodes) {
+        var out = [];
+        nodes.forEach(o => out.push(o.cloneNode(true)))
+        return out;
+    }
 }();
 !function() {
     if (globalThis.window == null) return;
@@ -611,6 +619,10 @@
         // properties
         /** @type defineProperties<intell.portal.Portal> */
         var defineProperties = {
+            element: {
+                get: function() { return element },
+                set: function() { throw new Error("'Portal.element' cannot be assigned to -- it is read only") }
+            },
             applications: {
                 get: function() { return applications.slice() },
                 set: function() { throw new Error("'Portal.applications' cannot be assigned to -- it is read only")  }
@@ -665,8 +677,11 @@
         }
         portal.addManifestModule = function(moduleName) {
             return import(moduleName).then(function(module) {
-                module.default(portal);
+                return module.default(portal);
             }); 
+        }
+        portal.getApplication = function(id) {
+            return applications.find(app => app.manifest.id == id)
         }
 
         portal.open = function(arg1) {
@@ -687,6 +702,8 @@
                 
                 // 1. if open an application already opened, exit this block
                 // 2. set active class, hide all other applications
+                //      a. hide the container of application
+                //      b. hide all applications
                 // 3. 
 
                 // --1--
@@ -698,11 +715,10 @@
 
                 // --2--
                 activeApplication = application;
-
                 portal.taskbar.active(application);
-
-
-
+                // --2a--
+                intell.ctrl.hide($portalApplications[0]);
+                // --2b--
                 portal.applications.forEach(function(value) {
                     if (value.elementRoot != null) intell.ctrl.hide(value.elementRoot);
                 });
@@ -745,7 +761,8 @@
 
                         if (activeApplication == application) {
                             portal.overlay.hide();
-                            $(application.elementRoot).show();
+                            intell.ctrl.show($portalApplications[0]);
+                            intell.ctrl.show(application.elementRoot);
                         }
                         else
                             $(application.elementRoot).hide();
@@ -763,13 +780,14 @@
                 }
                 else if (application.status == "LOADED") { //LOADED
                     portal.overlay.hide();
+                    intell.ctrl.show($portalApplications[0]);
                     intell.ctrl.show(application.elementRoot);
                 }
                 else if (application.status == "FAIL") {
                     portal.overlay.showError(application);
                 }
 
-                portal.taskbar.active(application);
+                $portalApplications.attr('data-active-application', manifest.id);
                 portal.onChange.dispatch({ oldApplication: oldApplication, newApplication: newApplication });
 
                 // because portal.onchange -> application.onopen 
@@ -2383,7 +2401,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 
             // --5--
             var event = new Event('targetpopuphide', { cancelable: false, bubbles: true });
-            event.targetpopup = _this;
+            event.targetpopup = this;
             __private.element.dispatchEvent(event);
         }
 
@@ -3883,6 +3901,141 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
     
 
 }()
+!function() {
+    let ns = intell.component; ns = {}; intell.component = ns;
+
+    // varriables
+    let config = ns.config; config = { rootDir: "/component/" };
+    let manifests = ns.manifests; manifests = [];
+    let styleUrls = [''].splice();
+
+    // properties
+    intell.ctrl.template.defineProperties(ns, {
+        config: {
+            get: function() { return config },
+            set: function(newValue) {
+                if (newValue.rootDir != null) config.rootDir = newValue.rootDir;
+            },
+        },
+        manifests: {
+            get: function() { return manifests },
+            set: function() { throw new Error("'intell.component.manifests' cannot be assigned to -- it is read only") }
+        }
+    });
+
+    // methods
+    ns.addManifest = function(o) {
+        var manifest = Object.assign({}, o);
+
+        // normalize
+        if (manifest.html == null) manifest.html = o.name + '/index.html';
+
+        if (manifest.html != null) manifest.html = new URL(config.rootDir + manifest.html, location).href;
+        if (manifest.js != null) manifest.js = new URL(config.rootDir + manifest.js, location).href;
+        if (manifest.css != null) manifest.css = manifest.css.map(css => new URL(config.rootDir + css, location).href);
+        
+
+        manifests.push(manifest);
+
+        return manifest;
+    }
+    ns.getManifest = async function(name) {
+        let manifest = manifests.find(value => value.name == name);
+        if (manifest == null) manifest = this.addManifest({ name: name });
+        
+        if (manifest.html != null && manifest._html == null) {
+            let response = await fetch(manifest.html);
+            if (response.status !== 200) throw new Error("'" + name + "' component failed to fetch '" + manifest.html + "'");
+            let html = await response.text();
+            
+            manifest._html = html;
+        }
+
+        if (manifest.js != null && manifest._default == null) {
+            try {
+                var module = await import(manifest.js);
+            } catch (e) {
+                throw new Error("'" + name + "' component failed to dynamically import module '" + manifest.js + "'");
+            }
+
+            if (typeof (module.default) !== 'function') throw new Error("'" + name + "' component must export default function");
+
+            manifest._default = module.default;
+        }
+
+        if (manifest.css != null) {
+            manifest.css.forEach(css => {
+                if (styleUrls.indexOf(css) != -1) return;
+
+                styleUrls.push(css);
+
+                var $link = $('<link href="' + css + '" rel="stylesheet">');
+                document.head.append($link[0]);
+                styleUrls.push(css);
+            })
+        }
+        
+
+
+        return manifest;
+    }
+    ns.transform = async function(elementOriginal) {
+        if (elementOriginal == null) throw new Error("Element component cannot be null");
+        if (elementOriginal.tagName != 'COMPONENT') throw new Error("Element tag must be component");
+
+        const cname = elementOriginal.getAttribute('cname');
+        const manifest = await ns.getManifest(cname);
+        const $element = $(manifest._html);
+        const element = $element[0];
+
+        if ($element.length > 1) throw new Error("Components can't have more than one element.");
+
+        // 1. copy attributes to the new element
+        // 2. macro script
+        //    a. replace <children/> with clone children
+        // 3. replace 
+
+        // --1--
+        elementOriginal.getAttributeNames().forEach(function(name) {
+            switch (name) {
+                case 'cname':
+                    break;
+                case 'class':
+                    element.classList.add(...elementOriginal.classList);
+                    break;
+                default:
+                    element.setAttribute(name, elementOriginal.getAttribute(name));
+                    break;
+            }
+        })          
+
+        // --2a--
+        //debugger;
+        element.querySelectorAll('children').forEach(e => {
+            e.replaceWith(...intell.ctrl.duplicateNodes(elementOriginal.childNodes));
+        })
+        //element.querySelectorAll('children')?.replaceWith(...elementOriginal.childNodes);
+
+        // --3--
+        elementOriginal.replaceWith(element);
+
+        await ns.transformAll(element);
+
+        if (manifest._default != null) manifest._default(element, elementOriginal);
+    }
+    ns.transformAll = async function(element) {
+        var componentElements = element.querySelectorAll('component');
+        componentElements = [...componentElements].filter(e => e.parentElement.closest('component') == null);
+
+        for (var i = 0; i < componentElements.length; i++) {
+            var componentElement = componentElements[i];
+            await ns.transform(componentElement)
+        }
+
+        //var promiseAll = [...componentElements].map(e => ns.transform(e));
+        //await Promise.all(promiseAll);
+    }
+}();
 
 
 !function() {

@@ -38,38 +38,30 @@
     ],
     "methods": [
         {
-            "title": "addManifest",
-            "description": "Open an application that added before.",
-            "overloads": [
+            "title": "addManifest(manifest: ApplicationManifest, callback: (application: Application) => void): Application",
+            "description": "Add an application to <mark>Portal</mark> by a manifest.",
+            "parameters": [
                 {
-                    "title": "addManifest(manifest: ApplicationManifest, callback: (application: Application) => void): Application",
-                    "description": "Add an application by a manifest.",
-                    "parameters": [
-                        {
-                            "name": "manifest",
-                            "type": "ApplicationManifest",
-                            "description": "The ApplicationManifest of application."
-                        }
-                    ]
+                    "name": "manifest",
+                    "type": "ApplicationManifest",
+                    "description": "The ApplicationManifest of application."
                 }
             ]
         },
         {
-            "title": "addManifestModule",
+            "title": "addManifestModule(moduleName: string): Promise<any>",
             "description": "Add a manifest to portal via JavaScript modules.",
-            "overloads": [
+            "parameters": [
                 {
-                    "title": "addManifestModule(moduleName: string): Promise<any>",
-                    "description": "Add a manifest to portal via module.",
-                    "parameters": [
-                        {
-                            "name": "moduleName",
-                            "type": "string",
-                            "description": "The module name that is used in the <a href=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import\">import</a> function."
-                        }
-                    ]
+                    "name": "moduleName",
+                    "type": "string",
+                    "description": "The module name that is used in the <a href=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import\">import</a> function."
                 }
             ],
+            "returns": {
+                "type": "Promise<any>",
+                "description": "Returns a promise which fulfills the value that is returned by the module function."
+            },
             "remarks": "The module must export function. The portal will call that function with the first parameter is <mark>Portal</mark>.<br>Required ES2020 (ES11).",
             "examples": "article/intell.portal/Portal.addManifestModule_examples.html"
         },

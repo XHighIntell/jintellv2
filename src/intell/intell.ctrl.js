@@ -371,5 +371,9 @@
     //    }
     //
     //}();
-    
+    ctrl.duplicateNodes = function(nodes) {
+        var out = [];
+        nodes.forEach(o => out.push(o.cloneNode(true)))
+        return out;
+    }
 }();

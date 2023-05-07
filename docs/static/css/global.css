@@ -66,6 +66,13 @@ a:hover{color:#0058ff}
 .icon.event{background-image:url(../image/Event_16x.svg)!important}
 .icon.field{background-image:url(../image/Field_16x.svg)!important}
 .icon.interface{background-image:url(../image/Interface_16x.svg)!important}
+.icon.wwwroot{background-image:url(../image/WebSite_16x.svg)!important}
+.icon.folder{background-image:url(../image/FolderOpened_16x.svg)!important}
+.icon.JSFile{background-image:url(../image/JSFile_16x.svg)!important}
+.icon.HTMLFile{background-image:url(../image/HTMLFile_16x.svg)!important}
+.icon.CSSFile{background-image:url(../image/CSSFile_16x.svg)!important}
+
+
 
 .documents-section{padding-top:20px;line-height:160%}
 .documents-section>.Content{display:flex}
@@ -151,7 +158,7 @@ a:hover{color:#0058ff}
 
 .documents-section>.Content>.docs-content .article .returns{}
 .documents-section>.Content>.docs-content .article .returns>.title{margin:20px 0 6px 0;font-size:max(1.3125rem,min(13.15265px + 0.978621vw,1.75rem));font-weight:600}
-.documents-section>.Content>.docs-content .article .returns>.type{text-decoration:none}
+.documents-section>.Content>.docs-content .article .returns>.type{text-decoration:none;color:unset}
 
 .documents-section>.Content>.docs-content .article .remarks{}
 .documents-section>.Content>.docs-content .article .remarks>.title{margin:32px 0 12px 0;font-size:max(1.3125rem,min(13.15265px + 0.978621vw,1.75rem));font-weight:600}

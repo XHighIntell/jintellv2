@@ -43,6 +43,8 @@ declare namespace intell.ctrl {
     //export function startClass(element: HTMLElement, timeout: number, classname: string): Promise<void>;
     //export function stopClass(element: HTMLElement, classname: string): void;
 
+    /** Returns a deep copy of a list of ChildNode. */
+    function duplicateNodes(childNodes: NodeListOf<ChildNode>): ChildNode[];
 
     /** internally used by startHide, stopHider. */
     interface StartHideProcess {

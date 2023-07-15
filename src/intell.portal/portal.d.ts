@@ -8,10 +8,12 @@
         constructor(element: HTMLElement);
 
         // fields
-        protected taskbar: PortalTaskbar;
-        protected overlay: PortalOverlay;
+        taskbar: PortalTaskbar;
+        overlay: PortalOverlay;
 
         // properties
+        /** The root element of portal. */
+        element: HTMLElement;
         /** Gets the list of applications that are added to the portal. */
         applications: Application[];
         /** Gets or sets active application. */
@@ -19,11 +21,20 @@
 
         // methods
         /** Add a manifest to portal. */
-        addManifest(manifest: ApplicationManifest, callback: (application: Application) => void): Application;
+        addManifest(manifest: Partial<ApplicationManifest>, callback: (application: Application) => void): Application;
 
         /** Add a manifest to portal via module.
          * @description Required ES2020 (ES11) */
         addManifestModule(moduleName: string): Promise<any>;
+
+        /** Add an application by its constructor method. */
+        addManifestClass(constructor: { new(): Application }): Application;
+
+        /** Add an application by its constructor method. */
+        addManifestClassModule(moduleName: string): Promise<Application>;
+
+        /** Gets Application by its id. */
+        getApplication(id: string): Application;
 
         /** Open the first application that have manifest.startup equal true.  */
         open(): void;
@@ -47,8 +58,6 @@
         /** Initializes a new instance of application. */
         constructor();
 
-        protected __callback: (application: Application) => Promise<any> | void;
-
         /** Gets the manifest of application. */
         manifest: ApplicationManifest;
 
@@ -66,6 +75,9 @@
 
         /** Occur when the portal opens this application. */
         onOpen: intell.EventRegister<(this: Application) => void>;
+
+        init?(): Promise<any> | void;
+        protected __callback: (application: Application) => Promise<any> | void;
     }
 
     // methods
@@ -88,19 +100,19 @@
         title: string;
 
         /** Url to icon/image of the application. */
-        icon: string;
+        icon?: string;
 
         /** Display a text as icon/image of the application. */
-        iconText: string;
+        iconText?: string;
 
         /** Pin this application to menu. The default is true. */
         shortcut: boolean;
 
         /** The shortcut group */
-        group: string;
+        group?: string;
 
         /** Load the application immediately after add. The default is false. */
-        startup: boolean;
+        startup?: boolean;
 
         content: ApplicationManifestContent;
     }
@@ -109,10 +121,10 @@
         html: string;
 
         /** The list of JavaScript files to be injected into portal. */
-        js: string[];
+        js?: string[];
 
         /** (Unsupport) The list of CSS files to be injected into portal. */
-        css: string[];
+        css?: string[];
     }
 
     interface PortalTaskbar {

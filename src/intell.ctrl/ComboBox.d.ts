@@ -76,11 +76,11 @@ declare namespace intell.ctrl {
         session_selectedItem: ComboBoxItem;
     }
     interface ComboBoxAddOption {
-        icon: string;
+        icon?: string;
         name: string;
         value: any;
-        group: string;
-        disabled: boolean;
+        group?: string;
+        disabled?: boolean;
     }
 
 

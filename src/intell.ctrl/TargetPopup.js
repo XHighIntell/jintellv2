@@ -169,7 +169,7 @@
 
             // --5--
             var event = new Event('targetpopuphide', { cancelable: false, bubbles: true });
-            event.targetpopup = _this;
+            event.targetpopup = this;
             __private.element.dispatchEvent(event);
         }
 

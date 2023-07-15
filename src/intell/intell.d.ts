@@ -20,7 +20,7 @@ declare namespace intell {
         protected target: ThisParameterType<T>;
 
         /** Registers an event listener callback to this event. Listeners can return "stop" to prevent further chain of callbacks. */
-        addListener(callback: (this: ThisParameterType<T>, ...args: Parameters<T>) => "stop" | void): void;
+        addListener(callback: (this: ThisParameterType<T>, ...args: Parameters<T>) => "stop" | void | Promise<any>): void;
         
         /** Deregisters an event listener callback from this event. */
         removeListener(callback: T): void;

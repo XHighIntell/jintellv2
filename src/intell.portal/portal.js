@@ -32,6 +32,10 @@
         // properties
         /** @type defineProperties<intell.portal.Portal> */
         var defineProperties = {
+            element: {
+                get: function() { return element },
+                set: function() { throw new Error("'Portal.element' cannot be assigned to -- it is read only") }
+            },
             applications: {
                 get: function() { return applications.slice() },
                 set: function() { throw new Error("'Portal.applications' cannot be assigned to -- it is read only")  }
@@ -89,6 +93,41 @@
                 return module.default(portal);
             }); 
         }
+        portal.addManifestClass = function(fn) {
+            var application = new fn();
+
+            var manifest = application.manifest;
+
+            // 1. check if application exist
+            // 2. create shortcut base on manifest
+
+            // --1--
+            var element = this.taskbar.get(application);
+            if (element != null) return; // application already exists
+
+            applications.push(application);
+
+            // --2
+            if (manifest.shortcut === true) {
+                application.elementShortcut = this.taskbar.add(application);
+            }
+
+            if (application.init == null) throw new Error("application.init can't be null when added via addManifestClass.")
+
+            application.__callback = async function() {
+                await application.init(portal);
+            };
+
+            return application;
+        }
+        portal.addManifestClassModule = async function(moduleName) {
+            const module = await import(moduleName);
+            return portal.addManifestClass(module.default)
+        }
+
+        portal.getApplication = function(id) {
+            return applications.find(app => app.manifest.id == id)
+        }
 
         portal.open = function(arg1) {
             // open method have 3 overloads
@@ -108,6 +147,8 @@
                 
                 // 1. if open an application already opened, exit this block
                 // 2. set active class, hide all other applications
+                //      a. hide the container of application
+                //      b. hide all applications
                 // 3. 
 
                 // --1--
@@ -119,11 +160,10 @@
 
                 // --2--
                 activeApplication = application;
-
                 portal.taskbar.active(application);
-
-
-
+                // --2a--
+                intell.ctrl.hide($portalApplications[0]);
+                // --2b--
                 portal.applications.forEach(function(value) {
                     if (value.elementRoot != null) intell.ctrl.hide(value.elementRoot);
                 });
@@ -166,7 +206,8 @@
 
                         if (activeApplication == application) {
                             portal.overlay.hide();
-                            $(application.elementRoot).show();
+                            intell.ctrl.show($portalApplications[0]);
+                            intell.ctrl.show(application.elementRoot);
                         }
                         else
                             $(application.elementRoot).hide();
@@ -184,13 +225,14 @@
                 }
                 else if (application.status == "LOADED") { //LOADED
                     portal.overlay.hide();
+                    intell.ctrl.show($portalApplications[0]);
                     intell.ctrl.show(application.elementRoot);
                 }
                 else if (application.status == "FAIL") {
                     portal.overlay.showError(application);
                 }
 
-                portal.taskbar.active(application);
+                $portalApplications.attr('data-active-application', manifest.id);
                 portal.onChange.dispatch({ oldApplication: oldApplication, newApplication: newApplication });
 
                 // because portal.onchange -> application.onopen 

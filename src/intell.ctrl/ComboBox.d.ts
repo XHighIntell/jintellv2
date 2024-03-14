@@ -4,7 +4,7 @@
 declare namespace intell.ctrl {
 
     /** Represents a combo box control. */
-    export class ComboBox {
+    export class ComboBox<T = any> {
 
         /** Initializes a new instance of the ComboBox class from element.
          * @param element The element for which to create ComboBox.*/
@@ -15,23 +15,24 @@ declare namespace intell.ctrl {
         /** Gets the root element of ComboBox. */
         readonly element: HTMLElement;
         readonly elementSelect: HTMLElement;
+        readonly elementDropdown: HTMLElement;
         readonly elementChildren: HTMLElement;
         readonly elementItemAbstract: HTMLElement;
         readonly childrenVisible: boolean;
-        readonly items: ComboBoxItem[];
+        readonly items: ComboBoxItem<T>[];
 
 
         popupLocations: number[];
         popupOption: intell.ctrl.ShowAtOption;
-        selectedItem: ComboBoxItem;
+        selectedItem: ComboBoxItem<T>;
 
         // methods
-        getPrivate(): ComboBoxPrivate;
-        add(item: ComboBoxItem): void;
-        add(option: ComboBoxAddOption): ComboBoxItem;
-        private addItem(item: ComboBoxItem): void;
-        private addOption(option: ComboBoxAddOption): ComboBoxItem;
-        remove(item: ComboBoxItem): void;
+        getPrivate(): ComboBoxPrivate<T>;
+        add(item: ComboBoxItem<T>): void;
+        add(option: ComboBoxAddOption): ComboBoxItem<T>;
+        private addItem(item: ComboBoxItem<T>): void;
+        private addOption(option: ComboBoxAddOption): ComboBoxItem<T>;
+        remove(item: ComboBoxItem<T>): void;
         clear(): void;
 
         // navigation methods
@@ -47,9 +48,10 @@ declare namespace intell.ctrl {
         protected _pressEnter(): void;
         protected _pressUpOrDown(keyCode: number): void;
         protected _mouseUpOrClickItem(element: HTMLElement): void;
+        protected _setSearchKeyword(keyword: string): void;
 
         /** _setItem function works as selectedItem property. _setItem dispatchEvent events while property doesn't.  */
-        protected _setItem(item: ComboBoxItem): void;
+        protected _setItem(item: ComboBoxItem<T>): void;
 
         // events: comboboxchange
 
@@ -58,33 +60,36 @@ declare namespace intell.ctrl {
         static setItem(element: HTMLElement, comboBox: ComboBox): ComboBox;
         
     }
-    interface ComboBoxPrivate {
+    interface ComboBoxPrivate<T = any> {
         element: HTMLElement;
         elementSelect: HTMLElement;
+        elementDropdown: HTMLElement;
+        elementSearch: HTMLElement;
+        elementSearchInput: HTMLInputElement;
         elementChildren: HTMLElement;
         elementItemAbstract: HTMLElement;
         childrenVisible: boolean;
-        items: ComboBoxItem[];
+        items: ComboBoxItem<T>[];
         groups: ComboBoxGroup[]
 
         popupLocations: number[];
         popupOption: ctrl.ShowAtOption;
-        selectedItem: ComboBoxItem;
+        selectedItem: ComboBoxItem<T>;
 
         // navigation
         session_elementAt: HTMLElement;
-        session_selectedItem: ComboBoxItem;
+        session_selectedItem: ComboBoxItem<T>;
     }
-    interface ComboBoxAddOption {
+    interface ComboBoxAddOption<T = any> {
         icon?: string;
         name: string;
-        value: any;
+        value: T;
         group?: string;
         disabled?: boolean;
     }
 
 
-    export class ComboBoxItem {
+    export class ComboBoxItem<T = any> {
 
         constructor(element: HTMLElement);
 
@@ -96,7 +101,7 @@ declare namespace intell.ctrl {
 
         icon: string;
         name: string;
-        value: any;
+        value: T;
         group: string;
         disabled: boolean;
 

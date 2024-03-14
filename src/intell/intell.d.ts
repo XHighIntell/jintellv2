@@ -51,6 +51,8 @@ declare namespace intell {
     * @returns Return the key value pair object. */
     export function qs(search?: string): { [T: string]: string };
 
+    export function wait(timeout: number): Promise<void>;
+
     // ======= fields =======
     /** Gets the version of this library. */
     export var version: '2.0.0';
@@ -110,7 +112,7 @@ type NotKeyOf<T, U> = { [k in keyof T]: T[k] extends U ? never : k }[keyof T];
 type NotKeyOfFunction<T> = { [k in keyof T]: T[k] extends Function ? never : k }[keyof T];
 
 type defineProperties<T> = {
-    [K in keyof T]: {
+    [K in keyof T]?: {
         get: (this: T) => T[K];
         set: (this: T, newValue: T[K]) => void;
     }

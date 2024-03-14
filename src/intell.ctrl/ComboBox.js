@@ -35,16 +35,25 @@
         var _this = ComboBox.setItem(element, this);
         var $element = $(element);
         var $elementSelect = $element.find('>.Select');
-        var $elementChildren = $element.find('>.Children');
+        var $elementDropdown = $element.find('>.Dropdown');
+        var $elementSearch = $elementDropdown.find('>.Search');
+        var $elementSearchInput = $elementSearch.find('input');
+        var $elementChildren = $elementDropdown.find('>.Children');
+
         var $elementItemAbstract = $element.find('.Item.abstract').removeClass('abstract').remove();
 
+        //debugger;
         if ($elementSelect.length == 0) $elementSelect = $('<div class="Select"></div>').prependTo(element);
-        if ($elementChildren.length == 0) $elementChildren = $('<div class="Children"></div>').insertAfter($elementSelect);
-
+        if ($elementDropdown.length == 0) $elementDropdown = $('<div class="Dropdown"></div>').insertAfter($elementSelect);
+        if ($elementChildren.length == 0) $elementChildren = $('<div class="Children"></div>').appendTo($elementDropdown);
+        
 
         var __private = _this.getPrivate({});
         __private.element = element;
         __private.elementSelect = $elementSelect[0];
+        __private.elementDropdown = $elementDropdown[0];
+        __private.elementSearch = $elementSearch[0];
+        __private.elementSearchInput = $elementSearchInput[0];
         __private.elementChildren = $elementChildren[0];
         __private.elementItemAbstract = $elementItemAbstract[0];
         __private.childrenVisible = false;
@@ -60,8 +69,8 @@
         $element.mousedown(function(ev) {
             var e = ev.originalEvent;
             var $target = $(e.target);
-
-            if ($target.closest('.Children').length != 0) return;
+            //debugger;
+            if ($target.closest('.Dropdown').length != 0) return;
 
             if (__private.childrenVisible == false) _this.showChildrenElement(__private.element, true);
             else _this.hideChildren();
@@ -90,6 +99,10 @@
         });
         $element.keypress(function(ev) {
             if (ev.originalEvent.keyCode == 13) _this._pressEnter();
+        });
+        $elementSearchInput.on('keydown', async function() {
+            await intell.wait(1);
+            _this._setSearchKeyword(this.value);
         });
 
         // Predefined
@@ -293,8 +306,8 @@
         __private.items.forEach(function(item) { item.element.remove() });
         __private.groups.forEach(function(group) { group.element.remove() });
 
-        __private.items.slice(0, __private.items.length);
-        __private.groups.slice(0, __private.groups.length);
+        __private.items.splice(0, __private.items.length);
+        __private.groups.splice(0, __private.groups.length);
     }
 
     prototype.showChildren = function(at) {
@@ -339,7 +352,7 @@
             target.classList.add('ACTIVE');
 
             // --1c--
-            ctrl.showAt(__private.elementChildren, target, __private.popupLocations, __private.popupOption);
+            ctrl.showAt(__private.elementDropdown, target, __private.popupLocations, __private.popupOption);
 
         }
         else {
@@ -360,19 +373,30 @@
             if (__private.selectedItem != null) __private.selectedItem.element.classList.add('ACTIVE');
 
             // --2d--
-            ctrl.showAt(__private.elementChildren, target, __private.popupLocations, __private.popupOption);
+            ctrl.showAt(__private.elementDropdown, target, __private.popupLocations, __private.popupOption);
             if (__private.selectedItem != null) __private.selectedItem.element.scrollIntoView({ block: "nearest" });
+
+            if (__private.elementSearchInput != null) __private.elementSearchInput.value = "";
+            _this._setSearchKeyword("");
         }
 
         // --3--
         if (hideOnFocusOut == true) {
-            $(target).on('focusout.at', function() {
-                _this.hideChildren();
-                $(target).off('focusout.at');
-            })
+            setTimeout(async function() {
+                var $input = $(__private.elementSearchInput);
+                $input[0]?.focus();
+
+                $(target).on('focusout.at', async function(e) {
+                    await intell.wait(1);
+                    if (__private.element.contains(document.activeElement) == true) return;
+
+                    _this.hideChildren();
+                    $(target).off('focusout.at');
+                })
+
+
+            }, 1);
         }
-        
-        
     }
     prototype.showChildrenCoord = function(coord) {
         var _this = this;
@@ -401,7 +425,7 @@
             
 
             // --1c--
-            ctrl.showAt(__private.elementChildren, coord, __private.popupLocations, __private.popupOption);
+            ctrl.showAt(__private.elementDropdown, coord, __private.popupLocations, __private.popupOption);
         }
         else {
             // --2--
@@ -416,7 +440,7 @@
             if (__private.selectedItem != null) __private.selectedItem.element.classList.add('ACTIVE');
 
             // --2c--
-            ctrl.showAt(__private.elementChildren, coord, __private.popupLocations, __private.popupOption);
+            ctrl.showAt(__private.elementDropdown, coord, __private.popupLocations, __private.popupOption);
             if (__private.selectedItem != null) __private.selectedItem.element.scrollIntoView({ block: "nearest" });
         }
 
@@ -425,7 +449,7 @@
     prototype.hideChildren = function() {
         var __private = this.getPrivate();
         __private.childrenVisible = false;
-        $(__private.elementChildren).hide();
+        $(__private.elementDropdown).hide();
 
 
         if (__private.session_elementAt) {
@@ -545,7 +569,37 @@
         }
 
     }
+    prototype._setSearchKeyword = function(keyword) {
+        var __private = this.getPrivate();
 
+        __private.items.forEach(item => {
+            if (item.group != null) return;
+
+            if (item.name.toLowerCase().indexOf(keyword.toLowerCase()) != -1) 
+                intell.ctrl.show(item.element);
+            else 
+                intell.ctrl.hide(item.element);
+        });
+
+        __private.groups.forEach(g => {
+            let hideCount = 0; // count number of item hidden
+
+            intell.ctrl.show(g.element); 
+            g.items.forEach(item => {
+                if (item.name.toLowerCase().indexOf(keyword.toLowerCase()) != -1) {
+                    intell.ctrl.show(item.element); 
+                } else {
+                    intell.ctrl.hide(item.element);
+                    hideCount++;
+                }
+            });
+
+            if (hideCount == g.items.length) intell.ctrl.hide(g.element)
+        });
+
+
+    }
+    //prototype.
     // ===== static methods =====
 
 

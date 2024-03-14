@@ -171,7 +171,9 @@
         };
         return r;
     };
-
+    intell.wait = function(timeout) {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+    }
     
 }();
 !function() {
@@ -638,6 +640,31 @@
         
 
         // methods
+        portal.add = function(application) {
+
+            if (application.manifest == null) throw new Error();
+
+
+            application.manifest.shortcut ??= true;
+            application.manifest.startup ??= false;
+            application.status ??= "NONE";
+            application.onOpen ??= new intell.EventRegister(application);
+
+
+            // 1. check if application exist
+            // 2. create shortcut base on manifest
+
+            // --1--
+            var element = this.taskbar.get(application);
+            if (element != null) return; // application already exists
+
+            applications.push(application);
+
+            // --2
+            if (application.manifest.shortcut === true) {
+                application.elementShortcut = this.taskbar.add(application);
+            }
+        }
         portal.addManifest = function(manifest, callback) {
             var application = new ns.Application();
 
@@ -672,14 +699,42 @@
             if (manifest.shortcut === true) {
                 application.elementShortcut = this.taskbar.add(application);
             }
-            
-            application.__callback = callback;
+
+            application.init = callback;
         }
         portal.addManifestModule = function(moduleName) {
             return import(moduleName).then(function(module) {
                 return module.default(portal);
             }); 
         }
+        portal.addManifestClass = function(fn) {
+            var application = new fn();
+
+            var manifest = application.manifest;
+
+            // 1. check if application exist
+            // 2. create shortcut base on manifest
+
+            // --1--
+            var element = this.taskbar.get(application);
+            if (element != null) return; // application already exists
+
+            applications.push(application);
+
+            // --2
+            if (manifest.shortcut === true) {
+                application.elementShortcut = this.taskbar.add(application);
+            }
+
+            if (application.init == null) throw new Error("application.init can't be null when added via addManifestClass.")
+
+            return application;
+        }
+        portal.addManifestClassModule = async function(moduleName) {
+            const module = await import(moduleName);
+            return portal.addManifestClass(module.default)
+        }
+
         portal.getApplication = function(id) {
             return applications.find(app => app.manifest.id == id)
         }
@@ -694,12 +749,27 @@
                 let application = applications.find(function(value) { return value.manifest.startup == true });
                 if (application) portal.open(application);
             }
-            else if (arg1 instanceof ns.Application) {
-                // --B--
+            else if (typeof arg1 == "string") {
+                // --C--
 
+                // let find a application to open first
+                // 1. find application have the same id                
+
+                // --1--
+                if (arg1) {
+                    let application = applications.find(function(value) { return value.manifest.id == arg1 });
+
+                    if (application) portal.open(application);
+                    else portal.open();
+                }
+
+            }
+            else if (typeof arg1 == "object") {
+                // --B--
+                /** @type {intell.portal.Application}*/
                 let application = arg1;
-                let manifest = arg1.manifest;
-                
+                let manifest = application.manifest;
+
                 // 1. if open an application already opened, exit this block
                 // 2. set active class, hide all other applications
                 //      a. hide the container of application
@@ -737,7 +807,7 @@
 
                         // we can't simply append root use jquery:
                         // ================================
-                        $portalApplications.append(application.elementRoot)
+                        
                         // =================================
                         // [Deprecation] Synchronous XMLHttpRequest on the main thread is deprecated 
                         // because of its detrimental effects to the end user's experience. 
@@ -795,21 +865,6 @@
 
 
             }
-            else if (typeof arg1 == "string") {
-                // --C--
-
-                // let find a application to open first
-                // 1. find application have the same id                
-
-                // --1--
-                if (arg1) {
-                    let application = applications.find(function(value) { return value.manifest.id == arg1 });
-
-                    if (application) portal.open(application);
-                    else portal.open();
-                }
-
-            }
         }
         portal.load = function(application) {
             // 1. The application status must be none
@@ -843,6 +898,9 @@
                             if ($root.length > 1)
                                 $root = $('<div class="Application-Wrapper"></div>').append($root);
                             application.elementRoot = $root[0];
+
+                            intell.ctrl.hide(application.elementRoot);
+                            $portalApplications.append(application.elementRoot);
 
                             resolve();
 
@@ -890,7 +948,8 @@
             }
 
             return promise.then(function() {
-                if (typeof application.__callback == 'function') return application.__callback(application);
+                if (typeof application.init == 'function') return application.init.call(application, application);
+
             }).then(function() {
                 application.status = "LOADED";
             }).catch(function(error) {
@@ -1211,16 +1270,25 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         var _this = ComboBox.setItem(element, this);
         var $element = $(element);
         var $elementSelect = $element.find('>.Select');
-        var $elementChildren = $element.find('>.Children');
+        var $elementDropdown = $element.find('>.Dropdown');
+        var $elementSearch = $elementDropdown.find('>.Search');
+        var $elementSearchInput = $elementSearch.find('input');
+        var $elementChildren = $elementDropdown.find('>.Children');
+
         var $elementItemAbstract = $element.find('.Item.abstract').removeClass('abstract').remove();
 
+        //debugger;
         if ($elementSelect.length == 0) $elementSelect = $('<div class="Select"></div>').prependTo(element);
-        if ($elementChildren.length == 0) $elementChildren = $('<div class="Children"></div>').insertAfter($elementSelect);
-
+        if ($elementDropdown.length == 0) $elementDropdown = $('<div class="Dropdown"></div>').insertAfter($elementSelect);
+        if ($elementChildren.length == 0) $elementChildren = $('<div class="Children"></div>').appendTo($elementDropdown);
+        
 
         var __private = _this.getPrivate({});
         __private.element = element;
         __private.elementSelect = $elementSelect[0];
+        __private.elementDropdown = $elementDropdown[0];
+        __private.elementSearch = $elementSearch[0];
+        __private.elementSearchInput = $elementSearchInput[0];
         __private.elementChildren = $elementChildren[0];
         __private.elementItemAbstract = $elementItemAbstract[0];
         __private.childrenVisible = false;
@@ -1236,8 +1304,8 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         $element.mousedown(function(ev) {
             var e = ev.originalEvent;
             var $target = $(e.target);
-
-            if ($target.closest('.Children').length != 0) return;
+            //debugger;
+            if ($target.closest('.Dropdown').length != 0) return;
 
             if (__private.childrenVisible == false) _this.showChildrenElement(__private.element, true);
             else _this.hideChildren();
@@ -1266,6 +1334,10 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         });
         $element.keypress(function(ev) {
             if (ev.originalEvent.keyCode == 13) _this._pressEnter();
+        });
+        $elementSearchInput.on('keydown', async function() {
+            await intell.wait(1);
+            _this._setSearchKeyword(this.value);
         });
 
         // Predefined
@@ -1515,7 +1587,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
             target.classList.add('ACTIVE');
 
             // --1c--
-            ctrl.showAt(__private.elementChildren, target, __private.popupLocations, __private.popupOption);
+            ctrl.showAt(__private.elementDropdown, target, __private.popupLocations, __private.popupOption);
 
         }
         else {
@@ -1536,19 +1608,30 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
             if (__private.selectedItem != null) __private.selectedItem.element.classList.add('ACTIVE');
 
             // --2d--
-            ctrl.showAt(__private.elementChildren, target, __private.popupLocations, __private.popupOption);
+            ctrl.showAt(__private.elementDropdown, target, __private.popupLocations, __private.popupOption);
             if (__private.selectedItem != null) __private.selectedItem.element.scrollIntoView({ block: "nearest" });
+
+            if (__private.elementSearchInput != null) __private.elementSearchInput.value = "";
+            _this._setSearchKeyword("");
         }
 
         // --3--
         if (hideOnFocusOut == true) {
-            $(target).on('focusout.at', function() {
-                _this.hideChildren();
-                $(target).off('focusout.at');
-            })
+            setTimeout(async function() {
+                var $input = $(__private.elementSearchInput);
+                $input[0]?.focus();
+
+                $(target).on('focusout.at', async function(e) {
+                    await intell.wait(1);
+                    if (__private.element.contains(document.activeElement) == true) return;
+
+                    _this.hideChildren();
+                    $(target).off('focusout.at');
+                })
+
+
+            }, 1);
         }
-        
-        
     }
     prototype.showChildrenCoord = function(coord) {
         var _this = this;
@@ -1577,7 +1660,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
             
 
             // --1c--
-            ctrl.showAt(__private.elementChildren, coord, __private.popupLocations, __private.popupOption);
+            ctrl.showAt(__private.elementDropdown, coord, __private.popupLocations, __private.popupOption);
         }
         else {
             // --2--
@@ -1592,7 +1675,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
             if (__private.selectedItem != null) __private.selectedItem.element.classList.add('ACTIVE');
 
             // --2c--
-            ctrl.showAt(__private.elementChildren, coord, __private.popupLocations, __private.popupOption);
+            ctrl.showAt(__private.elementDropdown, coord, __private.popupLocations, __private.popupOption);
             if (__private.selectedItem != null) __private.selectedItem.element.scrollIntoView({ block: "nearest" });
         }
 
@@ -1601,7 +1684,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
     prototype.hideChildren = function() {
         var __private = this.getPrivate();
         __private.childrenVisible = false;
-        $(__private.elementChildren).hide();
+        $(__private.elementDropdown).hide();
 
 
         if (__private.session_elementAt) {
@@ -1721,7 +1804,37 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         }
 
     }
+    prototype._setSearchKeyword = function(keyword) {
+        var __private = this.getPrivate();
 
+        __private.items.forEach(item => {
+            if (item.group != null) return;
+
+            if (item.name.toLowerCase().indexOf(keyword.toLowerCase()) != -1) 
+                intell.ctrl.show(item.element);
+            else 
+                intell.ctrl.hide(item.element);
+        });
+
+        __private.groups.forEach(g => {
+            let hideCount = 0; // count number of item hidden
+
+            intell.ctrl.show(g.element); 
+            g.items.forEach(item => {
+                if (item.name.toLowerCase().indexOf(keyword.toLowerCase()) != -1) {
+                    intell.ctrl.show(item.element); 
+                } else {
+                    intell.ctrl.hide(item.element);
+                    hideCount++;
+                }
+            });
+
+            if (hideCount == g.items.length) intell.ctrl.hide(g.element)
+        });
+
+
+    }
+    //prototype.
     // ===== static methods =====
 
 
@@ -2261,9 +2374,22 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         __private.popupOption = { container_mode: "auto", space: 1 };
         __private.popupDelayHideTime = 500;
 
-        window.addEventListener('click', function(e) {
-            if (__private.element.contains(e.target) == true) return;
-            if (__private.targetElement != null && __private.targetElement.contains(e.target) == true) return;
+        /** @type {HTMLElement} */
+        let elementMouseDown;
+        /** @type {HTMLElement} */
+        let elementMouseUp;
+
+        document.addEventListener('mousedown', function(e) {
+            elementMouseDown = e.target;
+        });
+        document.addEventListener('mouseup', function(e) {
+            elementMouseUp = e.target;
+
+            if (__private.isVisible == false) return; // already hidden
+            if (__private.isVisible == true && __private.isFadingOut == true) return; // fading out
+
+            if (__private.element.contains(elementMouseDown) == true) return; // mousedown from inside
+            if (__private.targetElement != null && __private.targetElement.contains(e.target) == true) return; // mouseup on our target
 
             _this.hide();
         });

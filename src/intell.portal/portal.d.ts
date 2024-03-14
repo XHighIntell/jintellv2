@@ -20,8 +20,10 @@
         activeApplication: Application;
 
         // methods
+        add(application: Partial<Application> & Pick<Application, "manifest">): void;
+
         /** Add a manifest to portal. */
-        addManifest(manifest: Partial<ApplicationManifest>, callback: (application: Application) => void): Application;
+        addManifest(manifest: Partial<ApplicationManifest>, callback: (application: Application) => any | Promise<any>): Application;
 
         /** Add a manifest to portal via module.
          * @description Required ES2020 (ES11) */
@@ -62,24 +64,23 @@
         manifest: ApplicationManifest;
 
         /** The root element of application. */
-        elementRoot: HTMLElement;
+        elementRoot?: HTMLElement;
 
         /** Gets the sidebar element. */
-        elementShortcut: HTMLElement;
+        elementShortcut?: HTMLElement;
 
         /** The status of this application. "NONE" = 0, "LOADING" = 1, "LOADED" = 2, "FAIL" = 3 */
         status: "NONE" | "LOADING" | "LOADED" | "FAIL";
 
         /** The error occurs while loading. */
-        error: Error;
+        error?: Error;
 
         /** Occur when the portal opens this application. */
         onOpen: intell.EventRegister<(this: Application) => void>;
 
-        init?(): Promise<any> | void;
-        protected __callback: (application: Application) => Promise<any> | void;
+        init?(this: Application, application: Application): Promise<any> | void;
     }
-
+    type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>;
     // methods
     // export function create(element?: HTMLElement): Portal;
 
@@ -106,7 +107,7 @@
         iconText?: string;
 
         /** Pin this application to menu. The default is true. */
-        shortcut: boolean;
+        shortcut?: boolean;
 
         /** The shortcut group */
         group?: string;

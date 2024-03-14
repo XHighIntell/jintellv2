@@ -51,6 +51,31 @@
         
 
         // methods
+        portal.add = function(application) {
+
+            if (application.manifest == null) throw new Error();
+
+
+            application.manifest.shortcut ??= true;
+            application.manifest.startup ??= false;
+            application.status ??= "NONE";
+            application.onOpen ??= new intell.EventRegister(application);
+
+
+            // 1. check if application exist
+            // 2. create shortcut base on manifest
+
+            // --1--
+            var element = this.taskbar.get(application);
+            if (element != null) return; // application already exists
+
+            applications.push(application);
+
+            // --2
+            if (application.manifest.shortcut === true) {
+                application.elementShortcut = this.taskbar.add(application);
+            }
+        }
         portal.addManifest = function(manifest, callback) {
             var application = new ns.Application();
 
@@ -85,8 +110,8 @@
             if (manifest.shortcut === true) {
                 application.elementShortcut = this.taskbar.add(application);
             }
-            
-            application.__callback = callback;
+
+            application.init = callback;
         }
         portal.addManifestModule = function(moduleName) {
             return import(moduleName).then(function(module) {
@@ -114,10 +139,6 @@
 
             if (application.init == null) throw new Error("application.init can't be null when added via addManifestClass.")
 
-            application.__callback = async function() {
-                await application.init(portal);
-            };
-
             return application;
         }
         portal.addManifestClassModule = async function(moduleName) {
@@ -139,12 +160,27 @@
                 let application = applications.find(function(value) { return value.manifest.startup == true });
                 if (application) portal.open(application);
             }
-            else if (arg1 instanceof ns.Application) {
-                // --B--
+            else if (typeof arg1 == "string") {
+                // --C--
 
+                // let find a application to open first
+                // 1. find application have the same id                
+
+                // --1--
+                if (arg1) {
+                    let application = applications.find(function(value) { return value.manifest.id == arg1 });
+
+                    if (application) portal.open(application);
+                    else portal.open();
+                }
+
+            }
+            else if (typeof arg1 == "object") {
+                // --B--
+                /** @type {intell.portal.Application}*/
                 let application = arg1;
-                let manifest = arg1.manifest;
-                
+                let manifest = application.manifest;
+
                 // 1. if open an application already opened, exit this block
                 // 2. set active class, hide all other applications
                 //      a. hide the container of application
@@ -182,7 +218,7 @@
 
                         // we can't simply append root use jquery:
                         // ================================
-                        $portalApplications.append(application.elementRoot)
+                        
                         // =================================
                         // [Deprecation] Synchronous XMLHttpRequest on the main thread is deprecated 
                         // because of its detrimental effects to the end user's experience. 
@@ -240,21 +276,6 @@
 
 
             }
-            else if (typeof arg1 == "string") {
-                // --C--
-
-                // let find a application to open first
-                // 1. find application have the same id                
-
-                // --1--
-                if (arg1) {
-                    let application = applications.find(function(value) { return value.manifest.id == arg1 });
-
-                    if (application) portal.open(application);
-                    else portal.open();
-                }
-
-            }
         }
         portal.load = function(application) {
             // 1. The application status must be none
@@ -288,6 +309,9 @@
                             if ($root.length > 1)
                                 $root = $('<div class="Application-Wrapper"></div>').append($root);
                             application.elementRoot = $root[0];
+
+                            intell.ctrl.hide(application.elementRoot);
+                            $portalApplications.append(application.elementRoot);
 
                             resolve();
 
@@ -335,7 +359,8 @@
             }
 
             return promise.then(function() {
-                if (typeof application.__callback == 'function') return application.__callback(application);
+                if (typeof application.init == 'function') return application.init.call(application, application);
+
             }).then(function() {
                 application.status = "LOADED";
             }).catch(function(error) {

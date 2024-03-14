@@ -36,6 +36,21 @@
         $root.find('.action-add').click(function() {
             var moduleName = new URL('../dynamic/dynamic.js', src).pathname;
             portal.addManifestModule(moduleName);
+
+            portal.add({
+                manifest: {
+                    id: 'brochures',
+                    name: 'Dynamic Via Add',
+                    iconText: "",
+                    group: 'Account',
+                    content: {
+                        html: '/demo/portal/apps/dynamic/ui.html',
+                    },
+                },
+                init: function() {
+                    hljs.highlightElement(this.elementRoot);
+                }
+            });
         });
         
     })

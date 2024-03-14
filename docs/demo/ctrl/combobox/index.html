@@ -37,28 +37,35 @@
                     <div id="combobox1" class="X-ComboBox Light" tabindex="0"></div>
 
                     <style>
+                        
                         .X-ComboBox.Light{position:relative;display:inline-block;min-width:100px;border:1px solid #b6b6b6;outline:none}
                         .X-ComboBox.Light:hover{background:rgba(0,0,0,.03)} 
                         .X-ComboBox.Light:focus{border-color:#0098ff;background:rgba(0,0,0,.03)}
+                        .X-ComboBox:has(*:focus){border-color:#0098ff;background:rgba(0,0,0,.03)}
+
                         .X-ComboBox.Light .Select{display:flex;align-items:center;padding:0 10px;min-height:2em;cursor:default}
                         .X-ComboBox.Light .Select::after{content:"▼";display:flex;flex:1 1 auto;flex-direction:row-reverse;padding-left:1em;font-size:.5em}
                         .X-ComboBox.Light .Select .Item{display:flex;align-items:center}
                         .X-ComboBox.Light .Select .Item>.Icon{display:flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:4px;font-family:fontello}
 
-                        .X-ComboBox.Light>.Children{position:absolute;display:none;min-width:100%;max-height:calc(100vh);border:1px solid #b6b6b6;background:#fff;z-index:10;overflow-y:auto;box-sizing:border-box}
-                        .X-ComboBox.Light>.Children .Group{padding:4px 0}
-                        .X-ComboBox.Light>.Children .Group>header{padding:0 10px 4px}
-                        .X-ComboBox.Light>.Children .Group>header .Name{position:relative;font-size:.7em;font-weight:500}
-                        .X-ComboBox.Light>.Children .Group>.Children>.Item{padding-left:24px}
-                        .X-ComboBox.Light>.Children .Group:last-child{padding-bottom:0}
-
-                        .X-ComboBox.Light>.Children .Item{display:flex;align-items:center;padding:2px 12px 2px 12px;cursor:pointer}
-                        .X-ComboBox.Light>.Children .Item:hover{background:rgba(29,29,29,.1)}
-                        .X-ComboBox.Light>.Children .Item.ACTIVE{background:rgba(0,173,255,.5)}
-                        .X-ComboBox.Light>.Children .Item>.Icon{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:4px;font-family:fontello}
-                        .X-ComboBox.Light>.Children .Item>.Name{white-space:nowrap}
-                        .X-ComboBox.Light>.Children .Item.DISABLED{opacity:0.3;cursor:not-allowed}
-                        .X-ComboBox.Light>.Children .Item.DISABLED:hover{background:none}
+                        .X-ComboBox.Light>.Dropdown{position:absolute;display:none;min-width:100%;max-height:calc(100vh);border:1px solid #b6b6b6;background:#fff;z-index:10;overflow-y:auto;box-sizing:border-box}
+                        .X-ComboBox.Light>.Dropdown>.Search{display:flex;padding:5px}
+                        .X-ComboBox.Light>.Dropdown>.Search input{padding:4px 6px;border:1px solid #c3c3c3;border-radius:2px;outline:none}
+                        .X-ComboBox.Light>.Dropdown>.Search input:focus{border-color:#0098ff}
+                        .X-ComboBox.Light>.Dropdown>.Children{}
+                        .X-ComboBox.Light>.Dropdown>.Children .Group{padding:4px 0}
+                        .X-ComboBox.Light>.Dropdown>.Children .Group>header{padding:0 10px 4px}
+                        .X-ComboBox.Light>.Dropdown>.Children .Group>header .Name{position:relative;font-size:.7em;font-weight:500}
+                        .X-ComboBox.Light>.Dropdown>.Children .Group>.Children>.Item{padding-left:24px}
+                        .X-ComboBox.Light>.Dropdown>.Children .Group:last-child{padding-bottom:0}
+                                         
+                        .X-ComboBox.Light>.Dropdown>.Children .Item{display:flex;align-items:center;padding:2px 12px 2px 12px;cursor:pointer}
+                        .X-ComboBox.Light>.Dropdown>.Children .Item:hover{background:rgba(29,29,29,.1)}
+                        .X-ComboBox.Light>.Dropdown>.Children .Item.ACTIVE{background:rgba(0,173,255,.5)}
+                        .X-ComboBox.Light>.Dropdown>.Children .Item>.Icon{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:4px;font-family:fontello}
+                        .X-ComboBox.Light>.Dropdown>.Children .Item>.Name{white-space:nowrap}
+                        .X-ComboBox.Light>.Dropdown>.Children .Item.DISABLED{opacity:0.3;cursor:not-allowed}
+                        .X-ComboBox.Light>.Dropdown>.Children .Item.DISABLED:hover{background:none}
                     </style>
 
                     <script>
@@ -98,22 +105,23 @@
                         <div class="Item abstract">
                             <div class="Name"></div>
                         </div>
-
-                        <div class="Children">
-                            
-
-
-                            <div class="Item">
-                                <div class="Name">Predefined Item A</div>
+                        <div class="Dropdown">
+                            <div class="Search">
+                                <input type="text" placeholder="Search"/>
                             </div>
+                            <div class="Children">
+                                <div class="Item">
+                                    <div class="Name">Predefined Item AA</div>
+                                </div>
                             
-                            <div class="Group">
-                                <header>
-                                    <div class="Name">Free</div>
-                                </header>
-                                <div class="Children">
-                                    <div class="Item ACTIVE" data-value="F1">
-                                        <div class="Name">F1 (Predefined)</div>
+                                <div class="Group">
+                                    <header>
+                                        <div class="Name">Free</div>
+                                    </header>
+                                    <div class="Children">
+                                        <div class="Item ACTIVE" data-value="F1">
+                                            <div class="Name">F1 (Predefined)</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

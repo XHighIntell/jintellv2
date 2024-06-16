@@ -150,7 +150,7 @@
             return applications.find(app => app.manifest.id == id)
         }
 
-        portal.open = function(arg1) {
+        portal.open = async function(arg1) {
             // open method have 3 overloads
             // A. open(): void;
             // B. open(application: Portal.Application): void;
@@ -158,7 +158,7 @@
             
             if (arg1 == null) {
                 let application = applications.find(function(value) { return value.manifest.startup == true });
-                if (application) portal.open(application);
+                if (application) return portal.open(application);
             }
             else if (typeof arg1 == "string") {
                 // --C--
@@ -170,8 +170,7 @@
                 if (arg1) {
                     let application = applications.find(function(value) { return value.manifest.id == arg1 });
 
-                    if (application) portal.open(application);
-                    else portal.open();
+                    return portal.open(application);
                 }
 
             }
@@ -214,11 +213,12 @@
                     portal.overlay.showLoading(application);
 
                     // --2--
-                    portal.load(application).then(function() {
+                    try {
+                        await portal.load(application);
 
                         // we can't simply append root use jquery:
                         // ================================
-                        
+
                         // =================================
                         // [Deprecation] Synchronous XMLHttpRequest on the main thread is deprecated 
                         // because of its detrimental effects to the end user's experience. 
@@ -238,21 +238,20 @@
                         // })
                         // ========================
 
-
-
                         if (activeApplication == application) {
                             portal.overlay.hide();
                             intell.ctrl.show($portalApplications[0]);
                             intell.ctrl.show(application.elementRoot);
                         }
-                        else
-                            $(application.elementRoot).hide();
+                        else $(application.elementRoot).hide();
 
                         application.onOpen.dispatch();
-                    }, function(error) {
-                        if (activeApplication == application) portal.overlay.showError(application);
 
-                    });
+                    }
+                    catch (e) {
+                        if (activeApplication == application) portal.overlay.showError(application);
+                        throw e;
+                    }
 
                 }
                 else if (application.status == "LOADING") {
@@ -580,8 +579,8 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 
             // methods
             overlay.showLoading = function(application) {
-                $loadingOverlay.find('.Application-Name').text(application.manifest.name);
-                $loadingOverlay.find('.Application-Description').text(application.manifest.description);
+                $loadingOverlay.find('.Application-Name').html(application.manifest.name);
+                $loadingOverlay.find('.Application-Description').html(application.manifest.description);
                 $loadingOverlay.show();
 
                 $loadingOverlay[0].offsetHeight

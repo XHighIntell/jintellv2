@@ -154,26 +154,47 @@
         if (container != null) {
             switch (location) {
                 case 1: case 2: case 3:
+                    if (rect.x - margin < container.x) {
+                        rect.x = Math.max(0, container.x + margin);
+                        score--;
+                    }
+
                     if (rect.y - margin < container.y) {
-                        rect.y = container.y + margin;
+                        rect.y = Math.max(0, container.y + margin);
                         score--;
                     }
                     break;
                 case 4: case 5: case 6:
                     if (rect.x + rect.width + margin > container.x + container.width) {
-                        rect.x = container.x + container.width - margin - rect.width;
+                        rect.x = Math.max(0, container.x + container.width - margin - rect.width);
                         score--
                     }
+
+                    if (rect.y + rect.height + margin > container.y + container.height) {
+                        rect.y = Math.max(0, container.y + container.height - margin - rect.height);
+                        score--
+                    }
+
                     break;
                 case 7: case 8: case 9:
+                    if (rect.x + rect.width + margin > container.x + container.width) {
+                        rect.x = Math.max(0, container.x + container.width - margin - rect.width);
+                        score--;
+                    }
+
                     if (rect.y + rect.height + margin > container.y + container.height) {
-                        rect.y = container.y + container.height - margin - rect.height;
+                        rect.y = Math.max(0, container.y + container.height - margin - rect.height);
                         score--;
                     }
                     break;
                 case 10: case 11: case 12:
                     if (rect.x - margin < container.x) {
-                        rect.x = container.x + margin;
+                        rect.x = Math.max(0, container.x + margin);
+                        score--;
+                    }
+
+                    if (rect.y - margin < container.y) {
+                        rect.y = Math.max(0, container.y + margin);
                         score--;
                     }
                     break;
@@ -231,6 +252,12 @@
                     let scrollbar_right_size = elementContainer.offsetWidth - elementContainer.clientWidth;
                     let scrollbar_bottom_size = elementContainer.offsetHeight - elementContainer.clientHeight;
 
+                    if (elementContainer != document.documentElement) {
+                        // if we are on scrollable parent that is not documentElement
+                        width = elementContainer.clientWidth;
+                        height = elementContainer.clientHeight;
+                    }
+
                     // notes: <html> <body> tag cannot obtain a scroll bar (the browser scroll bar stays outside the border of the root element).
                     // => This may need more implementation.
                     if (elementContainer == document.documentElement || elementContainer == document.body) {
@@ -246,7 +273,7 @@
         }
 
 
-        $(element).css({ left: '-900px', visibility: 'hidden' });
+        $(element).css({ left: '-900px', top: '-90px', visibility: 'hidden' });
         ctrl.show(element);
 
         var popup = ctrl.getBoundingClientRectOffset(element);

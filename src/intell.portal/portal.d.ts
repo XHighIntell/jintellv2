@@ -39,14 +39,14 @@
         getApplication(id: string): Application;
 
         /** Open the first application that have manifest.startup equal true.  */
-        open(): void;
+        open(): Promise<void>;
         /** Open an application that added before. */
-        open(application: Application): void;
+        open(application: Application): Promise<void>;
         /** Open an application specified by its id. If there are no match id open default applcation. */
-        open(applicationId: string): void;
+        open(applicationId: string): Promise<void>;
 
-        /** (private) Load all resources of an application. */
-        protected load(application: Application): Promise<void>;
+        /** Load all resources of an application. */
+        load(application: Application): Promise<void>;
         /** (private) Load a single javascript. Javascript will be ignored if url that have loaded before. */
         protected loadJavascript(url: string): Promise<void>;
         /** (private) Load a single style sheet. Style sheet will be ignored if url that have loaded before. */
@@ -70,13 +70,13 @@
         elementShortcut?: HTMLElement;
 
         /** The status of this application. "NONE" = 0, "LOADING" = 1, "LOADED" = 2, "FAIL" = 3 */
-        status: "NONE" | "LOADING" | "LOADED" | "FAIL";
+        status?: "NONE" | "LOADING" | "LOADED" | "FAIL";
 
         /** The error occurs while loading. */
         error?: Error;
 
         /** Occur when the portal opens this application. */
-        onOpen: intell.EventRegister<(this: Application) => void>;
+        onOpen?: intell.EventRegister<(this: Application) => void>;
 
         init?(this: Application, application: Application): Promise<any> | void;
     }

@@ -409,6 +409,12 @@
                     let scrollbar_right_size = elementContainer.offsetWidth - elementContainer.clientWidth;
                     let scrollbar_bottom_size = elementContainer.offsetHeight - elementContainer.clientHeight;
 
+                    if (elementContainer != document.documentElement) {
+                        // if we are on scrollable parent that is not documentElement
+                        width = elementContainer.clientWidth;
+                        height = elementContainer.clientHeight;
+                    }
+
                     // notes: <html> <body> tag cannot obtain a scroll bar (the browser scroll bar stays outside the border of the root element).
                     // => This may need more implementation.
                     if (elementContainer == document.documentElement || elementContainer == document.body) {
@@ -424,7 +430,7 @@
         }
 
 
-        $(element).css({ left: '-900px', visibility: 'hidden' });
+        $(element).css({ left: '-900px', top: '-90px', visibility: 'hidden' });
         ctrl.show(element);
 
         var popup = ctrl.getBoundingClientRectOffset(element);
@@ -739,7 +745,7 @@
             return applications.find(app => app.manifest.id == id)
         }
 
-        portal.open = function(arg1) {
+        portal.open = async function(arg1) {
             // open method have 3 overloads
             // A. open(): void;
             // B. open(application: Portal.Application): void;
@@ -747,7 +753,7 @@
             
             if (arg1 == null) {
                 let application = applications.find(function(value) { return value.manifest.startup == true });
-                if (application) portal.open(application);
+                if (application) return portal.open(application);
             }
             else if (typeof arg1 == "string") {
                 // --C--
@@ -759,8 +765,7 @@
                 if (arg1) {
                     let application = applications.find(function(value) { return value.manifest.id == arg1 });
 
-                    if (application) portal.open(application);
-                    else portal.open();
+                    return portal.open(application);
                 }
 
             }
@@ -803,11 +808,12 @@
                     portal.overlay.showLoading(application);
 
                     // --2--
-                    portal.load(application).then(function() {
+                    try {
+                        await portal.load(application);
 
                         // we can't simply append root use jquery:
                         // ================================
-                        
+
                         // =================================
                         // [Deprecation] Synchronous XMLHttpRequest on the main thread is deprecated 
                         // because of its detrimental effects to the end user's experience. 
@@ -827,21 +833,20 @@
                         // })
                         // ========================
 
-
-
                         if (activeApplication == application) {
                             portal.overlay.hide();
                             intell.ctrl.show($portalApplications[0]);
                             intell.ctrl.show(application.elementRoot);
                         }
-                        else
-                            $(application.elementRoot).hide();
+                        else $(application.elementRoot).hide();
 
                         application.onOpen.dispatch();
-                    }, function(error) {
-                        if (activeApplication == application) portal.overlay.showError(application);
 
-                    });
+                    }
+                    catch (e) {
+                        if (activeApplication == application) portal.overlay.showError(application);
+                        throw e;
+                    }
 
                 }
                 else if (application.status == "LOADING") {
@@ -1169,8 +1174,8 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 
             // methods
             overlay.showLoading = function(application) {
-                $loadingOverlay.find('.Application-Name').text(application.manifest.name);
-                $loadingOverlay.find('.Application-Description').text(application.manifest.description);
+                $loadingOverlay.find('.Application-Name').html(application.manifest.name);
+                $loadingOverlay.find('.Application-Description').html(application.manifest.description);
                 $loadingOverlay.show();
 
                 $loadingOverlay[0].offsetHeight
@@ -1541,8 +1546,8 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         __private.items.forEach(function(item) { item.element.remove() });
         __private.groups.forEach(function(group) { group.element.remove() });
 
-        __private.items.slice(0, __private.items.length);
-        __private.groups.slice(0, __private.groups.length);
+        __private.items.splice(0, __private.items.length);
+        __private.groups.splice(0, __private.groups.length);
     }
 
     prototype.showChildren = function(at) {
@@ -3190,17 +3195,20 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 
         }, true);
         element.addEventListener('mouseup', function(e) {
-
-            // 1. ignore if it is from the children Menu
-            // 2. if this menu has children, dispatch event 
+            // 1. ignore if mouseup is not left mouse
+            // 2. ignore if it is from the children Menu
+            // 3. if this menu has children, dispatch event
             //    a. dispatch event
             //    b. hide all
 
             // --1--
+            if (e.button != 0) return;
+
+            // --2--
             var closest_elementMenu = ctrl.findClosestElement(e.target, value => Menu.getItem(value) != null);
             if (closest_elementMenu != element) return;
 
-            // --2--
+            // --3--
             if (_this.children.length == 0) _this._dispatchEvent_menuclick(_this);
         });
 
@@ -3247,7 +3255,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         element.addEventListener('focusout', function(e) {
             var root = _this.getRoot();
 
-            console.log('Menu.foucusout', _this, e, document.activeElement);
+            //console.log('Menu.foucusout', _this, e, document.activeElement);
 
             if (_this !== root) return;
             if (_this.element == document.activeElement) return;
@@ -3261,7 +3269,8 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
             //
             //if (_this !== root) return;
             //if (__private.element.contains(e.target) == true) return;
-            //
+
+            // if (document.activeElement  __private.element.isfo
             //_this.active = false;
             //_this.childrenVisible = false;
             //
@@ -3600,7 +3609,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 
         // --1--
         if (locations == null) locations = this == root ? root.rootLocations : root.childLocations;
-        if (option == null) option = this == root ? root.rootOption : root.childLocations;
+        if (option == null) option = this == root ? root.rootOption : root.childOption;
 
         var element = __private.element;
         var elementChildren = __private.elementChildren;
@@ -3635,7 +3644,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
             element.classList.add(CHILDREN_VISIBLE_CLASS)
             ctrl.stopHide(elementChildren);
         }
-
+        this.getRoot().element.focus({ preventScroll: true });
         __private.childrenVisible = true;
         
     }

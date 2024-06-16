@@ -161,10 +161,7 @@
         {
             "title": "active: boolean",
             "type": "boolean",
-            "description": "Gets or sets the active state of this menu.",
-            "value": {
-                "description": "the default is <mark>86399999</mark> (23:59:59.999)."
-            }
+            "description": "Gets or sets the active state of this menu."
         },
         {
             "title": "childrenVisible: boolean",
@@ -294,7 +291,8 @@
     "events": [
         {
             "title": "menuclick",
-            "description": "Occurs when the menu is clicked. The events does bubbles."
+            "description": "Occurs when the menu is clicked. The events does bubbles and cancelable.",
+            "remarks": "Any click event that does not prevent default (by calling the event's <mark>preventDefault()</mark> method) will result in the menu being hidden afterward."
         }
     ],
     "static_methods": [

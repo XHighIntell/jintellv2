@@ -115,17 +115,20 @@
 
         }, true);
         element.addEventListener('mouseup', function(e) {
-
-            // 1. ignore if it is from the children Menu
-            // 2. if this menu has children, dispatch event 
+            // 1. ignore if mouseup is not left mouse
+            // 2. ignore if it is from the children Menu
+            // 3. if this menu has children, dispatch event
             //    a. dispatch event
             //    b. hide all
 
             // --1--
+            if (e.button != 0) return;
+
+            // --2--
             var closest_elementMenu = ctrl.findClosestElement(e.target, value => Menu.getItem(value) != null);
             if (closest_elementMenu != element) return;
 
-            // --2--
+            // --3--
             if (_this.children.length == 0) _this._dispatchEvent_menuclick(_this);
         });
 
@@ -172,7 +175,7 @@
         element.addEventListener('focusout', function(e) {
             var root = _this.getRoot();
 
-            console.log('Menu.foucusout', _this, e, document.activeElement);
+            //console.log('Menu.foucusout', _this, e, document.activeElement);
 
             if (_this !== root) return;
             if (_this.element == document.activeElement) return;
@@ -186,7 +189,8 @@
             //
             //if (_this !== root) return;
             //if (__private.element.contains(e.target) == true) return;
-            //
+
+            // if (document.activeElement  __private.element.isfo
             //_this.active = false;
             //_this.childrenVisible = false;
             //
@@ -525,7 +529,7 @@
 
         // --1--
         if (locations == null) locations = this == root ? root.rootLocations : root.childLocations;
-        if (option == null) option = this == root ? root.rootOption : root.childLocations;
+        if (option == null) option = this == root ? root.rootOption : root.childOption;
 
         var element = __private.element;
         var elementChildren = __private.elementChildren;
@@ -560,7 +564,7 @@
             element.classList.add(CHILDREN_VISIBLE_CLASS)
             ctrl.stopHide(elementChildren);
         }
-
+        this.getRoot().element.focus({ preventScroll: true });
         __private.childrenVisible = true;
         
     }
@@ -747,12 +751,16 @@
     prototype._dispatchEvent_menuclick = function(menu) {
         var root = this.getRoot();
 
-        var event = new Event("menuclick", { bubbles: true, cancelable: false });
+        var event = new Event("menuclick", { bubbles: true, cancelable: true });
         event.menu = menu;
         menu.element.dispatchEvent(event);
 
-        root.active = false;
-        root.childrenVisible = false;
+        if (event.defaultPrevented == false) {
+            root.active = false;
+            root.childrenVisible = false;
+        } else {
+
+        }
     }
 
     // ==== static methods ====

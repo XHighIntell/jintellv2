@@ -8,32 +8,45 @@
         constructor(element: HTMLElement);
 
         // fields
-        protected taskbar: PortalTaskbar;
-        protected overlay: PortalOverlay;
+        taskbar: PortalTaskbar;
+        overlay: PortalOverlay;
 
         // properties
+        /** The root element of portal. */
+        element: HTMLElement;
         /** Gets the list of applications that are added to the portal. */
         applications: Application[];
         /** Gets or sets active application. */
         activeApplication: Application;
 
         // methods
+        add(application: Partial<Application> & Pick<Application, "manifest">): void;
+
         /** Add a manifest to portal. */
-        addManifest(manifest: ApplicationManifest, callback: (application: Application) => void): Application;
+        addManifest(manifest: Partial<ApplicationManifest>, callback: (application: Application) => any | Promise<any>): Application;
 
         /** Add a manifest to portal via module.
          * @description Required ES2020 (ES11) */
         addManifestModule(moduleName: string): Promise<any>;
 
-        /** Open the first application that have manifest.startup equal true.  */
-        open(): void;
-        /** Open an application that added before. */
-        open(application: Application): void;
-        /** Open an application specified by its id. If there are no match id open default applcation. */
-        open(applicationId: string): void;
+        /** Add an application by its constructor method. */
+        addManifestClass(constructor: { new(): Application }): Application;
 
-        /** (private) Load all resources of an application. */
-        protected load(application: Application): Promise<void>;
+        /** Add an application by its constructor method. */
+        addManifestClassModule(moduleName: string): Promise<Application>;
+
+        /** Gets Application by its id. */
+        getApplication(id: string): Application;
+
+        /** Open the first application that have manifest.startup equal true.  */
+        open(): Promise<void>;
+        /** Open an application that added before. */
+        open(application: Application): Promise<void>;
+        /** Open an application specified by its id. If there are no match id open default applcation. */
+        open(applicationId: string): Promise<void>;
+
+        /** Load all resources of an application. */
+        load(application: Application): Promise<void>;
         /** (private) Load a single javascript. Javascript will be ignored if url that have loaded before. */
         protected loadJavascript(url: string): Promise<void>;
         /** (private) Load a single style sheet. Style sheet will be ignored if url that have loaded before. */
@@ -47,27 +60,27 @@
         /** Initializes a new instance of application. */
         constructor();
 
-        protected __callback: (application: Application) => Promise<any> | void;
-
         /** Gets the manifest of application. */
         manifest: ApplicationManifest;
 
         /** The root element of application. */
-        elementRoot: HTMLElement;
+        elementRoot?: HTMLElement;
 
         /** Gets the sidebar element. */
-        elementShortcut: HTMLElement;
+        elementShortcut?: HTMLElement;
 
         /** The status of this application. "NONE" = 0, "LOADING" = 1, "LOADED" = 2, "FAIL" = 3 */
-        status: "NONE" | "LOADING" | "LOADED" | "FAIL";
+        status?: "NONE" | "LOADING" | "LOADED" | "FAIL";
 
         /** The error occurs while loading. */
-        error: Error;
+        error?: Error;
 
         /** Occur when the portal opens this application. */
-        onOpen: intell.EventRegister<(this: Application) => void>;
-    }
+        onOpen?: intell.EventRegister<(this: Application) => void>;
 
+        init?(this: Application, application: Application): Promise<any> | void;
+    }
+    type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>;
     // methods
     // export function create(element?: HTMLElement): Portal;
 
@@ -88,19 +101,19 @@
         title: string;
 
         /** Url to icon/image of the application. */
-        icon: string;
+        icon?: string;
 
         /** Display a text as icon/image of the application. */
-        iconText: string;
+        iconText?: string;
 
         /** Pin this application to menu. The default is true. */
-        shortcut: boolean;
+        shortcut?: boolean;
 
         /** The shortcut group */
-        group: string;
+        group?: string;
 
         /** Load the application immediately after add. The default is false. */
-        startup: boolean;
+        startup?: boolean;
 
         content: ApplicationManifestContent;
     }
@@ -109,10 +122,10 @@
         html: string;
 
         /** The list of JavaScript files to be injected into portal. */
-        js: string[];
+        js?: string[];
 
         /** (Unsupport) The list of CSS files to be injected into portal. */
-        css: string[];
+        css?: string[];
     }
 
     interface PortalTaskbar {

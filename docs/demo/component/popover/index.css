@@ -3,7 +3,7 @@
 .popover .action-pop:before{content:'';font-family:'fontello'}
 .popover .action-pop.POPUP-ATTACHED{background:rgba(0,234,255,.3)}
     
-.popover .targetpopup{position:absolute;width:max-content;padding:2px 8px;box-shadow:0 0 2px black;background:#fff;transition:opacity .5s;opacity:0}
+.popover .targetpopup{position:absolute;width:max-content;padding:6px 8px;box-shadow:0 0 2px black;background:#fff;transition:opacity .5s;opacity:0;white-space:normal;z-index:9}
 .popover .targetpopup.ACTIVE{opacity:1}
 .popover .targetpopup .Arrow{position:absolute;height:8px;width:8px;box-shadow:1px 1px 1px rgba(0,0,0,.4);background:#fff;clip-path:polygon(200% 200%,100% -10%,-10% 100%)}
 .popover .targetpopup .Arrow.DOWN{bottom:-4px;transform:rotate(45deg)}

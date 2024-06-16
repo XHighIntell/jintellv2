@@ -40,6 +40,7 @@
                     </div>
                     <div id="targetpopup1" style="display:none">
                         <span class="Arrow"></span>
+                        <input type="text"/>
                         aaaaaaa
                     </div>
 
@@ -102,7 +103,7 @@
                     <script>
                         window.addEventListener('load', function() {
                             var targetpopup2 = window.targetpopup2 = new intell.ctrl.TargetPopup(document.getElementById('targetpopup2'));
-
+                        
                             $('#example2').on('click', '.actions .action', function() { targetpopup2.showAt(this) });
                         });
                     </script>

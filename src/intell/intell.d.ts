@@ -20,7 +20,7 @@ declare namespace intell {
         protected target: ThisParameterType<T>;
 
         /** Registers an event listener callback to this event. Listeners can return "stop" to prevent further chain of callbacks. */
-        addListener(callback: (this: ThisParameterType<T>, ...args: Parameters<T>) => "stop" | void): void;
+        addListener(callback: (this: ThisParameterType<T>, ...args: Parameters<T>) => "stop" | void | Promise<any>): void;
         
         /** Deregisters an event listener callback from this event. */
         removeListener(callback: T): void;
@@ -50,6 +50,8 @@ declare namespace intell {
     * @param search The string containing key value pair that separate by =. If search is not specified, location.search.substr(1) will be used instead.
     * @returns Return the key value pair object. */
     export function qs(search?: string): { [T: string]: string };
+
+    export function wait(timeout: number): Promise<void>;
 
     // ======= fields =======
     /** Gets the version of this library. */
@@ -110,7 +112,7 @@ type NotKeyOf<T, U> = { [k in keyof T]: T[k] extends U ? never : k }[keyof T];
 type NotKeyOfFunction<T> = { [k in keyof T]: T[k] extends Function ? never : k }[keyof T];
 
 type defineProperties<T> = {
-    [K in keyof T]: {
+    [K in keyof T]?: {
         get: (this: T) => T[K];
         set: (this: T, newValue: T[K]) => void;
     }

@@ -32,6 +32,10 @@
         // properties
         /** @type defineProperties<intell.portal.Portal> */
         var defineProperties = {
+            element: {
+                get: function() { return element },
+                set: function() { throw new Error("'Portal.element' cannot be assigned to -- it is read only") }
+            },
             applications: {
                 get: function() { return applications.slice() },
                 set: function() { throw new Error("'Portal.applications' cannot be assigned to -- it is read only")  }
@@ -47,6 +51,31 @@
         
 
         // methods
+        portal.add = function(application) {
+
+            if (application.manifest == null) throw new Error();
+
+
+            application.manifest.shortcut ??= true;
+            application.manifest.startup ??= false;
+            application.status ??= "NONE";
+            application.onOpen ??= new intell.EventRegister(application);
+
+
+            // 1. check if application exist
+            // 2. create shortcut base on manifest
+
+            // --1--
+            var element = this.taskbar.get(application);
+            if (element != null) return; // application already exists
+
+            applications.push(application);
+
+            // --2
+            if (application.manifest.shortcut === true) {
+                application.elementShortcut = this.taskbar.add(application);
+            }
+        }
         portal.addManifest = function(manifest, callback) {
             var application = new ns.Application();
 
@@ -81,16 +110,47 @@
             if (manifest.shortcut === true) {
                 application.elementShortcut = this.taskbar.add(application);
             }
-            
-            application.__callback = callback;
+
+            application.init = callback;
         }
         portal.addManifestModule = function(moduleName) {
             return import(moduleName).then(function(module) {
                 return module.default(portal);
             }); 
         }
+        portal.addManifestClass = function(fn) {
+            var application = new fn();
 
-        portal.open = function(arg1) {
+            var manifest = application.manifest;
+
+            // 1. check if application exist
+            // 2. create shortcut base on manifest
+
+            // --1--
+            var element = this.taskbar.get(application);
+            if (element != null) return; // application already exists
+
+            applications.push(application);
+
+            // --2
+            if (manifest.shortcut === true) {
+                application.elementShortcut = this.taskbar.add(application);
+            }
+
+            if (application.init == null) throw new Error("application.init can't be null when added via addManifestClass.")
+
+            return application;
+        }
+        portal.addManifestClassModule = async function(moduleName) {
+            const module = await import(moduleName);
+            return portal.addManifestClass(module.default)
+        }
+
+        portal.getApplication = function(id) {
+            return applications.find(app => app.manifest.id == id)
+        }
+
+        portal.open = async function(arg1) {
             // open method have 3 overloads
             // A. open(): void;
             // B. open(application: Portal.Application): void;
@@ -98,16 +158,32 @@
             
             if (arg1 == null) {
                 let application = applications.find(function(value) { return value.manifest.startup == true });
-                if (application) portal.open(application);
+                if (application) return portal.open(application);
             }
-            else if (arg1 instanceof ns.Application) {
-                // --B--
+            else if (typeof arg1 == "string") {
+                // --C--
 
+                // let find a application to open first
+                // 1. find application have the same id                
+
+                // --1--
+                if (arg1) {
+                    let application = applications.find(function(value) { return value.manifest.id == arg1 });
+
+                    return portal.open(application);
+                }
+
+            }
+            else if (typeof arg1 == "object") {
+                // --B--
+                /** @type {intell.portal.Application}*/
                 let application = arg1;
-                let manifest = arg1.manifest;
-                
+                let manifest = application.manifest;
+
                 // 1. if open an application already opened, exit this block
                 // 2. set active class, hide all other applications
+                //      a. hide the container of application
+                //      b. hide all applications
                 // 3. 
 
                 // --1--
@@ -119,11 +195,10 @@
 
                 // --2--
                 activeApplication = application;
-
                 portal.taskbar.active(application);
-
-
-
+                // --2a--
+                intell.ctrl.hide($portalApplications[0]);
+                // --2b--
                 portal.applications.forEach(function(value) {
                     if (value.elementRoot != null) intell.ctrl.hide(value.elementRoot);
                 });
@@ -138,11 +213,12 @@
                     portal.overlay.showLoading(application);
 
                     // --2--
-                    portal.load(application).then(function() {
+                    try {
+                        await portal.load(application);
 
                         // we can't simply append root use jquery:
                         // ================================
-                        $portalApplications.append(application.elementRoot)
+
                         // =================================
                         // [Deprecation] Synchronous XMLHttpRequest on the main thread is deprecated 
                         // because of its detrimental effects to the end user's experience. 
@@ -162,20 +238,20 @@
                         // })
                         // ========================
 
-
-
                         if (activeApplication == application) {
                             portal.overlay.hide();
-                            $(application.elementRoot).show();
+                            intell.ctrl.show($portalApplications[0]);
+                            intell.ctrl.show(application.elementRoot);
                         }
-                        else
-                            $(application.elementRoot).hide();
+                        else $(application.elementRoot).hide();
 
                         application.onOpen.dispatch();
-                    }, function(error) {
-                        if (activeApplication == application) portal.overlay.showError(application);
 
-                    });
+                    }
+                    catch (e) {
+                        if (activeApplication == application) portal.overlay.showError(application);
+                        throw e;
+                    }
 
                 }
                 else if (application.status == "LOADING") {
@@ -184,33 +260,19 @@
                 }
                 else if (application.status == "LOADED") { //LOADED
                     portal.overlay.hide();
+                    intell.ctrl.show($portalApplications[0]);
                     intell.ctrl.show(application.elementRoot);
                 }
                 else if (application.status == "FAIL") {
                     portal.overlay.showError(application);
                 }
 
-                portal.taskbar.active(application);
+                $portalApplications.attr('data-active-application', manifest.id);
                 portal.onChange.dispatch({ oldApplication: oldApplication, newApplication: newApplication });
 
                 // because portal.onchange -> application.onopen 
                 if (arg1.status == "LOADED") arg1.onOpen.dispatch();
 
-
-            }
-            else if (typeof arg1 == "string") {
-                // --C--
-
-                // let find a application to open first
-                // 1. find application have the same id                
-
-                // --1--
-                if (arg1) {
-                    let application = applications.find(function(value) { return value.manifest.id == arg1 });
-
-                    if (application) portal.open(application);
-                    else portal.open();
-                }
 
             }
         }
@@ -246,6 +308,9 @@
                             if ($root.length > 1)
                                 $root = $('<div class="Application-Wrapper"></div>').append($root);
                             application.elementRoot = $root[0];
+
+                            intell.ctrl.hide(application.elementRoot);
+                            $portalApplications.append(application.elementRoot);
 
                             resolve();
 
@@ -293,7 +358,8 @@
             }
 
             return promise.then(function() {
-                if (typeof application.__callback == 'function') return application.__callback(application);
+                if (typeof application.init == 'function') return application.init.call(application, application);
+
             }).then(function() {
                 application.status = "LOADED";
             }).catch(function(error) {
@@ -513,8 +579,8 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 
             // methods
             overlay.showLoading = function(application) {
-                $loadingOverlay.find('.Application-Name').text(application.manifest.name);
-                $loadingOverlay.find('.Application-Description').text(application.manifest.description);
+                $loadingOverlay.find('.Application-Name').html(application.manifest.name);
+                $loadingOverlay.find('.Application-Description').html(application.manifest.description);
                 $loadingOverlay.show();
 
                 $loadingOverlay[0].offsetHeight

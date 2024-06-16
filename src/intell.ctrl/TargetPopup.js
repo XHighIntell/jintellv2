@@ -29,9 +29,22 @@
         __private.popupOption = { container_mode: "auto", space: 1 };
         __private.popupDelayHideTime = 500;
 
-        window.addEventListener('click', function(e) {
-            if (__private.element.contains(e.target) == true) return;
-            if (__private.targetElement != null && __private.targetElement.contains(e.target) == true) return;
+        /** @type {HTMLElement} */
+        let elementMouseDown;
+        /** @type {HTMLElement} */
+        let elementMouseUp;
+
+        document.addEventListener('mousedown', function(e) {
+            elementMouseDown = e.target;
+        });
+        document.addEventListener('mouseup', function(e) {
+            elementMouseUp = e.target;
+
+            if (__private.isVisible == false) return; // already hidden
+            if (__private.isVisible == true && __private.isFadingOut == true) return; // fading out
+
+            if (__private.element.contains(elementMouseDown) == true) return; // mousedown from inside
+            if (__private.targetElement != null && __private.targetElement.contains(e.target) == true) return; // mouseup on our target
 
             _this.hide();
         });
@@ -169,7 +182,7 @@
 
             // --5--
             var event = new Event('targetpopuphide', { cancelable: false, bubbles: true });
-            event.targetpopup = _this;
+            event.targetpopup = this;
             __private.element.dispatchEvent(event);
         }
 

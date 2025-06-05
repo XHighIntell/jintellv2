@@ -161,7 +161,7 @@
         {
             "title": "active: boolean",
             "type": "boolean",
-            "description": "Gets or sets the active state of this menu.",
+            "description": "Gets or sets the active state of this menu."
         },
         {
             "title": "childrenVisible: boolean",

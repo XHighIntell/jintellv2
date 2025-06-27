@@ -98,7 +98,7 @@
         description: string;
 
         /** A short description of the application */
-        title: string;
+        title?: string;
 
         /** Url to icon/image of the application. */
         icon?: string;

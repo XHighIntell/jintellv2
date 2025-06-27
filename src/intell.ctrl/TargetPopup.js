@@ -28,6 +28,8 @@
         __private.popupLocations = [9, 1];
         __private.popupOption = { container_mode: "auto", space: 1 };
         __private.popupDelayHideTime = 500;
+        __private.isVisible = false;
+        __private.isFadingOut = false;
 
         /** @type {HTMLElement} */
         let elementMouseDown;

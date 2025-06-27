@@ -2,8 +2,8 @@
     if (globalThis.window == null) return;
     var ctrl = intell.ctrl;
     var Numeric = ctrl.Numeric;
-    var localeDecimalSeparator = (0.1).toLocaleString().substr(1, 1);   // "." in en-US
-    var localeThousandSeparator = (1000).toLocaleString().substr(1, 1); // "," in en-US
+    var localeDecimalSeparator = (0.1).toLocaleString().substring(1, 2);   // "." in en-US
+    var localeThousandSeparator = (1000).toLocaleString().substring(1, 2); // "," in en-US
 
 
     // constructor
@@ -36,6 +36,7 @@
         __private.decimalSeparator = localeDecimalSeparator;
         __private.thousandSeparator = localeThousandSeparator;
         __private.nullable = false;
+        __private.readonly = false;
         __private.value = null;
         __private.increment = 1;
 
@@ -49,23 +50,33 @@
             var e = ev.originalEvent;
             var keyCode = e.keyCode;
 
+
             if (keyCode == 27) {
                 session_skiped = true;
                 __private.elementInput.value = Numeric.formatNumber(__private.value, __private);
                 __private.elementInput.blur();
             }
-            else if (keyCode == 38) {
+            else if (keyCode == 38 && __private.readonly == false) {
                 _this.increaseSessionBy(__private.increment); e.preventDefault();
             }
-            else if (keyCode == 40) {
+            else if (keyCode == 40 && __private.readonly == false) {
                 _this.increaseSessionBy(-__private.increment); e.preventDefault();
             }
         })
-        $elementInput.keypress(function(e) { if ('1234567890.,-'.indexOf(e.originalEvent.key) == -1) return false });
-        $elementInput.focusout(function(e) { if (session_skiped == true) return; _this._focusout() });
+        $elementInput.on('keypress', function(e) {
+            if (__private.readonly == true) return false;
+            if ('1234567890.,-'.indexOf(e.originalEvent.key) == -1) return false
+        });
+        $elementInput.on('focusout', function(e) { if (session_skiped == true) return; _this._focusout() });
 
-        $elementUp.click(function() { _this.increaseSessionBy(_this.increment) });
-        $elementDown.click(function() { _this.increaseSessionBy(-_this.increment) });
+        $elementUp.on('click', function() {
+            if (__private.readonly == true) return;
+            _this.increaseSessionBy(_this.increment)
+        });
+        $elementDown.on('click', function() {
+            if (__private.readonly == true) return;
+            _this.increaseSessionBy(-_this.increment)
+        });
 
         $elementUp.add($elementDown).mousedown(function(ev) {
             __private.elementInput.focus();
@@ -74,6 +85,7 @@
         })
         $element.on('mousewheel', function(ev) {
             if (__private.elementInput != document.activeElement) return;
+            if (__private.readonly == true) return;
 
             var e = ev.originalEvent;
 
@@ -145,6 +157,15 @@
         nullable: {
             get: function() { return this.getPrivate().nullable },
             set: function(newValue) { this.getPrivate().nullable = newValue }
+        },
+        readonly: {
+            get: function() { return this.getPrivate().readonly },
+            set: function(newValue) {
+                var __private = this.getPrivate();
+
+                __private.readonly = newValue
+                __private.elementInput.readOnly = newValue;
+            }
         },
         value: {
             get: function() { return this.getPrivate().value },

@@ -1,5 +1,5 @@
 ﻿!function() {
-    if (globalThis.window == null) return;
+    //if (globalThis.window == null) return;
     var template = intell.ctrl.template; template = {}; intell.ctrl.template = template;
     var privateKey = Symbol ? Symbol('__private') : '__private';
     
@@ -27,6 +27,6 @@
     var prototype = constructor.prototype;
 
     
-    prototype.getPrivate = function(o) { return this[privateKey] ?? (this[privateKey] = o) }
+    prototype.getPrivate = function(o) { return this[privateKey] ?? (this[privateKey] = (o ?? {})) }
 
 }()

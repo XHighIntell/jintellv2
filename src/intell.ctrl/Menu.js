@@ -610,10 +610,15 @@
             element.classList.remove(CHILDREN_VISIBLE_CLASS);
             element.classList.add(CHILDREN_FADEOUT_CLASS);
 
-            ctrl.startHide(elementChildren, delayHideTime, FADEOUT_CLASS).then(function() {
+            ctrl.startHide(elementChildren, delayHideTime, FADEOUT_CLASS).then(() => {
                 element.classList.remove(CHILDREN_FADEOUT_CLASS);
 
                 __private.childrenFadingOut = false;
+                
+                // menuclose event will be triggered when children hide
+                var event = new Event("menuclose", { bubbles: true, cancelable: true });
+                event.menu = this;
+                __private.element.dispatchEvent(event);
             });
 
             // --4--
@@ -649,9 +654,15 @@
         __private.children.forEach(function(child) {
             var child__private = child.getPrivate();
             if (child__private.active == true) child.active = false;
-            if (child__private.childrenVisible == true || child__private.childrenFadingOut == true) child.hideChildrenImmediately();
+            if (child__private.childrenVisible == true || child__private.childrenFadingOut == true) {
+                child.hideChildrenImmediately();
+            }
         })
 
+        // menuclose event will be triggered when children hide
+        var event = new Event("menuclose", { bubbles: true, cancelable: true });
+        event.menu = this;
+        __private.element.dispatchEvent(event);
     }
     prototype.checkHasChildren = function() {
         var __private = this.getPrivate();

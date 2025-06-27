@@ -14,7 +14,7 @@ declare namespace intell.ctrl.template {
 
     interface InheritOption {
         ctrlKey: symbol | string;
-        mode: 'all';
+        mode?: 'all';
         // methods: ['getPrivate']
         // static_methods: ['getItem', 'setItem'];
     }

@@ -41,6 +41,9 @@ declare namespace intell.ctrl {
         /** Gets or sets the thousand separator; the default is locale thousand separator. */
         thousandSeparator: string;
 
+        /** Gets or sets whether the control is not mutable, meaning the user can not edit the control. */
+        readonly: boolean;
+
         /** Gets or sets the value of Numeric. */
         value?: number;
 
@@ -93,6 +96,7 @@ declare namespace intell.ctrl {
         decimalSeparator: number;
         thousandSeparator: number;
         nullable: boolean;
+        readonly: boolean;
         value: number;
 
         increment: number;

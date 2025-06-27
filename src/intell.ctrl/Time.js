@@ -288,6 +288,8 @@
         if (name) this.setEditName(name);
     }
     prototype._wheel = function(e) {
+        if (e.ctrlKey == true) return;
+        
         var __private = this.getPrivate();
         var name = __private.currentUnitName;
         if (name == null) return;
@@ -304,8 +306,8 @@
         var __private = this.getPrivate();
         var keycode = e.keyCode;
 
-        if (keycode == 37) this._keydownLeft();
-        if (keycode == 39) this._keydownRight();
+        if (keycode == 37) { this._keydownLeft(); e.preventDefault(); }
+        if (keycode == 39) { this._keydownRight(); e.preventDefault(); }
         if (keycode == 8 || keycode == 46) this._keydownDel();
         if (keycode == 27) this._keydownEsc();
 
@@ -320,7 +322,7 @@
             e.preventDefault();
         }
 
-        if (48 <= e.keyCode && e.keyCode <= 57) {
+        if (e.key === parseInt(e.key).toString()) {
             // internal handle number key press
             // 1. calculate newUnitValue from keycode. number (0-9)
             //   a. if current is seconds and newUnitValue > 59 and user press 3 time, newUnitValue is new input
@@ -328,7 +330,7 @@
             // 3. move to next if possible
 
             var name = __private.currentUnitName; if (name == null) return;
-            var inputNumber = e.keyCode - 48;
+            var inputNumber = parseInt(e.key);
             var currentUnitValue = __private[name]; if (currentUnitValue == null) currentUnitValue = 0;
 
             __private.currentNumbers++;
@@ -345,9 +347,9 @@
                     newUnitValue = inputNumber;
                     __private.currentNumbers = 1;
                 }
-                
+
             } else if (name == "milliseconds") newUnitValue = newUnitValue % 1000;
-            
+
             // --2--
             this.setEditValue(name, newUnitValue);
 
@@ -363,11 +365,11 @@
             else if (name == "minutes") {
                 if (__private.minutes > 5) moveNext = true;
                 else if (__private.currentNumbers >= 2) moveNext = true;
-            } 
+            }
             else if (name == "seconds") {
                 if (__private.seconds > 5) moveNext = true;
                 else if (__private.currentNumbers >= 2) moveNext = true;
-            } 
+            }
 
             if (moveNext == true) this._keydownRight();
         }
@@ -377,6 +379,7 @@
 
         if (__private.currentUnitName == "minutes") this.setEditName("hours")
         else if (__private.currentUnitName == "seconds") this.setEditName("minutes")
+        else if (__private.currentUnitName == "milliseconds") this.setEditName("seconds")
     }
     prototype._keydownRight = function() {
         var __private = this.getPrivate();

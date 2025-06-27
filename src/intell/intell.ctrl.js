@@ -1,5 +1,4 @@
 ﻿!function() {
-    if (globalThis.window == null) return;
     var ctrl = intell.ctrl; ctrl = {}; intell.ctrl = ctrl;
 
     // === methods ===
@@ -159,8 +158,18 @@
                         score--;
                     }
 
+                    if (rect.x + rect.width + margin > container.x + container.width) {
+                        rect.x = Math.max(0, container.x + container.width - margin - rect.width);
+                        score--;
+                    }
+
                     if (rect.y - margin < container.y) {
                         rect.y = Math.max(0, container.y + margin);
+                        score--;
+                    }
+
+                    if (rect.y + rect.height + margin > container.y + container.height) {
+                        rect.y = Math.max(0, container.y + container.height - margin - rect.height);
                         score--;
                     }
                     break;
@@ -177,8 +186,18 @@
 
                     break;
                 case 7: case 8: case 9:
+                    if (rect.x - margin < container.x) {
+                        rect.x = Math.max(0, container.x + margin);
+                        score--;
+                    }
+
                     if (rect.x + rect.width + margin > container.x + container.width) {
                         rect.x = Math.max(0, container.x + container.width - margin - rect.width);
+                        score--;
+                    }
+
+                    if (rect.y - margin < container.y) {
+                        rect.y = Math.max(0, container.y + margin);
                         score--;
                     }
 
@@ -239,6 +258,7 @@
                     if (element == document.documentElement) return true;
 
                     var computedStyle = getComputedStyle(element);
+                    if (computedStyle.overflow == 'hidden') return true;
                     if (computedStyle.overflow != 'visible' && computedStyle.position != 'static') return true;
 
                     return false;
@@ -260,10 +280,12 @@
 
                     // notes: <html> <body> tag cannot obtain a scroll bar (the browser scroll bar stays outside the border of the root element).
                     // => This may need more implementation.
-                    if (elementContainer == document.documentElement || elementContainer == document.body) {
-                        scrollbar_right_size = 0;
-                        scrollbar_bottom_size = 0;
-                    }
+                    scrollbar_right_size = 0;
+                    scrollbar_bottom_size = 0;
+                    //if (elementContainer == document.documentElement || elementContainer == document.body) {
+                    //    scrollbar_right_size = 0;
+                    //    scrollbar_bottom_size = 0;
+                    //}
 
                     clone.container = new DOMRect(offset.left, offset.top, width - scrollbar_right_size, height - scrollbar_bottom_size);
 

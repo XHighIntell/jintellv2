@@ -19,12 +19,12 @@ hljs.registerLanguage('dts', function(a) {
                 begin: '"', end: '"'
             },
             {
-                scope: 'keyword',
-                begin: '\\b(any|new|constructor|void|this|function|static|readonly)\\b',
-            },
-            {
                 scope: 'attr',           // name
                 begin: /(\w+)(?= *\?? *:)/,
+            },
+            {
+                scope: 'keyword',
+                begin: '\\b(any|new|constructor|void|this|function|static|readonly)\\b',
             },
             {
                 scope: 'class built_in', // type

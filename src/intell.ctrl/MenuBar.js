@@ -102,7 +102,7 @@
     // ====== methods ======
     prototype.add = function() {
         if (arguments.length == 1 && typeof arguments[0] == "string") return this.addName.apply(this, arguments);
-        if (arguments.length == 1 && arguments[0] instanceof MenuItem == true) return this.addMenu.apply(this, arguments);
+        if (arguments.length == 1 && arguments[0] instanceof intell.ctrl.Menu == true) return this.addMenu.apply(this, arguments);
         if (arguments.length == 1 && typeof arguments[0] == "object") return this.addOption.apply(this, arguments);
 
         throw new Error("arguments do not match with any overloads.")

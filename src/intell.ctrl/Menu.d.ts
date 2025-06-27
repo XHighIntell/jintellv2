@@ -158,3 +158,7 @@
 }
 
 
+interface GlobalEventHandlersEventMap {
+    "menuclick": Event & { menu: intell.ctrl.Menu };
+    "menuclose": Event & { menu: intell.ctrl.Menu };
+}

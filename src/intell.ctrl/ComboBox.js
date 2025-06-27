@@ -231,11 +231,11 @@
         
         var item = new ctrl.ComboBoxItem(element);
 
-        if (option.name) item.name = option.name;
-        if (option.icon) item.icon = option.icon;
-        if (option.value) item.value = option.value;
-        if (option.group) item.group = option.group;
-        if (option.disabled) item.disabled = option.disabled;
+        if (option.name != null) item.name = option.name;
+        if (option.icon != null) item.icon = option.icon;
+        if (option.value != null) item.value = option.value;
+        if (option.group != null) item.group = option.group;
+        if (option.disabled != null) item.disabled = option.disabled;
 
         this.addItem(item);
 

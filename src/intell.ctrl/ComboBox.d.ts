@@ -40,7 +40,7 @@ declare namespace intell.ctrl {
         showChildren(): void;
         showChildren(target: HTMLElement, hideOnFocusOut: boolean): void;
         showChildren(coord: intell.ctrl.CoordinatesLike): void;
-        protected showChildrenElement(target: HTMLElement, hideOnFocusOut: boolean): void;
+        protected showChildrenElement(target: HTMLElement, hideOnFocusOut?: boolean): void;
         protected showChildrenCoord(coord: intell.ctrl.CoordinatesLike): void;
         hideChildren(): void;
 

@@ -50,3 +50,8 @@ declare namespace intell.ctrl {
 
 }
 
+
+
+interface GlobalEventHandlersEventMap {
+    "targetpopuphide": Event & { targetpopup: intell.ctrl.TargetPopup };
+}

@@ -1,4 +1,5 @@
 ﻿!function() {
+    if (globalThis.window == null) return;
     let ns = intell.component; ns = {}; intell.component = ns;
 
     // varriables

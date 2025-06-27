@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Demo</title>
+    <link href="../../../static/css/global.css" rel="stylesheet" />
+
+    <script src="../../../static/lib/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../../../static/lib/intell/intell.js"></script>
+    <script src="../../../static/lib/hljs/highlight.min.js"></script>
+    <script src="../../../static/js/docs.js"></script>
+</head>
+<body class="Light">
+    <div class="Container master-header">
+        <div class="Content">
+            <a href="../../../" class="title">jintellv2 - Demos</a>
+            <div class="spring"></div>
+            <div class="links">
+                <a class="link" title="Document" href="../../../document.html">
+                    <div class="icon"></div>
+                </a>
+                <a class="link" title="Source - Github" href="https://github.com/xhighintell/jintellv2">
+                    <div class="icon"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="Container" style="margin:20px 0px">
+        <div class="Content">
+            <style>
+                .themes{display:flex}
+                .themes .action{margin:0 1px;padding:2px 4px;border:1px solid #0000006b;cursor:pointer}
+                .themes .action:hover{}
+                .themes .action.ACTIVE{background:#005287;color:#fff}
+                .Dark .demos-section{color:#fff;background:#000}
+            </style>
+            <div class="themes">
+                <div class="action ACTIVE" data-theme="Light">Light</div>
+                <div class="action" data-theme="Dark">Dark</div>
+            </div>
+            <script>
+                $('.themes').on('click', '.action', function() {
+                    $('.themes .action').removeClass('ACTIVE');
+                    this.classList.add('ACTIVE');
+                    document.body.classList.remove('Light', 'Dark', 'GoogleChrome', 'DarkBlue');
+                    document.body.classList.add(this.getAttribute('data-theme'));
+                });
+
+            </script>
+        </div>
+    </div>
+
+    <div class="demos-section Container">
+        <div class="Content">
+            <div class="example">
+                <div class="title">Default</div>
+                <div class="description"></div>
+
+                <div id="example1" data-code-id="Example1">
+                    <div id="datetimepicker1" class="X-DateTime" tabindex="0"></div>
+                    <style>
+                        .Light .X-DateTime{position:relative;display:inline-block;outline:none;border:1px solid #000}
+                        .Light .X-DateTime.ACTIVE{border-color:#0092ff}
+                        .Light .X-DateTime .Label{display:flex}
+                        .Light .X-DateTime .Label .Input{width:200px;border:none;outline:none}
+                        .Light .X-DateTime .Label .Input:not(:empty){padding:.2em .3em}
+                        .Light .X-DateTime .Label .Edit{display:flex;align-items:center;padding:.2em .3em;cursor:pointer;user-select:none}
+                        .Light .X-DateTime .Label .Edit::before{content:"\E84F";display:flex;font-family:fontello}
+                        .Light .X-DateTime .Label .Edit:hover{background:rgba(0,0,0,.1)}
+                        .Light .X-DateTime .Children{display:none;position:absolute;width:min-content;border:1px solid #0092ff;top:calc(100% - 1px);z-index:1;background:#fff}
+                        .Light .X-DateTime .Children>.Intersect{position:absolute;z-index:99}
+                        .Light .X-DateTime .Children>.Intersect::before{content:"";position:absolute;left:1px;top:0;right:1px;bottom:0;background:#fff}
+                        .Light .X-DateTime .Calendar{padding:.2em .2em}
+                        .Light .X-DateTime .Calendar>.Calendar-Header{display:flex;padding:0 0 8px 6px;font-size:1.2em}
+                        .Light .X-DateTime .Calendar>.Calendar-Header .Calendar-Title{flex:1 1 auto}
+                        .Light .X-DateTime .Calendar>.Calendar-Header .Calendar-Prev,.Light .X-DateTime .Calendar>.Calendar-Header .Calendar-Next{display:flex;align-items:center;justify-content:center;width:1.4em;margin:0 .1em;padding:0  0.3em;cursor:pointer;box-sizing:border-box;user-select:none}
+                        .Light .X-DateTime .Calendar>.Calendar-Header .Calendar-Prev:hover,.Light .X-DateTime .Calendar>.Calendar-Header .Calendar-Next:hover{background:#0000001a}
+                        .Light .X-DateTime .Calendar>.Calendar-Header .Calendar-Prev::before{content:"\F106";font-family:fontello}
+                        .Light .X-DateTime .Calendar>.Calendar-Header .Calendar-Next::before{content:"\F107";font-family:fontello}
+                        .Light .X-DateTime .Calendar>.Calendar-Table{display:inline-grid;grid-template-columns:repeat(7,40px);grid-gap:1px}
+                        .Light .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Head{display:contents;font-size:1em;font-weight:500}
+                        .Light .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Head>div{text-align:center}
+                        .Light .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body{display:contents;font-size:0.9em}
+                        .Light .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div{position:relative;display:flex;align-items:center;justify-content:center;height:24px;border:1px solid transparent;cursor:pointer}
+                        .Light .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div>span{z-index:0}
+                        .Light .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div.OTHER-MONTH{color:#00000059}
+                        .Light .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div:hover{border-color:#000000}
+                        .Light .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div.SELECTED::before{content:"";position:absolute;left:0;top:0;bottom:0;right:0;z-index:0;background:#0078d7}
+                        .Light .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div.SELECTED:hover::before{left:1px;top:1px;bottom:1px;right:1px}
+                        .Light .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div.ACTIVE{border-color:#0078d7}
+                        .Light .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div.ACTIVE.SELECTED::before{left:1px;top:1px;bottom:1px;right:1px}
+                        .Light .X-DateTime .Clock{margin-top:5px;padding:.2em .5em;border-top:1px solid #dcdcdc}
+                        .Light .X-DateTime .Clock .Time{font-size:1.7em;outline:none}
+                        .Light .X-DateTime .Clock .Hours{}
+                        .Light .X-DateTime .Clock .Minutes{}
+                        .Light .X-DateTime .Clock .Seconds{}
+                        .Light .X-DateTime .Clock .Milliseconds{font-size:.6em}
+                        .Light .X-DateTime .Clock .Time .ACTIVE>.Value{background:#0078d7;color:#fff}
+                        .Light .X-DateTime .Clock .Noon{font-size:.6em;color:gray}
+                        .Light .X-DateTime .Clock .Noon.ACTIVE{background:#0078d7;color:#fff}
+                        .Light .X-DateTime .Clock .Timezone{font-size:.4em;color:#b4b4b4ed}
+
+                        .Dark .X-DateTime{position:relative;display:inline-block;outline:none;border:1px solid rgba(255,255,255,.3);color:#fff}
+                        .Dark .X-DateTime.ACTIVE{border-color:#0092ff}
+                        .Dark .X-DateTime .Label{display:flex}
+                        .Dark .X-DateTime .Label .Input{width:200px;border:none;outline:none;color:#fff;background:rgba(0,0,0,.5)}
+                        .Dark .X-DateTime .Label .Input:not(:empty){padding:.2em .3em}
+                        .Dark .X-DateTime .Label .Edit{display:flex;align-items:center;padding:.2em .3em;cursor:pointer;user-select:none;background:#101010}
+                        .Dark .X-DateTime .Label .Edit::before{content:"\E84F";display:flex;font-family:fontello}
+                        .Dark .X-DateTime .Label .Edit:hover{background:#005287}
+                        .Dark .X-DateTime .Label .Edit:active{background:#0092fff2}
+                        .Dark .X-DateTime .Children{display:none;position:absolute;width:min-content;padding:.2em .2em;border:1px solid #0092ff;top:calc(100% - 1px);z-index:1;background:#000}
+                        .Dark .X-DateTime .Children{}
+                        .Dark .X-DateTime .Children>.Intersect{position:absolute;z-index:99}
+                        .Dark .X-DateTime .Children>.Intersect::before{content:"";position:absolute;left:1px;top:0;right:1px;bottom:0;background:#000}
+                        .Dark .X-DateTime .Calendar>.Calendar-Header{display:flex;padding:0 0 8px 6px;font-size:1.2em}
+                        .Dark .X-DateTime .Calendar>.Calendar-Header .Calendar-Title{flex:1 1 auto}
+                        .Dark .X-DateTime .Calendar>.Calendar-Header .Calendar-Prev,.Dark .X-DateTime .Calendar>.Calendar-Header .Calendar-Next{display:flex;align-items:center;justify-content:center;width:25px;margin:0 2px;padding:0 6px;cursor:pointer;box-sizing:border-box;user-select:none}
+                        .Dark .X-DateTime .Calendar>.Calendar-Header .Calendar-Prev:hover,.Dark .X-DateTime .Calendar>.Calendar-Header .Calendar-Next:hover{background:#0092ff70}
+                        .Dark .X-DateTime .Calendar>.Calendar-Header .Calendar-Prev:active,.Dark .X-DateTime .Calendar>.Calendar-Header .Calendar-Next:active{background:#0092fff2}
+                        .Dark .X-DateTime .Calendar>.Calendar-Header .Calendar-Prev::before{content:"\F106";font-family:fontello}
+                        .Dark .X-DateTime .Calendar>.Calendar-Header .Calendar-Next::before{content:"\F107";font-family:fontello}
+
+                        .Dark .X-DateTime .Calendar>.Calendar-Table{display:inline-grid;grid-template-columns:repeat(7,40px);grid-gap:1px}
+                        .Dark .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Head{display:contents;font-size:1em;font-weight:500}
+                        .Dark .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Head>div{text-align:center}
+                        .Dark .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body{display:contents;font-size:0.9em}
+                        .Dark .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div{position:relative;display:flex;align-items:center;justify-content:center;height:24px;border:1px solid transparent;cursor:pointer}
+                        .Dark .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div>span{z-index:0}
+                        .Dark .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div.OTHER-MONTH{color:#ffffff3b}
+                        .Dark .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div:hover{border-color:#ffffff57}
+                        .Dark .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div.SELECTED{color:#fff}
+                        .Dark .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div.SELECTED::before{content:"";position:absolute;left:0;top:0;bottom:0;right:0;z-index:0;background:#0078d7}
+                        .Dark .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div.SELECTED:hover::before{left:1px;top:1px;bottom:1px;right:1px}
+                        .Dark .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div.ACTIVE{border-color:#0078d7}
+                        .Dark .X-DateTime .Calendar>.Calendar-Table .Calendar-Table-Body>div.ACTIVE.SELECTED::before{left:1px;top:1px;bottom:1px;right:1px}
+                        .Dark .X-DateTime .Clock{margin-top:5px;padding:.2em .5em;border-top:1px solid #ffffff45}
+                        .Dark .X-DateTime .Clock .Time{font-size:1.7em;outline:none}
+                        .Dark .X-DateTime .Clock .Hours{}
+                        .Dark .X-DateTime .Clock .Minutes{}
+                        .Dark .X-DateTime .Clock .Seconds{}
+                        .Dark .X-DateTime .Clock .Milliseconds{font-size:.6em}
+                        .Dark .X-DateTime .Clock .Time .ACTIVE>.Value{background:#0078d7;color:#fff}
+                        .Dark .X-DateTime .Clock .Noon{font-size:.6em;color:gray}
+                        .Dark .X-DateTime .Clock .Noon.ACTIVE{background:#0078d7;color:#fff}
+                        .Dark .X-DateTime .Clock .Timezone{font-size:.4em;color:#b4b4b4ed}
+                    </style>
+
+                    <script>
+                        $(document).ready(function() {
+                            var dateTime1 = window.dateTime1 = new intell.ctrl.DateTime(document.getElementById('datetimepicker1'));
+                            dateTime1.element.addEventListener('datetimechange', function(e) {
+                                console.log('dateTime1, value changed', dateTime1.value, e.target);
+                            });
+                        });
+                    </script>
+                </div>
+
+                <div class="demo-source" data-code-source="Example1">
+                    <div class="label">Source code - Default</div>
+                </div>
+            </div>
+
+            <div class="example">
+                <div class="title">Predefined</div>
+                <div class="description"></div>
+
+                <div id="example2" data-code-id="Example2">
+                    <div id="datetimepicker2" class="X-DateTime" tabindex="0">
+                        <div class="Label">
+                            <input class="Input"/>
+                            <div class="Edit"></div>
+                        </div>
+                        <div class="Children">
+                            <div class="Intersect"></div>
+                            <div class="Calendar">
+                                <div class="Calendar-Header">
+                                    <div class="Calendar-Prev" tabindex="0"></div>
+                                    <div class="Calendar-Title">Septemper 2024</div>
+                                    <div class="Calendar-Next" tabindex="0"></div>
+                                </div>
+                                <div class="Calendar-Table" tabindex="0">
+                                    <div class="Calendar-Table-Head"></div>
+                                    <div class="Calendar-Table-Body"></div>
+                                </div>
+                            </div>
+                            <div class="Clock">
+                                <span class="Time" tabindex="0">
+                                    <span class="Hours"><span class="Value">00</span></span
+                                    ><span class="Minutes">:<span class="Value">00</span></span
+                                    ><span class="Seconds">:<span class="Value">00</span></span
+                                    ><span class="Milliseconds">.<span class="Value">000</span></span>
+                                    <span class="Noon"></span>
+                                    <span class="Timezone"></span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    <style>
+                        #datetimepicker2 .Calendar-Header{padding:0 0 8px 0}
+                        #datetimepicker2 .Calendar-Prev::before{content:"\F104"}
+                        #datetimepicker2 .Calendar-Next::before{content:"\F105"}
+                        #datetimepicker2 .Calendar-Header .Calendar-Title{text-align:center}
+                    </style>
+                    <input type="datetime-local"/>
+
+                    <script>
+                        $(document).ready(function() {
+                            var dateTime2 = window.dateTime2 = new intell.ctrl.DateTime(document.getElementById('datetimepicker2'));
+                        });
+                    </script>
+                </div>
+
+                <div class="demo-source" data-code-source="Example2">
+                    <div class="label">Source code - Default</div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <script>docs.demos.auto()</script>
+</body>
+</html>

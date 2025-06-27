@@ -1,0 +1,367 @@
+{
+    "_": "class",
+    "title": "DateTime Class",
+    "description": "Represents a control that allows the user to select a date and a time and to display the date and time with a specified format.",
+
+    "constructors": [
+        {
+            "title": "constructor(element: HTMLElement)",
+            "description": "Initializes a new instance of the DateTime class from element.",
+            "parameters": [
+                {
+                    "name": "element",
+                    "type": "HTMLElement",
+                    "description": "The element for which to create Time."
+                }
+            ]
+        }
+    ],
+    "properties": [
+        {
+            "title": "readonly element: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the root element of control.",
+            "value": {
+                "description": "Returns the root element of control."
+            }
+        },
+        {
+            "title": "readonly elementLabel: HTMLElement",
+            "type": "HTMLElement",
+            "description": " Gets the hours element of control.",
+            "value": {
+                "description": "Returns the hours element of control."
+            }
+        },
+        {
+            "title": "readonly elementChildren: HTMLElement",
+            "type": "HTMLElement",
+            "description": "Gets the minutes element of control.",
+            "value": {
+                "description": "Returns the minutes element of control."
+            }
+        },
+        {
+            "title": "readonly elementIntersect: HTMLElement",
+            "type": "HTMLElement",
+            "description": " Gets the seconds element of control.",
+            "value": {
+                "description": "Returns the seconds element of control."
+            }
+        },
+        {
+            "title": "value?: number",
+            "type": "number",
+            "description": "Gets or sets the date/time value assigned to the control.",
+            "value": {
+                "description": "The default value is <mark>null</mark>"
+            }
+        },
+        {
+            "title": "timezoneOffset: number",
+            "type": "number",
+            "description": "Gets or sets the difference in minutes between the time on the local computer and Universal Coordinated Time (UTC).",
+            "value": {
+                "description": "The default value is the local time zone offset"
+            },
+            "remarks": "Adjusting the time zone offset affects how the time is displayed, but not the underlying value."
+        },
+        {
+            "title": "firstDayOfWeek: number",
+            "type": "number",
+            "description": "Gets or sets the first day of the week in the calendar.",
+            "value": {
+                "description": [
+                    "The default value is <mark>0</mark>.", 
+                    "<div>Sunday = 0</div>",
+                    "<div>Monday = 1</div>",
+                    "<div>Tuesday = 2</div>",
+                    "<div>Wednesday = 3</div>",
+                    "<div>Thursday = 4</div>",
+                    "<div>Friday = 5</div>",
+                    "<div>Saturday = 6</div>"
+                ]
+            },
+            "remarks": "Adjusting the first day of the week affects how the calendar is displayed, but not the underlying value."
+        },
+        {
+            "title": "locales?: string | string[]",
+            "type": "string | string[]",
+            "description": "Gets or sets the locales of the calendar.",
+            "value": {
+                "description": "The default value is <mark>navigator.language</mark>. Ex: 'en', 'en-US', 'zh', 'it'"
+            }
+        },
+        {
+            "title": "secondsEnabled: boolean",
+            "type": "number",
+            "description": "Gets or sets whether seconds are displayed.",
+            "value": {
+                "description": "The default value is <mark>true</mark>"
+            }
+        },
+        {
+            "title": "millisecondsEnabled: boolean",
+            "type": "number",
+            "description": "Gets or sets whether milliseconds are displayed.",
+            "value": {
+                "description": "The default value is <mark>false</mark>"
+            }
+        },
+        {
+            "title": "hour12: boolean",
+            "type": "number",
+            "description": "Gets or sets whether to use the 12- or 24-hour format.",
+            "value": {
+                "description": "The default value is <mark>false</mark>"
+            }
+        },
+        {
+            "title": "nullable: boolean",
+            "type": "number",
+            "description": "Gets or sets whether the value can be null.",
+            "value": {
+                "description": "The default value is <mark>true</mark>"
+            }
+        },
+        {
+            "title": "calendarLocations: number[]",
+            "type": "number[]",
+            "description": "Gets or sets the locations where the calendar is positioned when displayed.",
+            "value": {
+                "description": "the default is <mark>[9, 1]</mark>."
+            }
+        },
+        {
+            "title": "calendarOption: intell.ctrl.ShowAtOption",
+            "type": "intell.ctrl.ShowAtOption",
+            "description": "Gets or sets the option that determines where the calendar is positioned when displayed.",
+            "value": {
+                "description": "The default value is <mark>{ container_mode: \"auto\", space: -1 }</mark>."
+            }
+        },
+        {
+            "title": "calendarFadeOutTime: number",
+            "type": "boolean",
+            "description": "Gets or sets the fade-out duration for the calendar.",
+            "value": {
+                "description": "The default value is <mark>0</mark>."
+            }
+        },
+        {
+            "title": "active: boolean",
+            "type": "boolean",
+            "description": "Gets or sets whether this DateTime picker is active.",
+            "value": {
+                "description": "The default value is <mark>false</mark>."
+            }
+        },
+        {
+            "title": "calendarVisible: boolean",
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the calendar is displayed.",
+            "remarks": "Returns false while the calendar is fading out."
+        }
+    ],
+
+    "events": [
+        {
+            "title": "datetimechange",
+            "description": "The change event is triggered when the user commits a change to the value."
+        }
+    ],
+    "methods": [
+        {
+            "title": "customFormatDisplay(): string",
+            "description": "Returns formatted display time in 'en-US' locale.",
+            "remarks": [
+                "This method can be overridden.",
+                "<div>The <mark>Date.parse</mark> doesn't support parsing with a specified locale, parsing the value back from text give incorrect result. If you prefer a custom format, consider disabling the input element’s editing mode.</div>"
+            ]
+        },
+        {
+            "title": "showChildrenAt",
+            "description": "Shows the calendar at.",
+            "overloads": [
+                {
+                    "title": "showChildrenAt(target: HTMLElement, locations?: number[], option?: ShowAtOption): void",
+                    "description": "Shows the calendar at the specified element."
+                },
+                {
+                    "title": "showChildrenAt(coords: CoordinatesLike, locations?: number[], option?: ShowAtOption): void",
+                    "description": "Shows the calendar at the specified coordinates."
+                }
+            ]
+        },
+        {
+            "title": "hideChildren(): Menu",
+            "description": "Hides the calendar. When the calendar is hidden, its session value is cleared."
+        },
+        {
+            "title": "hideChildrenImmediately(): Menu",
+            "description": "Immediately hides the calendar. When the calendar is hidden, its session value is cleared."
+        }
+    ],
+    "static_methods": [
+        {
+            "title": "getLocaleTimezoneOffset(): number",
+            "description": "Returns the local time zone offset in minutes.",
+            "returns": {
+                "type": "number",
+                "description": ["A number that represents the time zone offset in minutes. Ex: -420 for GMT+7"]
+            }
+        },
+        {
+            "title": "getWeekDayName(weekday: number, locales?: string): string",
+            "description": "Returns the display name of the weekday for the specified locale.",
+            "parameters": [
+                {
+                    "name": "weekday",
+                    "type": "number",
+                    "description": [
+                        "The weekday.",
+                        "<div>Sunday = 0",
+                        "<div>Monday = 1",
+                        "<div>Tuesday = 2",
+                        "<div>Wednesday = 3",
+                        "<div>Thursday = 4",
+                        "<div>Friday = 5",
+                        "<div>Saturday = 6</div>"
+                    ]
+                },
+                {
+                    "name": "locales",
+                    "type": "string | null",
+                    "description": "The specified locales. If unspecified, the local browser locales will be used."
+                }
+            ],
+            "returns": {
+                "type": "string",
+                "description": ["A string that represents the name of the weekday. Ex: Sun, Mon, Tue, Wed."]
+            }
+        },
+        {
+            "title": "getMonthName(month: number, locales?: string): number",
+            "description": "Returns the display name of the month for the specified locale.",
+            "parameters": [
+                {
+                    "name": "month",
+                    "type": "number",
+                    "description": ["An integer, between 1 and 12, representing the month."]
+                },
+                {
+                    "name": "locales",
+                    "type": "string | null",
+                    "description": "The specified locales. If unspecified, the local browser locales will be used."
+                }
+            ],
+            "returns": {
+                "type": "string",
+                "description": ["A string that represents the name of the month. Ex: January, February, March, April."]
+            }
+        },
+
+        {
+            "title": "getYear(time: number, timeZoneOffset: number): number",
+            "description": "Gets the year from a DateTime value, using the specified time zone offset."
+        },
+        {
+            "title": "getMonth(time: number, timeZoneOffset: number): number",
+            "description": "Gets the month from a DateTime value, using the specified time zone offset.",
+            "parameters": [
+                {
+                    "name": "time",
+                    "type": "number",
+                    "description": "The date and time value to get."
+                },
+                {
+                    "name": "timeZoneOffset",
+                    "type": "number",
+                    "description": "The time zone offset in minutes."
+                }
+            ],
+            "returns": {
+                "type": "number",
+                "description": ["An integer, between 1 and 12, representing the month."]
+            }
+        },
+
+        {
+            "title": "getDate(time: number, timeZoneOffset: number): number",
+            "description": "Gets day-of-the-month from a DateTime value, using the specified time zone offset."
+        },
+        {
+            "title": "getDayOfWeek(time: number, timeZoneOffset: number): number",
+            "description": "Gets the day of the week from a DateTime value, using the specified time zone offset."
+        },
+        {
+            "title": "getHours(time: number, timeZoneOffset: number): number",
+            "description": "Gets the hours from a DateTime value, using the specified time zone offset."
+        },
+        {
+            "title": "getMinutes(time: number, timeZoneOffset: number): number",
+            "description": "Gets the minutes from a DateTime value, using the specified time zone offset."
+        },
+        {
+            "title": "getSeconds(time: number, timeZoneOffset: number): number",
+            "description": "Gets the seconds from a DateTime value, using the specified time zone offset."
+        },
+        {
+            "title": "getMilliseconds(time: number, timeZoneOffset: number): number",
+            "description": "Gets the milliseconds from a DateTime value, using the specified time zone offset."
+        },
+
+        {
+            "title": "isSameDate(time1: number, time2: number, timeZoneOffset: number): boolean",
+            "description": "Checks whenever two datetime have the same date. Compares only the date, ignoring the time portion of the input values.",
+            "parameters": [
+                {
+                    "name": "time1",
+                    "type": "number",
+                    "description": ""
+                },
+                {
+                    "name": "time2",
+                    "type": "number",
+                    "description": ""
+                },
+                {
+                    "name": "timeZoneOffset",
+                    "type": "number",
+                    "description": "The local time zone offset in minutes."
+                }
+            ],
+            "returns": {
+                "type": "boolean",
+                "description": ["Returns true if the two DateTime values have the same date."]
+            }
+        },
+        {
+            "title": "isSameMonth(time1: number, time2: number, timeZoneOffset: number): boolean",
+            "description": "Checks whenever two datetimes have the same month.",
+            "parameters": [
+                {
+                    "name": "time1",
+                    "type": "number",
+                    "description": ""
+                },
+                {
+                    "name": "time2",
+                    "type": "number",
+                    "description": ""
+                },
+                {
+                    "name": "timeZoneOffset",
+                    "type": "number",
+                    "description": "The local time zone offset in minutes."
+                }
+            ],
+            "returns": {
+                "type": "boolean",
+                "description": ["Returns true if the two DateTime values have the same month."]
+            }
+        }
+    ],
+
+    "examples": "article/intell.ctrl/DateTime_examples.html"
+}

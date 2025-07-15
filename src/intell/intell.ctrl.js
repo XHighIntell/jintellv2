@@ -10,7 +10,7 @@
 
         // --1--
         if (arguments.length == 0) throw new TypeError("Failed to execute 'show' on 'intell.ctrl': 1 argument required, but only 0 present.");
-        if (element instanceof HTMLElement == false) return;
+        if (element instanceof Element == false) return;
 
         // --2--
         if (element.style.display == 'none') element.style.display = '';
@@ -29,6 +29,17 @@
     ctrl.hide = function(element) {
         var computedStyle = getComputedStyle(element);
         if (computedStyle.display != 'none') element.style.display = 'none';
+    }
+    ctrl.toggle = function(element, force) {
+        if (force == null) {
+            var computedStyle = getComputedStyle(element);
+
+            if (computedStyle.display == 'none') { ctrl.show(element); return true; }
+            else { ctrl.hide(element); return false; }
+        } else {
+            if (force == true) { ctrl.show(element); return true; }
+            else { ctrl.hide(element); return false; }
+        }
     }
 
     // startHide + stopHide

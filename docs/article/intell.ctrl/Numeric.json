@@ -109,12 +109,18 @@
             "value": {
                 "description": "The value of numeric."
             },
-            "remarks": "If the user puts an empty string into the textbox while <mark>nullable = false</mark>, the value will be set to <mark>0</mark>. <br>The value is checked and modified to satisfy conditions on sets.<ul><li>If the value is lesser than <mark>min</mark>, <mark>min</mark> will be used.</li><li>If the value is greater than <mark>max</mark>, <mark>max</mark> will be used.</li><li>And <mark>minimumFractionDigits</mark>, <mark>maximumFractionDigits</mark></li></ul>"
+            "remarks": [
+                "If the user enters an empty string into the textbox while <mark>nullable = false</mark>, the value will be set to <mark>0</mark>. <br>The value is then validated and modified to meet the required conditions during assignment.",
+                "<ul><li>If the value is lesser than <mark>min</mark>, <mark>min</mark> will be used.</li><li>If the value is greater than <mark>max</mark>, <mark>max</mark> will be used.</li><li>And <mark>minimumFractionDigits</mark>, <mark>maximumFractionDigits</mark></li></ul>"
+            ]
         },
         {
             "title": "nullable: boolean",
             "type": "boolean",
-            "description": "Gets or sets whether the value can be null; the default is <mark>false</mark>."
+            "description": "Gets or sets whether the value can be null.",
+            "value": {
+                "description": "The default value is <mark>true</mark>"
+            }
         },
         {
             "title": "increment: number",

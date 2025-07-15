@@ -13,7 +13,7 @@
 
         var ctrlKey = option.ctrlKey ?? (Symbol ? new Symbol() : 'ctrlKey');
         
-        constructor.getItem = function(element) { return element[ctrlKey] }
+        constructor.getItem = function(element) { return element?.[ctrlKey] }
         constructor.setItem = function(element, control) {
             //if (control instanceof constructor == false) throw new TypeError("'comboBox' must be comboBox.");
             return element[ctrlKey] = control

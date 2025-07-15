@@ -25,13 +25,15 @@ declare namespace intell.ctrl {
         popupLocations: number[];
         popupOption: intell.ctrl.ShowAtOption;
         selectedItem: ComboBoxItem<T>;
+        /** Gets or sets the value of the ComboBox. If the value does not exist in the options list, the set operation will have no effect.*/
+        value?: T;
 
         // methods
         getPrivate(): ComboBoxPrivate<T>;
         add(item: ComboBoxItem<T>): void;
-        add(option: ComboBoxAddOption): ComboBoxItem<T>;
+        add(option: ComboBoxAddOption<T>): ComboBoxItem<T>;
         private addItem(item: ComboBoxItem<T>): void;
-        private addOption(option: ComboBoxAddOption): ComboBoxItem<T>;
+        private addOption(option: ComboBoxAddOption<T>): ComboBoxItem<T>;
         remove(item: ComboBoxItem<T>): void;
         clear(): void;
 

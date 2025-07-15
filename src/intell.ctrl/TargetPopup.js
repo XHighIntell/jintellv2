@@ -49,7 +49,7 @@
             if (__private.targetElement != null && __private.targetElement.contains(e.target) == true) return; // mouseup on our target
 
             _this.hide();
-        });
+        }, { capture: true });
 
     }
 

@@ -7,10 +7,13 @@ declare namespace intell.ctrl {
 
     // ======= methods =======
     /** Show the element by changing its display style. */
-    export function show(element: HTMLElement): void;
+    export function show(element: Element): void;
 
     /** Hide the element by changing its display style. */
-    export function hide(element: HTMLElement): void;
+    export function hide(element: Element): void;
+
+    /** Toggles the visibility of an element. */
+    export function toggle(element: Element, force?: boolean): boolean;
 
     /** Start hiding animation by adding specified classes then completely hide. Calling startHide multiple times will return the Promise from previous call. */
     export function startHide(element: HTMLElement, timeout: number, delayHideClass: string): Promise<void>;

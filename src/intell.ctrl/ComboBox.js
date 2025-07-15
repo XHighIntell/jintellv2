@@ -161,9 +161,8 @@
     ctrl.template.inherit(ComboBox, { ctrlKey: Symbol('__ComboBox__') });
 
     // ======= properties =======
-    var prototype = ComboBox.prototype;
-    /** @type defineProperties<intell.ctrl.ComboBox>*/
-    let defineProperties = {
+    const prototype = ComboBox.prototype;
+    ctrl.template.defineProperties(prototype, {
         element: {
             get: function() { return this.getPrivate().element },
             set: function() { throw new Error("'ComboBox.element' cannot be assigned to -- it is read only") }
@@ -213,8 +212,20 @@
 
             }
         },
-    };
-    Object.defineProperties(prototype, defineProperties)
+        value: {
+            get: function() {
+                var __private = this.getPrivate();
+                return __private.selectedItem?.value;
+            },
+            set: function(newValue) {
+                var __private = this.getPrivate();
+                var item = __private.items.find(i => i.value == newValue);
+                if (item == null) return;
+
+                this.selectedItem = item;
+            }
+        },
+    });
 
     // ======== methods =========
     prototype.add = function() {

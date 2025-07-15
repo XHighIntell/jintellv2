@@ -188,7 +188,7 @@
 
         // --1--
         if (arguments.length == 0) throw new TypeError("Failed to execute 'show' on 'intell.ctrl': 1 argument required, but only 0 present.");
-        if (element instanceof HTMLElement == false) return;
+        if (element instanceof Element == false) return;
 
         // --2--
         if (element.style.display == 'none') element.style.display = '';
@@ -207,6 +207,17 @@
     ctrl.hide = function(element) {
         var computedStyle = getComputedStyle(element);
         if (computedStyle.display != 'none') element.style.display = 'none';
+    }
+    ctrl.toggle = function(element, force) {
+        if (force == null) {
+            var computedStyle = getComputedStyle(element);
+
+            if (computedStyle.display == 'none') { ctrl.show(element); return true; }
+            else { ctrl.hide(element); return false; }
+        } else {
+            if (force == true) { ctrl.show(element); return true; }
+            else { ctrl.hide(element); return false; }
+        }
     }
 
     // startHide + stopHide
@@ -619,7 +630,7 @@
 
         var ctrlKey = option.ctrlKey ?? (Symbol ? new Symbol() : 'ctrlKey');
         
-        constructor.getItem = function(element) { return element[ctrlKey] }
+        constructor.getItem = function(element) { return element?.[ctrlKey] }
         constructor.setItem = function(element, control) {
             //if (control instanceof constructor == false) throw new TypeError("'comboBox' must be comboBox.");
             return element[ctrlKey] = control
@@ -1444,9 +1455,8 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
     ctrl.template.inherit(ComboBox, { ctrlKey: Symbol('__ComboBox__') });
 
     // ======= properties =======
-    var prototype = ComboBox.prototype;
-    /** @type defineProperties<intell.ctrl.ComboBox>*/
-    let defineProperties = {
+    const prototype = ComboBox.prototype;
+    ctrl.template.defineProperties(prototype, {
         element: {
             get: function() { return this.getPrivate().element },
             set: function() { throw new Error("'ComboBox.element' cannot be assigned to -- it is read only") }
@@ -1496,8 +1506,20 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
 
             }
         },
-    };
-    Object.defineProperties(prototype, defineProperties)
+        value: {
+            get: function() {
+                var __private = this.getPrivate();
+                return __private.selectedItem?.value;
+            },
+            set: function(newValue) {
+                var __private = this.getPrivate();
+                var item = __private.items.find(i => i.value == newValue);
+                if (item == null) return;
+
+                this.selectedItem = item;
+            }
+        },
+    });
 
     // ======== methods =========
     prototype.add = function() {
@@ -2125,7 +2147,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         __private.maximumFractionDigits = 2;
         __private.decimalSeparator = localeDecimalSeparator;
         __private.thousandSeparator = localeThousandSeparator;
-        __private.nullable = false;
+        __private.nullable = true;
         __private.readonly = false;
         __private.value = null;
         __private.increment = 1;
@@ -2246,7 +2268,15 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         },
         nullable: {
             get: function() { return this.getPrivate().nullable },
-            set: function(newValue) { this.getPrivate().nullable = newValue }
+            set: function(newValue) {
+                var __private = this.getPrivate();
+
+                __private.nullable = newValue;
+
+                if (__private.nullable == false && __private.value == null) {
+                    this.value = 0;
+                }
+            }
         },
         readonly: {
             get: function() { return this.getPrivate().readonly },
@@ -2463,7 +2493,7 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
             if (__private.targetElement != null && __private.targetElement.contains(e.target) == true) return; // mouseup on our target
 
             _this.hide();
-        });
+        }, { capture: true });
 
     }
 
@@ -5032,15 +5062,6 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
         return formater.formatToParts(Date.UTC(0, month, 0))[0].value;
     }
 
-    DateTime.isSameDate = function(time1, time2, timezoneOffset) {
-        if (timezoneOffset == null) throw new Error("timezoneOffset can't be null")
-        return Math.floor((time1 - timezoneOffset * 60000) / 86_400_000) == Math.floor((time2 - timezoneOffset * 60000) / 86_400_000);
-    }
-    DateTime.isSameMonth = function(time1, time2, timezoneOffset) {
-        if (timezoneOffset == null) throw new Error("timezoneOffset can't be null")
-        return DateTime.getMonth(time1, timezoneOffset) == DateTime.getMonth(time2, timezoneOffset);
-    }
-
     DateTime.getYear = function(time, timezoneOffset) {
         if (timezoneOffset == null) throw new Error("timezoneOffset can't be null")
         return new Date(time - timezoneOffset * 60000).getUTCFullYear();
@@ -5085,6 +5106,15 @@ $errorOverlay = $(`<div class="Error-Overlay" style="display:none">
     }
     DateTime.parse = function(s, timezoneOffset) {
         
+    }
+
+    DateTime.isSameDate = function(time1, time2, timezoneOffset) {
+        if (timezoneOffset == null) throw new Error("timezoneOffset can't be null")
+        return Math.floor((time1 - timezoneOffset * 60000) / 86_400_000) == Math.floor((time2 - timezoneOffset * 60000) / 86_400_000);
+    }
+    DateTime.isSameMonth = function(time1, time2, timezoneOffset) {
+        if (timezoneOffset == null) throw new Error("timezoneOffset can't be null")
+        return DateTime.getMonth(time1, timezoneOffset) == DateTime.getMonth(time2, timezoneOffset);
     }
 }()
 !function() {

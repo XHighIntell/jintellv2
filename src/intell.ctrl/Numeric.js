@@ -35,7 +35,7 @@
         __private.maximumFractionDigits = 2;
         __private.decimalSeparator = localeDecimalSeparator;
         __private.thousandSeparator = localeThousandSeparator;
-        __private.nullable = false;
+        __private.nullable = true;
         __private.readonly = false;
         __private.value = null;
         __private.increment = 1;
@@ -156,7 +156,15 @@
         },
         nullable: {
             get: function() { return this.getPrivate().nullable },
-            set: function(newValue) { this.getPrivate().nullable = newValue }
+            set: function(newValue) {
+                var __private = this.getPrivate();
+
+                __private.nullable = newValue;
+
+                if (__private.nullable == false && __private.value == null) {
+                    this.value = 0;
+                }
+            }
         },
         readonly: {
             get: function() { return this.getPrivate().readonly },

@@ -124,7 +124,7 @@
     interface MenuOption {
         icon: string;
         name: string;
-        shortcut: string;
+        shortcut?: string;
     }
     interface MenuPrivate {
         element: HTMLElement;

@@ -174,5 +174,26 @@
     intell.wait = function(timeout) {
         return new Promise(resolve => setTimeout(resolve, timeout));
     }
-    
+    intell.loadScript = function(url) {
+        return new Promise(function(resolve, reject) {
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = url;
+
+            script.onload = () => resolve(script);
+            script.onerror = () => {
+                script.remove();
+                reject(new Error(`Failed to load script: ${url}`));
+            }
+
+            document.head.appendChild(script);
+        });
+    }
+
+
+    Array.prototype.remove = function(item) {
+        const index = this.indexOf(item);
+        if (index > -1) this.splice(index, 1);
+    };
+
 }();

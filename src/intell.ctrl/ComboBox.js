@@ -59,6 +59,7 @@
         __private.childrenVisible = false;
         __private.items = [];
         __private.groups = [];
+        __private.nullable = true;
         __private.popupLocations = [9, 1];
         __private.popupOption = { space: -1, container_mode: "auto" }
 
@@ -187,29 +188,27 @@
             get: function() { return this.getPrivate().items.slice() },
             set: function() { throw new Error("'ComboBox.items' cannot be assigned to -- it is read only") },
         },
-
-        popupLocations: {
-            get: function() { return this.getPrivate().popupLocations },
-            set: function(newValue) { this.getPrivate().popupLocations = newValue },
-        },
-        popupOption: {
-            get: function() { return this.getPrivate().popupOption },
-            set: function(newValue) { this.getPrivate().popupOption = newValue },
-        },
         selectedItem: {
             get: function() { return this.getPrivate().selectedItem },
             set: function(newValue) {
-                var __private = this.getPrivate();
+                const __private = this.getPrivate();
 
-                if (newValue != null && __private.items.indexOf(newValue) == -1) throw new Error('Cannot set selectedItem that do not belong to combobox.');
+                if (newValue == null) {
+                    // logic
+                    __private.selectedItem = newValue;
 
-                // logic
-                __private.selectedItem = newValue;
+                    // ui/ux
+                    __private.elementSelect.replaceChildren();
+                }
+                else {
+                    if (__private.items.indexOf(newValue) == -1) throw new Error('Cannot set selectedItem that do not belong to combobox.');
 
-                // ui/ux
-                __private.elementSelect.innerHTML = '';
-                if (newValue != null) __private.elementSelect.append(newValue.element.cloneNode(true));
+                    // logic
+                    __private.selectedItem = newValue;
 
+                    // ui/ux
+                    __private.elementSelect.replaceChildren(newValue.element.cloneNode(true));
+                }
             }
         },
         value: {
@@ -220,10 +219,30 @@
             set: function(newValue) {
                 var __private = this.getPrivate();
                 var item = __private.items.find(i => i.value == newValue);
-                if (item == null) return;
 
                 this.selectedItem = item;
             }
+        },
+        nullable: {
+            get: function() { return this.getPrivate().nullable },
+            set: function(newValue) {
+                const __private = this.getPrivate();
+                __private.nullable = newValue;
+
+                if (__private.nullable == false && __private.selectedItem == null) {
+                    if (__private.items.length == 0) return;
+
+                    this.selectedItem = __private.items[0];
+                }
+            },
+        },
+        popupLocations: {
+            get: function() { return this.getPrivate().popupLocations },
+            set: function(newValue) { this.getPrivate().popupLocations = newValue },
+        },
+        popupOption: {
+            get: function() { return this.getPrivate().popupOption },
+            set: function(newValue) { this.getPrivate().popupOption = newValue },
         },
     });
 
@@ -265,7 +284,7 @@
 
         // ui/ux
         var $children = $(__private.elementChildren);
-
+       
         if (item.group) {
             var group = __private.groups.find(function(value) { return value.name == item.group });
         
@@ -279,8 +298,15 @@
             }
             group.add(item);
         
-        } else {
+        }
+        else {
             $children.append(item__private.element);
+        }
+
+        if (__private.nullable == false && __private.selectedItem == null) {
+            if (__private.items.length == 0) return;
+
+            this.selectedItem = __private.items[0];
         }
     }
     prototype.remove = function(item) {
@@ -576,6 +602,7 @@
         } else {
             _this.selectedItem = item;
             var event = new Event('comboboxchange', { bubbles: true });
+            event.comboBox = this;
             __private.element.dispatchEvent(event);
         }
 

@@ -1,7 +1,4 @@
-﻿//type ReplaceReturnType<T> = (this: ThisParameterType<T>, ...args: Parameters<T>) => "stopPropagation" | void;
-
-declare namespace intell {
-
+﻿declare namespace intell {
     
     // ======= classes =======
     /** Event register object that is used to add, remove listeners and dispatch them. */
@@ -36,7 +33,7 @@ declare namespace intell {
         hasListeners(): boolean;
     }
 
-    // ======= methods =======
+    //#region ======= methods =======
     /** Creates and assigns on/off function for EventTarget object. */
     export function createOnOff(target: EventTarget): void;
 
@@ -51,7 +48,14 @@ declare namespace intell {
     * @returns Return the key value pair object. */
     export function qs(search?: string): { [T: string]: string };
 
-    export function wait(timeout: number): Promise<void>;
+    /** Creates a promise that will complete after a time delay.
+     * @param delay The number of milliseconds to wait before completing the returned promise. */
+    export function wait(delay: number): Promise<void>;
+
+    /** Loads a JavaScript file by creating a script tag and appending it to the DOM. 
+     * @returns Returns the script element on success. */
+    export function loadScript(url: string): Promise<HTMLScriptElement>;
+    //#endregion
 
     // ======= fields =======
     /** Gets the version of this library. */
@@ -107,6 +111,10 @@ declare namespace intell {
     //export var onLoad: EventRegister<(this: HTMLAudioElement, ev: MouseEvent) => any>;
 }
 
+interface Array<T> {
+    //** Removes the first occurrence of a specific object from the array. */
+    remove(this: Array<T>, item: T): void;
+}
 
 type NotKeyOf<T, U> = { [k in keyof T]: T[k] extends U ? never : k }[keyof T];
 type NotKeyOfFunction<T> = { [k in keyof T]: T[k] extends Function ? never : k }[keyof T];

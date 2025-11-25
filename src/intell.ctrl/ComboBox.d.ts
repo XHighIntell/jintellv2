@@ -21,12 +21,12 @@ declare namespace intell.ctrl {
         readonly childrenVisible: boolean;
         readonly items: ComboBoxItem<T>[];
 
-
-        popupLocations: number[];
-        popupOption: intell.ctrl.ShowAtOption;
         selectedItem: ComboBoxItem<T>;
         /** Gets or sets the value of the ComboBox. If the value does not exist in the options list, the set operation will have no effect.*/
         value?: T;
+        nullable: boolean;
+        popupLocations: number[];
+        popupOption: intell.ctrl.ShowAtOption;
 
         // methods
         getPrivate(): ComboBoxPrivate<T>;
@@ -73,6 +73,7 @@ declare namespace intell.ctrl {
         childrenVisible: boolean;
         items: ComboBoxItem<T>[];
         groups: ComboBoxGroup[]
+        nullable: boolean;
 
         popupLocations: number[];
         popupOption: ctrl.ShowAtOption;
@@ -163,4 +164,6 @@ declare namespace intell.ctrl {
     }
 }
 
-
+interface GlobalEventHandlersEventMap {
+    "comboboxchange": Event & { comboBox: intell.ctrl.ComboBox };
+}

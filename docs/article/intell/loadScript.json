@@ -1,0 +1,20 @@
+{
+    "_": "function",
+    "title": "loadScript Function",
+    "description": "Loads a JavaScript file by creating a script tag and appending it to the DOM.",
+
+    "methods": [
+        {
+            "title": "function loadScript(url: string): Promise<HTMLScriptElement>",
+            "description": "Loads a JavaScript file by creating a script tag and appending it to the DOM.",
+            "parameters": [
+                {
+                    "name": "url",
+                    "type": "string",
+                    "description": "The URL of the JavaScript file."
+                }
+            ],
+            "returns": "Returns the script element on success."
+        }
+    ]
+}

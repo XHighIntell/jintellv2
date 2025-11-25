@@ -55,6 +55,32 @@
             }
         },
         {
+            "title": "selectedItem?: ComboBoxItem",
+            "type": "ComboBoxItem",
+            "description": "Gets or sets the selected item.",
+            "value": {
+                "description": "Returns the current selected item."
+            },
+            "remarks": "<mark>null</mark> is allowable."
+        },
+        {
+            "title": "value?: T",
+            "type": "T",
+            "description": "Gets or sets the value of the ComboBox using the name of a <mark>ComboBoxItem</mark>.",
+            "value": {
+                "description": "Returns the name of current selected <mark>ComboBoxItem</mark>."
+            },
+            "remarks": "If the value does not exist in the options list, the set operation will treat it as null."
+        },
+        {
+            "title": "nullable: boolean",
+            "type": "boolean",
+            "description": "Gets or sets whether the value can be null.",
+            "value": {
+                "description": "The default value is <mark>true</mark>"
+            }
+        },
+        {
             "title": "popupLocations: number[]",
             "type": "number[]",
             "description": "Gets or sets locations indicating of <mark>elementChildren</mark> when it is shown.",
@@ -69,24 +95,6 @@
             "value": {
                 "description": "The default value is <mark>{space: -1, container_mode: \"auto\"}</mark>."
             }
-        },
-        {
-            "title": "selectedItem?: ComboBoxItem",
-            "type": "ComboBoxItem",
-            "description": "Gets or sets the selected item.",
-            "value": {
-                "description": "Returns the current selected item."
-            },
-            "remarks": "<mark>null</mark> is allowable."
-        },
-        {
-            "title": "value?: T",
-            "type": "T",
-            "description": "Gets or sets the value of the ComboBox.",
-            "value": {
-                "description": "Returns the value of current selected item."
-            },
-            "remarks": "If the value does not exist in the options list, the set operation will have no effect."
         }
     ],
     "methods": [
